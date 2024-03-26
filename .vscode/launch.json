@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "msedge",
+            "name": " http://192.168.1.6:3000/fetchgroups",
+            "request": "launch",
+            "url": " http://192.168.1.6:3000/fetchgroups"
+        }
+    ]
+}
