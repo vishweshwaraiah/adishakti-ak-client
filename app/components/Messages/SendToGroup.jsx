@@ -20,7 +20,7 @@ const screenHeight = Dimensions.get('window').height;
 const SendToGroup = (props) => {
   const { getList } = props;
   const dispatch = useDispatch();
-  const { groupsList, isLoading } = useSelector((state) => state.numsGroups);
+  const { groupsList, status } = useSelector((state) => state.groupsSlice);
 
   const [selectedGroup, setSelectedGroup] = useState({});
 
@@ -53,21 +53,24 @@ const SendToGroup = (props) => {
 
   return (
     <View style={styles.groupBox}>
-      {isLoading && <Text>Loading groups...</Text>}
-      <View style={styles.groupsList}>
-        {groupsList.length ? (
-          <FlatList
-            data={groupsList}
-            renderItem={renderItem}
-            keyExtractor={(item) => item._id}
-            numColumns={numColumns}
-          />
-        ) : (
-          <Text style={{ textAlign: 'center' }}>
-            No groups found!. Add one from Mange groups page.
-          </Text>
-        )}
-      </View>
+      {status === 'loading' ? (
+        <Text style={styles.infoText}>Loading groups...</Text>
+      ) : (
+        <View style={styles.groupsList}>
+          {groupsList.length ? (
+            <FlatList
+              data={groupsList}
+              renderItem={renderItem}
+              keyExtractor={(item) => item._id}
+              numColumns={numColumns}
+            />
+          ) : (
+            <Text style={styles.infoText}>
+              No groups found!. Add one from Mange groups page.
+            </Text>
+          )}
+        </View>
+      )}
     </View>
   );
 };
@@ -78,20 +81,20 @@ const styles = StyleSheet.create({
   groupBox: {
     height: 'auto',
     width: '100%',
-    marginTop: Sizes.$ieMargin,
+    marginTop: Sizes.$ieRegularMargin,
   },
   groupsList: {
     maxHeight: screenHeight / 5,
   },
   styleLeft: {
-    width: size - Sizes.$iePadding,
-    paddingLeft: Sizes.$iePadding,
-    paddingBottom: Sizes.$iePadding,
+    width: size - Sizes.$ieRegularPadding,
+    paddingLeft: Sizes.$ieRegularPadding,
+    paddingBottom: Sizes.$ieRegularPadding,
   },
   styleRight: {
-    width: size - Sizes.$iePadding,
-    paddingRight: Sizes.$iePadding,
-    paddingBottom: Sizes.$iePadding,
+    width: size - Sizes.$ieRegularPadding,
+    paddingRight: Sizes.$ieRegularPadding,
+    paddingBottom: Sizes.$ieRegularPadding,
   },
   groupItem: {
     backgroundColor: Colors.$black,
@@ -100,10 +103,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
     height: Sizes.$ieRegularHeight,
-    borderRadius: Sizes.$ieBorderRadius,
-    paddingHorizontal: Sizes.$iePadding,
+    borderRadius: Sizes.$ieRegularRadius,
+    paddingHorizontal: Sizes.$ieRegularPadding,
   },
   groupItemText: {
+    color: Colors.$white,
+  },
+  infoText: {
+    textAlign: 'center',
+    backgroundColor: Colors.$info,
+    padding: Sizes.$ieRegularPadding,
+    marginBottom: Sizes.$ieSmallMargin,
+    borderRadius: Sizes.$ieSmallRadius,
+    overflow: 'hidden',
     color: Colors.$white,
   },
 });

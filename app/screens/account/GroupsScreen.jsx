@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     padding: Sizes.$ieExtraPadding,
-    marginTop: Sizes.$ieExtraMargin,
     width: '95%',
     alignSelf: 'center',
     ...MasterStyles.commonShadow,

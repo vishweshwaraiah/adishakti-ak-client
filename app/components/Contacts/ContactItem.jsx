@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   contactCon: {
     flex: 1,
     flexDirection: 'row',
-    paddingVertical: Sizes.$iePadding,
+    paddingVertical: Sizes.$ieRegularPadding,
     paddingHorizontal: Sizes.$ieExtraPadding,
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.$black,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   isSelected: {
     opacity: 0.9,
-    borderRadius: Sizes.$ieBorderRadius,
+    borderRadius: Sizes.$ieRegularRadius,
   },
 });
 

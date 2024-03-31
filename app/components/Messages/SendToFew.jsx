@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     gap: 'auto',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderRadius: Sizes.$ieBorderRadius,
+    borderRadius: Sizes.$ieRegularRadius,
     overflow: 'hidden',
     minHeight: 80,
     maxHeight: 200,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   addIcon: {
     backgroundColor: Colors.$white,
-    borderRadius: Sizes.$ieBorderRadius,
+    borderRadius: Sizes.$ieRegularRadius,
     paddingVertical: 12,
     overflow: 'hidden',
     alignItems: 'center',
@@ -157,14 +157,14 @@ const styles = StyleSheet.create({
     maxHeight: screenHeight / 5,
   },
   styleLeft: {
-    width: size - Sizes.$iePadding,
-    paddingLeft: Sizes.$iePadding,
-    paddingBottom: Sizes.$iePadding,
+    width: size - Sizes.$ieRegularPadding,
+    paddingLeft: Sizes.$ieRegularPadding,
+    paddingBottom: Sizes.$ieRegularPadding,
   },
   styleRight: {
-    width: size - Sizes.$iePadding,
-    paddingRight: Sizes.$iePadding,
-    paddingBottom: Sizes.$iePadding,
+    width: size - Sizes.$ieRegularPadding,
+    paddingRight: Sizes.$ieRegularPadding,
+    paddingBottom: Sizes.$ieRegularPadding,
   },
   numBox: {
     backgroundColor: Colors.$black,
@@ -178,9 +178,9 @@ const styles = StyleSheet.create({
   contactNum: {
     color: Colors.$white,
     paddingVertical: Sizes.$ieExtraPadding,
-    paddingHorizontal: Sizes.$iePadding,
+    paddingHorizontal: Sizes.$ieRegularPadding,
   },
   removeIcon: {
-    paddingRight: Sizes.$iePadding,
+    paddingRight: Sizes.$ieRegularPadding,
   },
 });

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 32,
     paddingHorizontal: 20,
-    paddingVertical: Sizes.$iePadding,
+    paddingVertical: Sizes.$ieRegularPadding,
     fontWeight: 'bold',
   },
   contactsList: {

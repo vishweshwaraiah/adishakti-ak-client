@@ -12,42 +12,52 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
 import MasterError from '@/components/MasterError';
-import MasterModal from '@/components/MasterModal';
-import MasterButton from '@/components/MasterButton';
+import AlertModal from '@/components/Modals/AlertModal';
 
 const DeleteGroups = () => {
   const dispatch = useDispatch();
-  const { groupsList, isDeleted, isError, message } = useSelector(
-    (state) => state.numsGroups
+  const { groupsList, isDeleted, status, message } = useSelector(
+    (state) => state.groupsSlice
   );
 
-  const [deleteItem, setDeleteItem] = useState(false);
-  const [modalOpen, setModalOpen] = useState('');
-  const [deleted, setDeleted] = useState(false);
+  const [modalStatus, setModalStatus] = useState('close');
+  const [deleteItem, setDeleteItem] = useState(undefined);
+  const [statusMessage, setStatusMessage] = useState('');
 
   useEffect(() => {
     if (isDeleted) {
-      setDeleted(true);
+      setStatusMessage('Successfully Deleted!');
+      setDeleteItem(undefined);
     }
   }, [isDeleted]);
+
+  useEffect(() => {
+    if (deleteItem) {
+      const groupName = deleteItem.group_name;
+      setStatusMessage(`Would you like to delete the group ${groupName}?`);
+    }
+  }, [deleteItem]);
 
   useEffect(() => {
     dispatch(fetchNumsGroups());
   }, []);
 
   const deleteGroup = () => {
-    dispatch(deleteNumsGroup(deleteItem));
+    if (deleteItem) {
+      dispatch(deleteNumsGroup(deleteItem));
+    } else {
+      setStatusMessage('Looks like you already deleted the group!');
+    }
   };
 
   const deleteHandler = (item) => {
-    setDeleted(false);
-    setModalOpen(true);
+    setModalStatus('open');
     setDeleteItem(item);
     return;
   };
 
   const handleCancel = () => {
-    setModalOpen(false);
+    setModalStatus('close');
   };
 
   const renderItem = ({ item }) => (
@@ -61,10 +71,13 @@ const DeleteGroups = () => {
 
   return (
     <View style={styles.utilsBox}>
-      {isError && (
-        <View style={{ marginTop: Sizes.$ieExtraMargin }}>
-          <MasterError errorMsg={message} />
-        </View>
+      {status === 'error' && (
+        <MasterError
+          timeout={10}
+          errorMsg={message}
+          marginBottom={10}
+          textAlign='center'
+        />
       )}
       {groupsList.length ? (
         <FlatList
@@ -78,53 +91,14 @@ const DeleteGroups = () => {
         </Text>
       )}
 
-      <MasterModal
-        triggerType='icon'
-        triggerShape='circle'
-        triggerSize='small'
-        triggerIcon='trash'
-        bodyHeight='30%'
-        bodyWidth='70%'
-        bgColor={Colors.$modalBodyBg}
-        modalToggle={modalOpen}
-        onToggle={setModalOpen}
-      >
-        {deleted ? (
-          <View style={styles.bodyContent}>
-            <Ionicons name='checkmark-circle' size={72} color='black' />
-            <Text>Successfully Deleted!</Text>
-          </View>
-        ) : (
-          <View style={styles.bodyContent}>
-            <Ionicons name='trash' size={72} color='black' />
-            <Text
-              style={{
-                justifyContent: 'center',
-                textAlign: 'center',
-                padding: Sizes.$ieExtraPadding,
-              }}
-            >
-              Would you like to delete the group{' '}
-              <Text style={{ fontWeight: 'bold' }}>
-                {deleteItem.group_name}
-              </Text>{' '}
-              ?
-            </Text>
-            <View style={styles.groupActions}>
-              <MasterButton
-                onPress={handleCancel}
-                title='Cancel'
-                variant='light'
-              ></MasterButton>
-              <MasterButton
-                onPress={deleteGroup}
-                title='Yes'
-                variant='success'
-              ></MasterButton>
-            </View>
-          </View>
-        )}
-      </MasterModal>
+      <AlertModal
+        onCancel={handleCancel}
+        onSubmit={deleteGroup}
+        modalStatus={modalStatus}
+        statusMessage={statusMessage}
+        onClose={handleCancel}
+        alertIcon='trash'
+      />
     </View>
   );
 };
@@ -152,16 +126,5 @@ const styles = StyleSheet.create({
   },
   groupItemText: {
     color: Colors.$white,
-  },
-  bodyContent: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-  },
-  groupActions: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
   },
 });

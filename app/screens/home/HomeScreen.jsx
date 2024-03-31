@@ -1,9 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import AuthTemplate from '@/wrappers/AuthTemplate';
-import ContactsList from '@/components/Contacts/ContactsList';
 import Sizes from '@/utils/Sizes';
-import MasterButton from '@/components/MasterButton';
 import { router } from 'expo-router';
 
 const HomeScreen = () => {
@@ -14,7 +12,9 @@ const HomeScreen = () => {
         <Text style={styles.sectionTitle}>Home</Text>
       </View>
       <View style={styles.homeContent}>
-        <MasterButton onPress={contactsScreen} title='Contacts' />
+        <Text style={styles.sectionTitle}>
+          Welcome to the great Janagoud's world..!.
+        </Text>
       </View>
     </AuthTemplate>
   );
@@ -27,11 +27,14 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 32,
     paddingHorizontal: 20,
-    paddingVertical: Sizes.$iePadding,
+    paddingVertical: Sizes.$ieRegularPadding,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   homeContent: {
     height: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

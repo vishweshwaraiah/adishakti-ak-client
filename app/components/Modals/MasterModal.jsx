@@ -14,48 +14,33 @@ import Sizes from '@/utils/Sizes';
 
 const MasterModal = (props) => {
   const {
-    triggerType,
-    triggerIcon = 'add',
-    triggerText = 'Save',
-    triggerShape = 'circle',
-    triggerSize = 'regular',
     children,
     bodyHeight,
     bodyWidth,
     bgColor,
     modalTitle,
-    modalToggle = false,
-    onToggle = () => {},
+    status = 'close',
+    setStatus = () => {},
+    onClose = () => {},
   } = props;
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [triggerStyle, setTriggerStyle] = useState({});
-  const [iconSize, setIconSize] = useState(0);
+  const [visibility, setVisibility] = useState('close');
+  const [isOpen, setIsOpen] = useState(false);
 
   const scaleValue = useRef(new Animated.Value(0)).current;
 
-  const triggerElement = () => {
-    if (triggerType === 'text') {
-      return <Text style={styles.textStyle}>{triggerText}</Text>;
-    }
-
-    if (triggerType === 'icon') {
-      return <Ionicons name={triggerIcon} size={iconSize} color='white' />;
-    }
-  };
-
   const toggleModal = (value) => {
-    if (value) {
-      setModalVisible(true);
-      onToggle(true);
+    if (value === 'open') {
+      setVisibility(value);
+      setStatus(value);
       Animated.spring(scaleValue, {
         toValue: 1,
         duration: 300,
         useNativeDriver: true,
       }).start();
     } else {
-      setTimeout(() => setModalVisible(false), 200);
-      onToggle(false);
+      setTimeout(() => setVisibility(value), 200);
+      setStatus(value);
       Animated.timing(scaleValue, {
         toValue: 0,
         duration: 300,
@@ -64,41 +49,22 @@ const MasterModal = (props) => {
     }
   };
 
-  useEffect(() => {
-    toggleModal(modalToggle);
-  }, [modalToggle]);
+  const handleClose = () => {
+    onClose();
+    toggleModal('close');
+  };
 
   useEffect(() => {
-    if (triggerShape === 'square') {
-      setTriggerStyle({
-        borderRadius: 0,
-      });
-    }
-    if (triggerShape === 'rounded') {
-      setTriggerStyle({
-        borderRadius: Sizes.$ieBorderRadius,
-      });
-    }
-    if (triggerShape === 'circle') {
-      setTriggerStyle({
-        borderRadius: 35,
-      });
-    }
-  }, [triggerShape]);
+    toggleModal(status);
+  }, [status]);
 
   useEffect(() => {
-    if (triggerSize === 'small') {
-      setIconSize(16);
+    if (visibility === 'open') {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
     }
-
-    if (triggerSize === 'regular') {
-      setIconSize(24);
-    }
-
-    if (triggerSize === 'large') {
-      setIconSize(32);
-    }
-  }, [triggerSize]);
+  }, [visibility]);
 
   const styles = StyleSheet.create({
     modalBox: {
@@ -109,7 +75,7 @@ const MasterModal = (props) => {
       elevation: 2,
       justifyContent: 'flex-start',
       alignItems: 'center',
-      padding: Sizes.$iePadding,
+      padding: Sizes.$ieRegularPadding,
       backgroundColor: Colors.$primary,
       overflow: 'hidden',
     },
@@ -152,8 +118,8 @@ const MasterModal = (props) => {
     },
     modalClose: {
       position: 'absolute',
-      right: Sizes.$ieCloseGap,
-      top: Sizes.$ieCloseGap,
+      right: Sizes.$ieFlexGap,
+      top: Sizes.$ieFlexGap,
       width: '10%',
       zIndex: 201,
     },
@@ -167,14 +133,14 @@ const MasterModal = (props) => {
 
   return (
     <View style={styles.modalBox}>
-      <Modal transparent={true} visible={modalVisible}>
+      <Modal transparent={true} visible={isOpen}>
         <View style={styles.centeredBackground}>
           <Animated.View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>{modalTitle}</Text>
               <TouchableOpacity
-                style={[triggerStyle, styles.modalClose]}
-                onPress={() => toggleModal(false)}
+                style={styles.modalClose}
+                onPress={() => handleClose()}
               >
                 <Ionicons name='close-circle' size={24} color='black' />
               </TouchableOpacity>
@@ -183,12 +149,6 @@ const MasterModal = (props) => {
           </Animated.View>
         </View>
       </Modal>
-      <TouchableOpacity
-        style={[styles.button, triggerStyle]}
-        onPress={() => toggleModal(true)}
-      >
-        {triggerElement()}
-      </TouchableOpacity>
     </View>
   );
 };

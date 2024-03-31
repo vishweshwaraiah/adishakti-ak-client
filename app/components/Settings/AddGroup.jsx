@@ -1,26 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNumsGroups } from '@/redux/slice/numsGroups';
-import MasterModal from '@/components/MasterModal';
+import MasterModal from '@/components/Modals/MasterModal';
 import ContactsList from '@/components/Contacts/ContactsList';
 import MasterInput from '@/components/MasterInput';
 import MasterButton from '@/components/MasterButton';
+import { Ionicons } from '@expo/vector-icons';
 import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
 import MasterError from '@/components/MasterError';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
-  const { message } = useSelector((state) => state.numsGroups);
+  const { message } = useSelector((state) => state.groupsSlice);
 
   const [contactNums, setContactNums] = useState([]);
   const [groupName, setGroupName] = useState('');
   const [nameError, setNameError] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState('close');
   const [contactsError, setContactsError] = useState(false);
 
-  const handleInput = (obj) => setGroupName(obj.value);
+  const handleInput = (obj) => {
+    if (obj && obj.value) {
+      const groupName = obj.value.trim();
+      setGroupName(groupName);
+    }
+  };
 
   const blurHandler = (name, error) => name && setNameError(error);
 
@@ -32,6 +38,10 @@ const AddGroup = () => {
     } else {
       setContactNums([]);
     }
+  };
+
+  const onClose = () => {
+    setModalOpen('close');
   };
 
   const handleSubmit = () => {
@@ -46,14 +56,14 @@ const AddGroup = () => {
     }
 
     if (contactNums.length && groupName) {
-      dispatch(
-        addNumsGroups({
-          groupName: groupName,
-          numberList: contactNums,
-        })
-      );
+      const groupData = {
+        groupName: groupName,
+        numberList: contactNums,
+      };
+
+      dispatch(addNumsGroups(groupData));
       setContactNums([]);
-      setModalOpen(false);
+      setModalOpen('close');
     }
   };
 
@@ -65,72 +75,86 @@ const AddGroup = () => {
   }, [modalOpen]);
 
   const handleCancel = () => {
-    setModalOpen(false);
+    setModalOpen('close');
   };
 
+  const openModal = () => {
+    setModalOpen('open');
+  };
+
+  const styles = StyleSheet.create({
+    inputBox: {
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.$secondary,
+    },
+    groupActions: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 20,
+      marginTop: Sizes.$ieExtraMargin,
+    },
+    contactsList: {
+      flex: 1,
+    },
+    errorBox: {
+      marginTop: Sizes.$ieExtraMargin,
+    },
+  });
+
   return (
-    <MasterModal
-      triggerType='icon'
-      triggerShape='circle'
-      triggerSize='small'
-      bodyHeight='60%'
-      bgColor={Colors.$modalBodyBg}
-      modalTitle='New Group'
-      modalToggle={modalOpen}
-      onToggle={setModalOpen}
-    >
-      <View style={styles.inputBox}>
-        <MasterInput
-          clearButtonMode='always'
-          inputLabel='Enter gruop name'
-          textColor='light'
-          startIcon='group'
-          iconFamily='FontAwesome'
-          name='add_phone'
-          type='text'
-          rounded={true}
-          width='95%'
-          onInput={handleInput}
-          onBlur={blurHandler}
-          error={nameError}
-        />
-      </View>
-      {contactsError && (
-        <View style={{ marginTop: Sizes.$ieExtraMargin }}>
-          <MasterError errorMsg='Select at least one contact!' />
+    <View>
+      <TouchableOpacity onPress={openModal}>
+        <Ionicons name='add-circle' size={32} color={Colors.$orange} />
+      </TouchableOpacity>
+      <MasterModal
+        bodyHeight='60%'
+        bgColor={Colors.$modalBodyBg}
+        modalTitle='New Group'
+        status={modalOpen}
+        setStatus={setModalOpen}
+        onClose={onClose}
+      >
+        <View style={styles.inputBox}>
+          <MasterInput
+            clearButtonMode='always'
+            inputLabel='Enter gruop name'
+            textColor='light'
+            startIcon='group'
+            iconFamily='FontAwesome'
+            name='add_phone'
+            type='text'
+            rounded={true}
+            width='95%'
+            onInput={handleInput}
+            onBlur={blurHandler}
+            error={nameError}
+          />
         </View>
-      )}
-      <ContactsList fetchSelected={getContacts} toolsBar={false} />
-      <View style={styles.groupActions}>
-        <MasterButton
-          onPress={handleCancel}
-          title='Cancel'
-          variant='light'
-        ></MasterButton>
-        <MasterButton
-          onPress={handleSubmit}
-          title='Save'
-          variant='success'
-        ></MasterButton>
-      </View>
-    </MasterModal>
+        {contactsError && (
+          <View style={styles.errorBox}>
+            <MasterError
+              errorMsg='Select at least one contact!'
+              width='90%'
+              timeout={0}
+            />
+          </View>
+        )}
+        <ContactsList fetchSelected={getContacts} toolsBar={false} />
+        <View style={styles.groupActions}>
+          <MasterButton
+            onPress={handleCancel}
+            title='Cancel'
+            variant='light'
+          ></MasterButton>
+          <MasterButton
+            onPress={handleSubmit}
+            title='Save'
+            variant='success'
+          ></MasterButton>
+        </View>
+      </MasterModal>
+    </View>
   );
 };
 
 export default AddGroup;
-
-const styles = StyleSheet.create({
-  inputBox: {
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.$secondary,
-  },
-  groupActions: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 20,
-    marginTop: Sizes.$ieExtraMargin,
-  },
-  contactsList: {
-    flex: 1,
-  },
-});

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import * as Contacts from 'expo-contacts';
 
 const useContacts = () => {
-  const [contacts, setContacts] = useState([]);
-  const [numbers, setNumbers] = useState([]);
+  const [allContacts, setAllContacts] = useState([]);
+  const [allNumbers, setAllNumbers] = useState([]);
 
   const getContacts = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
@@ -12,7 +12,7 @@ const useContacts = () => {
         fields: [Contacts.Fields.PhoneNumbers],
       });
       if (data && data.length > 0) {
-        setContacts(data);
+        setAllContacts(data);
       }
     }
   };
@@ -22,14 +22,14 @@ const useContacts = () => {
   }, []);
 
   useEffect(() => {
-    if (contacts.length) {
-      setNumbers(contacts.map((i) => i?.phoneNumbers).filter((i) => i));
+    if (allContacts.length) {
+      setAllNumbers(allContacts.map((i) => i?.phoneNumbers).filter((i) => i));
     }
-  }, [contacts]);
+  }, [allContacts]);
 
   return {
-    contacts,
-    numbers,
+    allContacts,
+    allNumbers,
   };
 };
 

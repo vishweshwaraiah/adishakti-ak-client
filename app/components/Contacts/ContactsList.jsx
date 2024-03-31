@@ -27,7 +27,7 @@ const ContactsList = (props) => {
   const [selectedArray, setSelectedArray] = useState([]);
   const [allSelected, setAllSelected] = useState(false);
 
-  const { contacts } = useContacts();
+  const { allContacts } = useContacts();
 
   const blurHandler = (name, error) => name && setKeyError(error);
 
@@ -38,7 +38,7 @@ const ContactsList = (props) => {
     setOrder(newOrder);
   };
 
-  const contactListFiltered = contacts.filter((contact) =>
+  const contactListFiltered = allContacts.filter((contact) =>
     contact?.name.toLowerCase().includes(keyword.toLowerCase())
   );
 
@@ -63,7 +63,7 @@ const ContactsList = (props) => {
   );
 
   useEffect(() => {
-    let previous = [...contacts];
+    let previous = [...allContacts];
     if (allSelected) {
       setSelectedArray(
         previous.map((i) => {
@@ -142,22 +142,23 @@ const ContactsList = (props) => {
     },
     sortButton: {
       backgroundColor: Colors.$gray,
-      padding: Sizes.$iePadding,
-      borderRadius: Sizes.$ieBorderRadius,
+      padding: Sizes.$ieRegularPadding,
+      borderRadius: Sizes.$ieRegularRadius,
       borderBottomColor: Colors.$activeBar,
       borderBottomWidth: 2,
-      marginHorizontal: Sizes.$ieMargin,
+      marginHorizontal: Sizes.$ieRegularMargin,
       justifyContent: 'space-between',
       alignItems: 'center',
       flexDirection: 'row',
     },
     mbRegular: {
-      marginBottom: Sizes.$ieMargin,
+      marginBottom: Sizes.$ieRegularMargin,
     },
     contactsPage: {
       borderBottomWidth: 1,
-      paddingBottom: Sizes.$iePadding,
-      paddingHorizontal: Sizes.$iePadding,
+      paddingBottom: Sizes.$ieRegularPadding,
+      paddingHorizontal: Sizes.$ieRegularPadding,
+      marginTop: Sizes.$ieRegularMargin,
     },
   });
 

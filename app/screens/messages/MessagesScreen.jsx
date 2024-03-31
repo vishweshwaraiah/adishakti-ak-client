@@ -1,56 +1,117 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import axios from 'axios';
-import { server_uri, validNumber } from '@/utils/Globals';
+import { ServerUri, ValidNumber } from '@/utils/Globals';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import MasterChats from '@/components/MasterChats';
+import AlertModal from '@/components/Modals/AlertModal';
 import useContacts from '@/utils/useContacts';
 
 const MessagesScreen = () => {
-  const { numbers } = useContacts();
+  const { allNumbers } = useContacts();
   const [numbersList, setNumbersList] = useState([]);
+  const [modalStatus, setModalStatus] = useState('close');
+  const [statusMessage, setStatusMessage] = useState('');
+  const [afterAction, setAfterAction] = useState(false);
+  const [alertIcon, setAlertIcon] = useState('checkmark');
 
-  const onPressSendMessage = (phonesArray, textMessage, sendType) => {
-    let numbers = [];
-    const message = textMessage;
+  const [selectedNumbers, setSelectedNumbers] = useState([]);
+  const [messageContent, setMessageContent] = useState('');
+  const [selectType, setSelectType] = useState('');
 
-    if (sendType === 'to_few') {
-      numbers = phonesArray?.map((i) => i.value);
+  const [clearForm, setClearForm] = useState('');
+
+  const selectOptions = [
+    { label: 'Send to few numbers', value: 'to_few' },
+    { label: 'Send to a contacts group', value: 'to_group' },
+    { label: 'Send to all contacts', value: 'to_all' },
+  ];
+
+  const handleContent = (smsContent) => {
+    const { phonesArray = [], textMessage = '', sendType = '' } = smsContent;
+
+    setModalStatus('open');
+
+    if (phonesArray.length && textMessage && sendType) {
+      setStatusMessage('Do you really want to send message?');
+      setAfterAction(false);
+      setAlertIcon('help-circle');
+      setSelectedNumbers(phonesArray);
+      setMessageContent();
+      setSelectType();
     } else {
-      numbers = phonesArray;
+      setStatusMessage('Message and numbers are required!');
+      setAfterAction(true);
+      setAlertIcon('alert-circle');
+      setSelectedNumbers([]);
+      setMessageContent(textMessage);
+      setSelectType(sendType);
     }
+  };
 
-    const data = {
-      numbers,
-      message,
-    };
+  const handleCancel = () => {
+    setModalStatus('close');
+  };
 
-    axios
-      .post(server_uri + '/message', data)
-      .then((response) => {
-        if (response.data) {
-          Alert.alert('Success!', 'Messages sent succssfully');
-        }
-      })
-      .catch((err) => {
-        Alert.alert('Failed to send!', err.message);
-      });
+  const handleSubmit = () => {
+    let numbersList = [];
+
+    setClearForm({});
+    // if (sendType === 'to_few') {
+    //   numbersList = phonesArray?.map((i) => i.value);
+    // } else {
+    //   numbersList = phonesArray;
+    // }
+    // const data = {
+    //   numbers: numbersList,
+    //   message: textMessage,
+    // };
+    // axios
+    //   .post(ServerUri + '/message', data)
+    //   .then((response) => {
+    //     if (response.data) {
+    //       setModalStatus('open');
+    //       setStatusMessage('Successfully sent!');
+    //       setAfterAction(true);
+    //       setAlertIcon('alert-circle');
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     setModalStatus('open');
+    //     setStatusMessage(err.message);
+    //     setAfterAction(false);
+    //     setAlertIcon('alert-circle');
+    //   });
   };
 
   useEffect(() => {
-    numbers.forEach((i) => {
+    allNumbers.forEach((i) => {
       let num = i[0].number;
-      if (validNumber(num)) {
+      if (ValidNumber(num)) {
         setNumbersList((prevs) => {
           return [...prevs, num];
         });
       }
     });
-  }, [numbers]);
+  }, [allNumbers]);
 
   return (
     <AuthTemplate screenName='Messages'>
-      <MasterChats onGetData={onPressSendMessage} numbersList={numbersList} />
+      <MasterChats
+        onSendClick={handleContent}
+        numbersList={numbersList}
+        selectOptions={selectOptions}
+        resetAction={clearForm}
+      />
+      <AlertModal
+        onCancel={handleCancel}
+        onSubmit={handleSubmit}
+        modalStatus={modalStatus}
+        statusMessage={statusMessage}
+        afterAction={afterAction}
+        onClose={handleCancel}
+        alertIcon={alertIcon}
+      />
     </AuthTemplate>
   );
 };

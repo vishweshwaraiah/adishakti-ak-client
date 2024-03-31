@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -12,11 +12,14 @@ import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
 import MasterStyles from '@/utils/MasterStyles';
 
-const MasterSelect = ({ label, data, onSelect }) => {
+const MasterSelect = (props) => {
+  const { defaultSelect, selectData, onSelect } = props;
+
   const DropdownButton = useRef();
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(undefined);
   const [dropdownTop, setDropdownTop] = useState(0);
+  const [selectLabel, setSelectLabel] = useState('');
 
   const toggleDropdown = () => {
     visible ? setVisible(false) : openDropdown();
@@ -35,6 +38,12 @@ const MasterSelect = ({ label, data, onSelect }) => {
     setVisible(false);
   };
 
+  useEffect(() => {
+    // This use-effect is to reset the selected label back to default
+    setSelectLabel(defaultSelect);
+    setSelected(undefined);
+  }, [defaultSelect]);
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={[
@@ -47,15 +56,23 @@ const MasterSelect = ({ label, data, onSelect }) => {
     </TouchableOpacity>
   );
 
+  const getLabel = (item) => {
+    if (item) {
+      return item?.label;
+    } else {
+      return selectLabel.label;
+    }
+  };
+
   const renderDropdown = () => {
     return (
       <Modal visible={visible} transparent animationType='fade'>
         <TouchableOpacity style={styles.selectOverlay} onPress={toggleDropdown}>
           <View style={[styles.selectDropdown, { top: dropdownTop }]}>
             <FlatList
-              data={data}
+              data={selectData}
               renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(item) => item.value.toString()}
               style={styles.dropdownList}
             />
           </View>
@@ -71,9 +88,7 @@ const MasterSelect = ({ label, data, onSelect }) => {
       onPress={toggleDropdown}
     >
       {renderDropdown()}
-      <Text style={styles.buttonText}>
-        {(selected && selected.label) || label}
-      </Text>
+      <Text style={styles.buttonText}>{getLabel(selected)}</Text>
       <FontAwesome
         style={styles.icon}
         name='chevron-circle-down'
@@ -92,25 +107,25 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.$white,
     height: Sizes.$ieLargeHeight,
     zIndex: 1,
-    borderRadius: Sizes.$ieBorderRadius,
+    borderRadius: Sizes.$ieRegularRadius,
     zIndex: 201,
     ...MasterStyles.commonShadow,
   },
   buttonText: {
     flex: 1,
     textAlign: 'left',
-    marginLeft: Sizes.$ieMargin,
+    marginLeft: Sizes.$ieRegularMargin,
   },
   icon: {
-    marginRight: Sizes.$ieMargin,
+    marginRight: Sizes.$ieRegularMargin,
   },
   selectDropdown: {
     position: 'absolute',
     backgroundColor: Colors.$white,
     width: '95%',
-    paddingBottom: Sizes.$iePadding,
-    borderBottomLeftRadius: Sizes.$ieBorderRadius,
-    borderBottomRightRadius: Sizes.$ieBorderRadius,
+    paddingBottom: Sizes.$ieRegularPadding,
+    borderBottomLeftRadius: Sizes.$ieRegularRadius,
+    borderBottomRightRadius: Sizes.$ieRegularRadius,
     borderTopWidth: 5,
     borderColor: Colors.$primary,
     ...MasterStyles.darkShadow,
@@ -129,7 +144,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   selectOption: {
-    padding: Sizes.$iePadding,
+    padding: Sizes.$ieRegularPadding,
     justifyContent: 'center',
     height: Sizes.$ieLargeHeight,
     borderBottomWidth: 0.3,

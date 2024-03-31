@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   settingsRow: {
     flexDirection: 'row',
     backgroundColor: Colors.$white,
-    borderRadius: Sizes.$ieBorderRadius,
+    borderRadius: Sizes.$ieRegularRadius,
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',

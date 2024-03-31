@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
   StyleSheet,
   TextInput,
   Text,
@@ -20,20 +19,57 @@ import SendToFew from '@/components/Messages/SendToFew';
 import SendToGroup from '@/components/Messages/SendToGroup';
 
 const MasterChats = (props) => {
-  const { onGetData = () => {}, numbersList = [] } = props;
+  const {
+    onSendClick = () => {},
+    numbersList = [],
+    selectOptions = [],
+    resetAction = {},
+  } = props;
+
+  const defaultSelect = {
+    label: 'Select an option',
+    value: 'default',
+  };
 
   const [textMessage, setTextMessage] = useState('');
   const [phonesArray, setPhonesArray] = useState([]);
   const [enteredList, setEnteredList] = useState([]);
+  const [groupList, setGroupList] = useState([]);
   const [selected, setSelected] = useState(undefined);
   const [sendType, setSendType] = useState(undefined);
-  const [selectLabel, setSelectLabel] = useState('Select an option');
+  const [defLabel, setDefLabel] = useState(defaultSelect);
 
-  const selectOptions = [
-    { label: 'Send to few numbers', value: 'to_few' },
-    { label: 'Send to all contacts', value: 'to_all' },
-    { label: 'Send to a group', value: 'to_group' },
-  ];
+  const resetForm = () => {
+    setTextMessage('');
+    setPhonesArray([]);
+    setEnteredList([]);
+    setSelected(undefined);
+    setSendType(undefined);
+    setDefLabel(defaultSelect);
+  };
+
+  const messageHandler = (value) => {
+    setTextMessage(value);
+  };
+
+  const sendMessage = () => {
+    const smsContent = {
+      phonesArray,
+      textMessage,
+      sendType,
+    };
+    onSendClick(smsContent);
+  };
+
+  const getNumbersList = (numbers) => {
+    setGroupList([]);
+    if (numbers?.length) setEnteredList(numbers);
+  };
+
+  const getGroupList = (group) => {
+    setEnteredList([]);
+    if (group?.length) setGroupList(group);
+  };
 
   useEffect(() => {
     if (selected) {
@@ -43,35 +79,23 @@ const MasterChats = (props) => {
 
   useEffect(() => {
     setPhonesArray([]);
+
     if (sendType === 'to_all' && numbersList.length) {
       setPhonesArray(numbersList);
-    } else if (sendType === 'to_few' && enteredList.length) {
+    }
+
+    if (sendType === 'to_few' && enteredList.length) {
       setPhonesArray(enteredList);
-    } else if (sendType === 'to_group') {
-      setPhonesArray([]);
     }
-  }, [sendType]);
 
-  const sendMessage = () => {
-    if (phonesArray.length && textMessage) {
-      onGetData(phonesArray, textMessage, sendType);
-      setTextMessage('');
-      setPhonesArray([]);
-      setSelected(undefined);
-      setSendType(undefined);
-      setSelectLabel('Default');
-    } else {
-      Alert.alert('Message and Numbers are required!');
+    if (sendType === 'to_group' && groupList.length) {
+      setPhonesArray(groupList);
     }
-  };
+  }, [sendType, numbersList, enteredList, groupList]);
 
-  const messageHandler = (value) => {
-    setTextMessage(value);
-  };
-
-  const getNumbersList = (numbers) => {
-    if (numbers?.length) setEnteredList(numbers);
-  };
+  useEffect(() => {
+    resetForm();
+  }, [resetAction]);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -83,15 +107,15 @@ const MasterChats = (props) => {
         <Text style={styles.mbRegular}>Choose numbers from</Text>
         <View style={styles.mbRegular}>
           <MasterSelect
-            label={selectLabel}
-            data={selectOptions}
+            defaultSelect={defLabel}
+            selectData={selectOptions}
             onSelect={setSelected}
           />
-          {!!selected && selected.value === 'to_few' && (
+          {selected?.value === 'to_few' && (
             <SendToFew getList={getNumbersList} />
           )}
-          {!!selected && selected.value === 'to_group' && (
-            <SendToGroup getList={getNumbersList} />
+          {selected?.value === 'to_group' && (
+            <SendToGroup getList={getGroupList} />
           )}
         </View>
         <View style={styles.mainBox}>
@@ -126,14 +150,14 @@ export default MasterChats;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: Sizes.$iePadding,
+    padding: Sizes.$ieRegularPadding,
     height: '100%',
   },
   mainBox: {
     position: 'relative',
     backgroundColor: Colors.$white,
     padding: Sizes.$ieExtraPadding,
-    borderRadius: Sizes.$ieBorderRadius,
+    borderRadius: Sizes.$ieRegularRadius,
     ...MasterStyles.commonShadow,
   },
   inputBox: {
@@ -144,24 +168,24 @@ const styles = StyleSheet.create({
   },
   sendIconBox: {
     position: 'relative',
-    padding: Sizes.$iePadding,
+    padding: Sizes.$ieRegularPadding,
     borderTopColor: Colors.$secondary,
     borderTopWidth: 1,
-    marginTop: Sizes.$ieMargin,
-    marginBottom: Sizes.$ieMargin * 2,
+    marginTop: Sizes.$ieRegularMargin,
+    marginBottom: Sizes.$ieRegularMargin * 2,
   },
   sendIcon: {
     position: 'absolute',
-    right: Sizes.$iePadding,
-    top: Sizes.$iePadding,
-    marginTop: Sizes.$ieMargin,
-    marginBottom: Sizes.$ieMargin,
+    right: Sizes.$ieRegularPadding,
+    top: Sizes.$ieRegularPadding,
+    marginTop: Sizes.$ieRegularMargin,
+    marginBottom: Sizes.$ieRegularMargin,
   },
   pressedBtn: {
     opacity: 0.5,
     transform: [{ scale: 1.5 }],
   },
   mbRegular: {
-    marginBottom: Sizes.$ieMargin,
+    marginBottom: Sizes.$ieRegularMargin,
   },
 });

@@ -5,7 +5,6 @@ const Layout = () => {
   return (
     <Stack screenOptions={{ headerShown: true }}>
       <Stack.Screen name='HomeScreen' />
-      <Stack.Screen name='ContactsScreen' />
     </Stack>
   );
 };

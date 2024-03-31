@@ -17,6 +17,7 @@ export default {
   $shadow: '#171717',
   $green: 'green',
   $gradientsArray: ['#faebd7', 'yellow'],
+  $profileGradients: ['#4c669f', '#3b5998', '#192f6a'],
   $selected: '#e5e5e5',
   $modalBackground: 'rgba(0,0,0,0.5)',
   $modalBodyBg: 'rgba(255,255,255,0.8)',

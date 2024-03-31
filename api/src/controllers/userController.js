@@ -128,9 +128,31 @@ const getUserByToken = async (req, res) => {
   }
 };
 
+const getUserByEmail = async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    if (!email) {
+      return res.status(404).json({ message: 'Invalid email id!' });
+    }
+
+    const user = await User.findOne(email);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Invalid user email id!' });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log('error', error);
+    res.status(500).json({ message: "Profile doesn't exists!" });
+  }
+};
+
 module.exports = {
   registerUser,
   verifyUserToken,
   userLogin,
   getUserByToken,
+  getUserByEmail,
 };

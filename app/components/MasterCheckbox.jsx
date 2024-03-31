@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
-    marginHorizontal: Sizes.$ieMargin / 2,
+    marginHorizontal: Sizes.$ieRegularMargin / 2,
   },
   title: {
-    marginLeft: Sizes.$ieMargin / 2,
+    marginLeft: Sizes.$ieRegularMargin / 2,
   },
 });

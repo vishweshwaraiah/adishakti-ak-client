@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store';
 import { Tabs, useRouter } from 'expo-router';
@@ -7,6 +7,8 @@ import { Entypo, Feather, AntDesign, Ionicons } from '@expo/vector-icons';
 import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
 import MasterStyles from '@/utils/MasterStyles';
+
+const screenHeight = Dimensions.get('window').height;
 
 const Layout = () => {
   const router = useRouter();
@@ -35,7 +37,7 @@ const Layout = () => {
 
     if (name === 'messages') {
       element = focused ? (
-        <Feather name='plus' size={48} color='yellow' />
+        <Feather name='plus' size={48} color='black' />
       ) : (
         <Feather name='plus' size={32} color='white' />
       );
@@ -107,12 +109,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 25,
     backgroundColor: Colors.$white,
-    borderRadius: Sizes.$ieBorderRadius * 2,
+    borderRadius: Sizes.$ieRegularRadius * 2,
     width: '90%',
     left: '5%',
     right: '5%',
-    paddingTop: Sizes.$iePadding,
+    paddingTop: Sizes.$ieRegularPadding,
     height: Sizes.$navDimension,
+    maxHeight: screenHeight / 10,
     ...MasterStyles.navShadow,
   },
   tabItemStyle: {
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     height: Sizes.$btnDimension,
     borderRadius: 35,
     backgroundColor: Colors.$activeBar,
-    paddingTop: Sizes.$iePadding,
+    paddingTop: Sizes.$ieRegularPadding,
   },
   floatingBtn: {
     display: 'none',
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
     height: Sizes.$btnDimension,
     borderRadius: 35,
     backgroundColor: Colors.$midblue,
-    padding: Sizes.$iePadding,
+    padding: Sizes.$ieRegularPadding,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',

@@ -19,7 +19,7 @@ import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { server_uri } from '@/utils/Globals';
+import { ServerUri } from '@/utils/Globals';
 import BaseTemplate from '@/wrappers/BaseTemplate';
 
 const screenWidth = Dimensions.get('window').width;
@@ -79,7 +79,7 @@ const login = () => {
     }
 
     axios
-      .post(server_uri + '/login', user)
+      .post(ServerUri + '/login', user)
       .then((response) => {
         const token = response.data?.token;
         AsyncStorage.setItem('auth', token);
@@ -137,7 +137,7 @@ const login = () => {
                 <Text style={styles.forgot_link}>Forgot Password</Text>
               </View>
               <MasterButton
-                marginTop={Sizes.$ieMargin}
+                marginTop={Sizes.$ieRegularMargin}
                 width={Sizes.$ieElementWidth}
                 title='Login'
                 onPress={handleLogin}

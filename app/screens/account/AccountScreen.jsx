@@ -8,8 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import AuthTemplate from '@/wrappers/AuthTemplate';
-import { server_uri } from '@/utils/Globals';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ServerUri } from '@/utils/Globals';
 import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
 import MasterCard from '@/components/MasterCard';
@@ -17,25 +16,15 @@ import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
 import Settings from '@/components/Settings/Settings';
 import { router } from 'expo-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '@/redux/slice/userData';
 
 const AccountScreen = () => {
-  const [userData, setUserData] = useState({});
-
-  const getUserDetails = async () => {
-    const token = await AsyncStorage.getItem('auth');
-
-    axios
-      .get(server_uri + '/get_user/' + token)
-      .then((response) => {
-        setUserData(response.data);
-      })
-      .catch((err) => {
-        Alert.alert('Failed to get user data!', err.message);
-      });
-  };
+  const { user } = useSelector((state) => state.userSlice);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getUserDetails();
+    dispatch(fetchUser());
   }, []);
 
   return (
@@ -48,8 +37,8 @@ const AccountScreen = () => {
               source={require('@/assets/images/logo.png')}
             ></Image>
             <View>
-              <Text style={styles.rowTitle}>{userData.name}</Text>
-              <Text style={styles.subText}>{userData.email}</Text>
+              <Text style={styles.rowTitle}>{user.name}</Text>
+              <Text style={styles.subText}>{user.email}</Text>
             </View>
           </View>
           <TouchableOpacity
@@ -91,7 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: Sizes.$ieLargeRadius,
   },
   rowTitle: {
-    fontSize: Sizes.$largeFont,
+    fontSize: Sizes.$ieLargeFont,
     fontWeight: 'bold',
   },
   subText: {

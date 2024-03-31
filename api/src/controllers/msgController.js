@@ -9,8 +9,6 @@ const sendMessages = async (req, res) => {
   const numbers = req.body?.numbers;
   const messageContent = req.body?.message;
 
-  console.log(numbers, messageContent);
-
   const client = require('twilio')(accountSid, authToken);
 
   Promise.all(
@@ -24,11 +22,9 @@ const sendMessages = async (req, res) => {
     })
   )
     .then((message) => {
-      console.log('Success', message);
       return res.status(200).json(message);
     })
     .catch((err) => {
-      console.log('Failed', err.message);
       const errMessage = err.message;
       return res.status(err.status).json({ message: errMessage });
     });
@@ -52,8 +48,15 @@ const createGroup = async (req, res) => {
 
     return res.status(200).json(savedItem);
   } catch (error) {
-    console.log('Error while saving group!', error.message);
-    return res.status(500).json({ message: 'Save failed!' });
+    if (error.code === 11000) {
+      return res.status(500).json({
+        message: 'Duplicate name. Group with same name already exists!',
+      });
+    } else {
+      return res.status(500).json({
+        message: error.message,
+      });
+    }
   }
 };
 
@@ -62,7 +65,6 @@ const fetchNumsGroups = async (req, res) => {
     const groupDetails = await NumsGroup.find();
     return res.status(200).json(groupDetails);
   } catch (error) {
-    console.log('Failed', err.message);
     const errMessage = err.message;
     return res.status(err.status).json({ message: errMessage });
   }
@@ -84,7 +86,6 @@ const deleteGroup = async (req, res) => {
 
     return res.status(200).json(deletedItem);
   } catch (error) {
-    console.log('Error while deleting group!', error.message);
     return res.status(500).json({ message: 'Delete failed!' });
   }
 };

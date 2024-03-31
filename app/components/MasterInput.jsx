@@ -255,9 +255,9 @@ export default MasterInput;
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: Sizes.$ieExtraMargin,
+    marginVertical: Sizes.$ieRegularMargin,
     backgroundColor: Colors.$white,
-    paddingHorizontal: Sizes.$iePadding,
+    paddingHorizontal: Sizes.$ieRegularPadding,
     alignSelf: 'center',
     maxHeight: Sizes.$ieMaxHeight,
     ...MasterStyles.commonShadow,
@@ -273,10 +273,10 @@ const styles = StyleSheet.create({
     height: 'auto',
     maxHeight: Sizes.$ieMaxHeight,
     color: 'grey',
-    fontSize: Sizes.$ieSmallFontSize,
-    lineHeight: Sizes.$ieSmallFontSize,
-    paddingHorizontal: Sizes.$iePadding,
-    paddingVertical: Sizes.$iePadding,
+    fontSize: Sizes.$ieSmallFont,
+    lineHeight: Sizes.$ieSmallFont,
+    paddingHorizontal: Sizes.$ieRegularPadding,
+    paddingVertical: Sizes.$ieRegularPadding,
     backgroundColor: Colors.$white,
     borderRadius: 5,
     overflow: 'hidden',
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    fontSize: Sizes.$ieFontSize,
+    fontSize: Sizes.$ieRegularFont,
     maxHeight: Sizes.$ieMaxHeight,
     color: Colors.$black,
   },
@@ -299,6 +299,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   isRounded: {
-    borderRadius: Sizes.$ieBorderRadius,
+    borderRadius: Sizes.$ieRegularRadius,
   },
 });

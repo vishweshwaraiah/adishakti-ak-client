@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   SafeAreaView,
   Dimensions,
@@ -24,6 +24,11 @@ const AuthTemplate = (props) => {
   const router = useRouter();
   const navigation = useNavigation();
   const [lastScreen, setLastScreen] = useState(false);
+
+  useEffect(() => {
+    const x = router.canGoBack();
+    if (!x) setLastScreen(true);
+  }, []);
 
   const goBack = () => {
     if (router.canGoBack()) {
@@ -112,12 +117,12 @@ const styles = StyleSheet.create({
   logoutBtn: {
     position: 'relative',
     backgroundColor: Colors.$orange,
-    padding: Sizes.$iePadding,
-    borderRadius: Sizes.$ieMargin,
+    padding: Sizes.$ieRegularPadding,
+    borderRadius: Sizes.$ieRegularMargin,
   },
   pressedBtn: {
     opacity: 0.5,
-    padding: Sizes.$iePadding + 2,
+    padding: Sizes.$ieRegularPadding + 2,
   },
   headerView: {
     flexDirection: 'row',
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
   },
   isHome: {
     backgroundColor: Colors.$orange,
-    borderRadius: Sizes.$ieBorderRadius,
+    borderRadius: Sizes.$ieRegularRadius,
     padding: Sizes.$ieSmallPadding,
   },
 });

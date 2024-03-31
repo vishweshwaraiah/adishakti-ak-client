@@ -19,7 +19,7 @@ import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
-import { server_uri } from '@/utils/Globals';
+import { ServerUri } from '@/utils/Globals';
 import BaseTemplate from '@/wrappers/BaseTemplate';
 
 const screenWidth = Dimensions.get('window').width;
@@ -66,7 +66,7 @@ const register = () => {
     }
 
     axios
-      .post(server_uri + '/register', user)
+      .post(ServerUri + '/register', user)
       .then((response) => {
         Alert.alert(
           response.data?.message,
@@ -165,7 +165,7 @@ const register = () => {
               />
 
               <MasterButton
-                marginTop={Sizes.$ieMargin}
+                marginTop={Sizes.$ieExtraMargin}
                 width={Sizes.$ieElementWidth}
                 title='Register'
                 onPress={handleRegister}

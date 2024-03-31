@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import SettingsRow from '@/components/Settings/SettingsRow';
+import Sizes from '@/utils/Sizes';
 
 const Settings = () => {
   return (
@@ -8,6 +9,10 @@ const Settings = () => {
       <SettingsRow
         rowTitle='Manage Groups'
         routePath='screens/account/GroupsScreen'
+      ></SettingsRow>
+      <SettingsRow
+        rowTitle='View Contacts'
+        routePath='screens/account/ContactsScreen'
       ></SettingsRow>
     </ScrollView>
   );
@@ -20,4 +25,5 @@ const styles = StyleSheet.create({
   width: '95%',
   alignItems: 'center',
   alignSelf: 'center',
+  gap: Sizes.$ieRegularMargin,
 });

@@ -1,14 +1,44 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { server_uri } from '@/utils/Globals';
+import { ServerUri } from '@/utils/Globals';
 
 const initialState = {
-  isLoading: false,
-  isError: false,
+  status: 'loading',
   isDeleted: false,
   groupsList: [],
   message: '',
 };
+
+export const fetchNumsGroups = createAsyncThunk('fetchNumsGroups', async () => {
+  const response = await axios.get(ServerUri + '/fetchgroups');
+  return response.data;
+});
+
+export const addNumsGroups = createAsyncThunk(
+  'addNumsGroups',
+  async (groupData, thunkAPI) => {
+    const createUrl = `${ServerUri}/creategroup`;
+
+    try {
+      const response = await axios.post(createUrl, groupData);
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err; // Rethrow non-response errors
+      }
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const deleteNumsGroup = createAsyncThunk(
+  'deleteNumsGroup',
+  async (groupData) => {
+    const deleteUrl = `${ServerUri}/delete/${groupData.group_name}`;
+    const response = await axios.delete(deleteUrl);
+    return response.data;
+  }
+);
 
 //State slice
 export const numsGroups = createSlice({
@@ -17,34 +47,34 @@ export const numsGroups = createSlice({
   extraReducers: (builder) => {
     // Fetch numbers groups
     builder.addCase(fetchNumsGroups.fulfilled, (state, action) => {
-      state.isLoading = false;
+      state.status = 'loaded';
       state.groupsList = action.payload;
     });
-    builder.addCase(fetchNumsGroups.pending, (state, action) => {
-      state.isLoading = true;
+    builder.addCase(fetchNumsGroups.pending, (state) => {
+      state.status = 'loading';
     });
     builder.addCase(fetchNumsGroups.rejected, (state, action) => {
-      state.isError = true;
-      console.log('Error: ', action);
+      state.status = 'error';
+      state.message = action.error?.message;
     });
 
     // Add numbers group
     builder.addCase(addNumsGroups.fulfilled, (state, action) => {
-      state.isLoading = false;
+      state.status = 'loaded';
       state.message = action.payload.message;
       state.groupsList.push(action.payload);
     });
-    builder.addCase(addNumsGroups.pending, (state, action) => {
-      state.isLoading = true;
+    builder.addCase(addNumsGroups.pending, (state) => {
+      state.status = 'loading';
     });
     builder.addCase(addNumsGroups.rejected, (state, action) => {
-      state.isError = true;
-      console.log('Error: ', action);
+      state.status = 'error';
+      state.message = action.payload?.message;
     });
 
-    // Delete numers groups
+    // Delete numbers groups
     builder.addCase(deleteNumsGroup.fulfilled, (state, action) => {
-      state.isLoading = false;
+      state.status = 'loaded';
       state.isDeleted = true;
       state.message = 'Deleted successfully!';
       const filteredList = state.groupsList.filter(
@@ -52,38 +82,16 @@ export const numsGroups = createSlice({
       );
       state.groupsList = filteredList;
     });
-    builder.addCase(deleteNumsGroup.pending, (state, action) => {
+    builder.addCase(deleteNumsGroup.pending, (state) => {
       state.isDeleted = false;
-      state.isLoading = true;
+      state.status = 'loading';
     });
     builder.addCase(deleteNumsGroup.rejected, (state, action) => {
       state.isDeleted = false;
-      state.isError = true;
-      console.log('Error: ', action);
+      state.status = 'error';
+      state.message = action.error?.message;
     });
   },
 });
-
-export const fetchNumsGroups = createAsyncThunk('fetchNumsGroups', async () => {
-  const response = await axios.get(server_uri + '/fetchgroups');
-  return response.data;
-});
-
-export const addNumsGroups = createAsyncThunk(
-  'addNumsGroups',
-  async (groupData) => {
-    const response = await axios.post(server_uri + '/creategroup', groupData);
-    return response.data;
-  }
-);
-
-export const deleteNumsGroup = createAsyncThunk(
-  'deleteNumsGroup',
-  async (groupData) => {
-    const deleteUrl = `${server_uri}/delete/${groupData.group_name}`;
-    const response = await axios.delete(deleteUrl);
-    return response.data;
-  }
-);
 
 export default numsGroups.reducer;
