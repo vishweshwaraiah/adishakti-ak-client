@@ -1,0 +1,119 @@
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import MasterModal from '@/components/Modals/MasterModal';
+import MasterButton from '@/components/MasterButton';
+import { Ionicons, Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
+import Colors from '@/utils/Colors';
+import Sizes from '@/utils/Sizes';
+
+const UploadModal = (props) => {
+  const {
+    handleCamera = () => {},
+    handleGallery = () => {},
+    handleRemove = () => {},
+    modalStatus = 'close',
+    afterAction = false,
+    onClose = () => {},
+    statusMessage = 'Success!',
+  } = props;
+
+  const [modalOpen, setModalOpen] = useState('close');
+
+  useEffect(() => {
+    if (modalStatus === 'open') {
+      setModalOpen('open');
+    } else {
+      setModalOpen('close');
+    }
+  }, [modalStatus]);
+
+  const getIcon = (iconFamily, iconName) => {
+    switch (iconFamily) {
+      case 'Ionicons':
+        return <Ionicons name={iconName} size={24} color='black' />;
+      case 'Entypo':
+        return <Entypo name={iconName} size={24} color='black' />;
+      case 'AntDesign':
+        return <AntDesign name={iconName} size={24} color='black' />;
+      default:
+        return <FontAwesome name={iconName} size={24} color='black' />;
+    }
+  };
+
+  return (
+    <MasterModal
+      bodyHeight={160}
+      bodyWidth='80%'
+      bgColor={Colors.$modalBodyBg}
+      status={modalOpen}
+      setStatus={setModalOpen}
+      onClose={onClose}
+    >
+      <View style={styles.bodyContent}>
+        {afterAction ? (
+          <View>
+            <Text style={styles.actionText}>{statusMessage}</Text>
+            <MasterButton
+              onPress={onClose}
+              title='Close'
+              variant='light'
+            ></MasterButton>
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.actionText}>Upload Photo</Text>
+            <View style={styles.groupActions}>
+              <MasterButton
+                onPress={handleCamera}
+                variant='light'
+                height='xlarge'
+              >
+                {getIcon('Ionicons', 'camera')}
+                <Text>Camera</Text>
+              </MasterButton>
+              <MasterButton
+                onPress={handleGallery}
+                variant='light'
+                height='xlarge'
+              >
+                {getIcon('Ionicons', 'images')}
+                <Text>Gallery</Text>
+              </MasterButton>
+              <MasterButton
+                onPress={handleRemove}
+                variant='light'
+                height='xlarge'
+              >
+                {getIcon('Ionicons', 'trash')}
+                <Text>Remove</Text>
+              </MasterButton>
+            </View>
+          </View>
+        )}
+      </View>
+    </MasterModal>
+  );
+};
+
+export default UploadModal;
+
+const styles = StyleSheet.create({
+  bodyContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+  },
+  groupActions: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 10,
+  },
+  actionText: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: Sizes.$ieRegularPadding,
+    marginBottom: Sizes.$ieSmallMargin,
+    fontSize: Sizes.$ieLargeFont,
+  },
+});

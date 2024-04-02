@@ -12,20 +12,22 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from 'react-native';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import MasterButton from '@/components/MasterButton';
 import MasterInput from '@/components/MasterInput';
 import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ServerUri } from '@/utils/Globals';
 import BaseTemplate from '@/wrappers/BaseTemplate';
+import { loginUser, clearToken } from '@/redux/slice/authData';
 
 const screenWidth = Dimensions.get('window').width;
 
-const login = () => {
+const AppLogin = () => {
   const router = useRouter();
+  const { status, token, message } = useSelector((state) => state.authSlice);
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -47,22 +49,11 @@ const login = () => {
     if (name === 'password') setPwdError(error);
   };
 
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const token = await AsyncStorage.getItem('auth');
-        if (token) {
-          router.replace('/screens/home');
-        }
-      } catch (error) {
-        console.log('Error', error.message);
-      }
-    };
+  const handleLogin = async () => {
+    await AsyncStorage.removeItem('auth');
+    await AsyncStorage.clear();
+    dispatch(clearToken());
 
-    checkLoginStatus();
-  }, []);
-
-  const handleLogin = () => {
     const user = {
       email: username,
       password,
@@ -78,17 +69,21 @@ const login = () => {
       return false;
     }
 
-    axios
-      .post(ServerUri + '/login', user)
-      .then((response) => {
-        const token = response.data?.token;
-        AsyncStorage.setItem('auth', token);
-        router.replace('/screens/home');
-      })
-      .catch((err) => {
-        Alert.alert('Login failed!', err.message);
-      });
+    dispatch(loginUser(user));
   };
+
+  useEffect(() => {
+    if (message !== '' && status === 'error') {
+      Alert.alert('Login failed!', message);
+    }
+  }, [message, status]);
+
+  useEffect(() => {
+    if (token) {
+      AsyncStorage.setItem('auth', token);
+      router.replace('/screens/home');
+    }
+  }, [token]);
 
   return (
     <BaseTemplate>
@@ -96,7 +91,7 @@ const login = () => {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.loginBox}>
             <View style={styles.titleText}>
-              <Text style={styles.title}>Login into Account!</Text>
+              <Text style={styles.title}>Log in!</Text>
             </View>
             <Animated.View style={styles.topView}>
               <Image
@@ -159,11 +154,11 @@ const login = () => {
   );
 };
 
-export default login;
+export default AppLogin;
 
 const styles = StyleSheet.create({
   loginBox: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'space-evenly',
     width: screenWidth,
     height: '100%',
@@ -180,7 +175,7 @@ const styles = StyleSheet.create({
     maxHeight: '50%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: Sizes.$ieRegularPadding,
   },
   brandImage: {
     alignSelf: 'center',
@@ -192,13 +187,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 0,
     opacity: 0.8,
-    paddingHorizontal: 24,
+    paddingHorizontal: Sizes.$ieLargePadding,
     width: screenWidth,
   },
   title: {
     color: Colors.$black,
-    fontSize: 30,
-    fontFamily: 'Marker Felt',
+    fontSize: Sizes.$ieTitleFont,
     textTransform: 'uppercase',
   },
   others: {
@@ -208,10 +202,9 @@ const styles = StyleSheet.create({
   },
   forgot_link: {
     color: Colors.$primary,
-    fontWeight: 500,
+    fontWeight: '500',
   },
   switchScreen: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginVertical: Sizes.$ieLargeMargin,
   },
 });

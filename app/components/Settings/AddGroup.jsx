@@ -6,10 +6,11 @@ import MasterModal from '@/components/Modals/MasterModal';
 import ContactsList from '@/components/Contacts/ContactsList';
 import MasterInput from '@/components/MasterInput';
 import MasterButton from '@/components/MasterButton';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
 import MasterError from '@/components/MasterError';
+import MasterStyles from '@/utils/MasterStyles';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const AddGroup = () => {
       setNameError(true);
       return false;
     }
-    console.log('contactNums', contactNums);
+
     if (!contactNums.length) {
       setContactsError(true);
       return false;
@@ -91,23 +92,23 @@ const AddGroup = () => {
       flexDirection: 'row',
       justifyContent: 'center',
       gap: 20,
-      marginTop: Sizes.$ieExtraMargin,
+      marginTop: Sizes.$ieLargeMargin,
     },
     contactsList: {
       flex: 1,
     },
     errorBox: {
-      marginTop: Sizes.$ieExtraMargin,
+      marginTop: Sizes.$ieLargeMargin,
     },
   });
 
   return (
     <View>
-      <TouchableOpacity onPress={openModal}>
-        <Ionicons name='add-circle' size={32} color={Colors.$orange} />
+      <TouchableOpacity onPress={openModal} style={MasterStyles.actionBtn}>
+        <FontAwesome name='plus' size={20} color={Colors.$black} />
       </TouchableOpacity>
       <MasterModal
-        bodyHeight='60%'
+        bodyHeight={500}
         bgColor={Colors.$modalBodyBg}
         modalTitle='New Group'
         status={modalOpen}
@@ -124,7 +125,7 @@ const AddGroup = () => {
             name='add_phone'
             type='text'
             rounded={true}
-            width='95%'
+            width='90%'
             onInput={handleInput}
             onBlur={blurHandler}
             error={nameError}

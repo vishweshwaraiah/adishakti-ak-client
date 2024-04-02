@@ -29,7 +29,7 @@ const UpdateModal = (props) => {
 
   return (
     <MasterModal
-      bodyHeight='30%'
+      bodyHeight={250}
       bodyWidth='70%'
       bgColor={Colors.$modalBodyBg}
       status={modalOpen}

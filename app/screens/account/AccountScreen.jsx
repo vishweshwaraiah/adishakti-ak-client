@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   Image,
   Text,
   View,
   TouchableOpacity,
-  Alert,
+  ScrollView,
 } from 'react-native';
 import AuthTemplate from '@/wrappers/AuthTemplate';
-import { ServerUri } from '@/utils/Globals';
-import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
 import MasterCard from '@/components/MasterCard';
-import Colors from '@/utils/Colors';
-import Sizes from '@/utils/Sizes';
-import Settings from '@/components/Settings/Settings';
+import SettingsRow from '@/components/Settings/SettingsRow';
 import { router } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '@/redux/slice/userData';
+import Colors from '@/utils/Colors';
+import Sizes from '@/utils/Sizes';
+import MasterAvatar from '@/components/Settings/MasterAvatar';
 
 const AccountScreen = () => {
   const { user } = useSelector((state) => state.userSlice);
@@ -27,65 +26,58 @@ const AccountScreen = () => {
     dispatch(fetchUser());
   }, []);
 
+  const editProfile = () => {
+    router.navigate('screens/account/ProfileScreen');
+  };
+
   return (
     <AuthTemplate screenName='Account'>
-      <MasterCard style={styles.profileBox}>
-        <View style={[styles.itemBox, styles.hasEditBtn]}>
-          <View style={styles.itemBox}>
-            <Image
-              style={styles.profileImage}
-              source={require('@/assets/images/logo.png')}
-            ></Image>
-            <View>
-              <Text style={styles.rowTitle}>{user.name}</Text>
-              <Text style={styles.subText}>{user.email}</Text>
-            </View>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              router.navigate('screens/account/ProfileScreen');
-            }}
-            style={styles.editBtn}
-          >
-            <MaterialIcons name='edit' size={24} color='white' />
-          </TouchableOpacity>
-        </View>
-      </MasterCard>
-      <Settings />
+      <View style={styles.profileBox}>
+        <MasterAvatar
+          userContent={user}
+          onEditPress={editProfile}
+          direction='row'
+        />
+      </View>
+      <ScrollView contentContainerStyle={styles.settingsRows}>
+        <SettingsRow
+          rowTitle='Manage Groups'
+          subTitle='View, add, update and delete groups'
+          routePath='screens/account/GroupsScreen'
+          startIcon='users'
+          iconFamily='Entypo'
+        ></SettingsRow>
+        <SettingsRow
+          rowTitle='View Contacts'
+          subTitle='Browse, search and view contacts'
+          routePath='screens/account/ContactsScreen'
+          startIcon='contacts'
+          iconFamily='AntDesign'
+        ></SettingsRow>
+      </ScrollView>
     </AuthTemplate>
   );
 };
 
 const styles = StyleSheet.create({
   profileBox: {
-    flex: 1,
-  },
-  profileImage: {
-    width: Sizes.$ieRegularHeight,
-    height: Sizes.$ieRegularHeight,
-  },
-  itemBox: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    gap: 10,
-  },
-  hasEditBtn: {
-    justifyContent: 'space-between',
+    padding: Sizes.$ieRegularPadding,
   },
   editBtn: {
+    position: 'absolute',
+    right: 0,
+    opacity: 0.8,
     backgroundColor: Colors.$primary,
-    paddingHorizontal: Sizes.$ieLargePadding,
-    paddingVertical: Sizes.$ieSmallPadding,
+    paddingHorizontal: Sizes.$ieExtraPadding,
+    paddingVertical: Sizes.$ieRegularPadding,
     borderRadius: Sizes.$ieLargeRadius,
   },
-  rowTitle: {
-    fontSize: Sizes.$ieLargeFont,
-    fontWeight: 'bold',
-  },
-  subText: {
-    color: Colors.$gray,
-    textDecorationLine: 'underline',
+  settingsRows: {
+    justifyContent: 'center',
+    width: '95%',
+    alignItems: 'center',
+    alignSelf: 'center',
+    gap: Sizes.$ieRegularMargin,
   },
 });
 

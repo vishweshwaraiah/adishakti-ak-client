@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store';
 import { Tabs, useRouter } from 'expo-router';
@@ -7,8 +13,6 @@ import { Entypo, Feather, AntDesign, Ionicons } from '@expo/vector-icons';
 import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
 import MasterStyles from '@/utils/MasterStyles';
-
-const screenHeight = Dimensions.get('window').height;
 
 const Layout = () => {
   const router = useRouter();
@@ -60,9 +64,10 @@ const Layout = () => {
         <Tabs.Screen
           name='home'
           options={{
-            tabBarLabel: 'Home',
+            tabBarLabel: '',
             title: 'Home',
             headerShown: false,
+            tabBarLabelStyle: styles.tabBarLabelStyle,
             tabBarStyle: styles.tabBarStyle,
             tabBarItemStyle: styles.tabItemStyle,
             tabBarIcon: (e) => CustomTabBarIcon(e, 'home'),
@@ -74,6 +79,7 @@ const Layout = () => {
             tabBarLabel: '',
             title: 'Messages',
             headerShown: false,
+            tabBarLabelStyle: styles.tabBarLabelStyle,
             tabBarStyle: styles.tabBarStyle,
             tabBarItemStyle: styles.tabItemStyle,
             tabBarIcon: (e) => CustomTabBarIcon(e, 'messages'),
@@ -83,9 +89,10 @@ const Layout = () => {
         <Tabs.Screen
           name='account'
           options={{
-            tabBarLabel: 'Account',
+            tabBarLabel: '',
             title: 'Account',
             headerShown: false,
+            tabBarLabelStyle: styles.tabBarLabelStyle,
             tabBarStyle: styles.tabBarStyle,
             tabBarItemStyle: styles.tabItemStyle,
             tabBarIcon: (e) => CustomTabBarIcon(e, 'account'),
@@ -113,15 +120,15 @@ const styles = StyleSheet.create({
     width: '90%',
     left: '5%',
     right: '5%',
-    paddingTop: Sizes.$ieRegularPadding,
     height: Sizes.$navDimension,
-    maxHeight: screenHeight / 10,
+    maxHeight: 75,
     ...MasterStyles.navShadow,
   },
   tabItemStyle: {
-    top: 8,
+    top: Platform.OS === 'ios' ? 20 : 10,
     position: 'relative',
   },
+  tabBarLabelStyle: {},
   iconView: {
     alignItems: 'center',
     justifyContent: 'center',

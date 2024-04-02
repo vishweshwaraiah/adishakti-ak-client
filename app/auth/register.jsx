@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Image,
@@ -7,25 +7,27 @@ import {
   Text,
   Pressable,
   Keyboard,
-  Platform,
   Alert,
   Animated,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import MasterButton from '@/components/MasterButton';
 import MasterInput from '@/components/MasterInput';
 import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
 import { useRouter } from 'expo-router';
-import axios from 'axios';
-import { ServerUri } from '@/utils/Globals';
 import BaseTemplate from '@/wrappers/BaseTemplate';
+import { registerUser } from '@/redux/slice/authData';
+import { clearUser } from '@/redux/slice/userData';
 
 const screenWidth = Dimensions.get('window').width;
 
-const register = () => {
+const AppRegister = () => {
   const router = useRouter();
+  const { status, message } = useSelector((state) => state.authSlice);
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
@@ -35,7 +37,6 @@ const register = () => {
   const [pwdError, setPwdError] = useState(false);
 
   const clearInputs = () => {
-    setName('');
     setEmail('');
     setMobile('');
     setPassword('');
@@ -65,34 +66,20 @@ const register = () => {
       return false;
     }
 
-    axios
-      .post(ServerUri + '/register', user)
-      .then((response) => {
-        Alert.alert(
-          response.data?.message,
-          'You have been registered successfully!',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            {
-              text: 'Ok',
-              onPress: () => console.log('Ok Pressed'),
-            },
-          ]
-        );
-        clearInputs();
-      })
-      .catch((err) => {
-        let message = 'An error occurred during registration!';
-        if (err.message) {
-          message = err.message;
-        }
-        Alert.alert('Registration Failed', message);
-      });
+    dispatch(registerUser(user));
   };
+
+  useEffect(() => {
+    if (status === 'error' && message !== '') {
+      Alert.alert('Registration Failed', message);
+    }
+
+    if (status === 'loaded' && message !== '') {
+      Alert.alert('Success!', message);
+      clearInputs();
+      dispatch(clearUser());
+    }
+  }, [status, message]);
 
   const getValue = (obj) => {
     if (obj.name === 'email') {
@@ -114,7 +101,7 @@ const register = () => {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.registerBox}>
             <View style={styles.titleText}>
-              <Text style={styles.title}>Register now!</Text>
+              <Text style={styles.title}>Register!</Text>
             </View>
             <Animated.View style={styles.topView}>
               <Image
@@ -165,7 +152,7 @@ const register = () => {
               />
 
               <MasterButton
-                marginTop={Sizes.$ieExtraMargin}
+                marginTop={Sizes.$ieLargeMargin}
                 width={Sizes.$ieElementWidth}
                 title='Register'
                 onPress={handleRegister}
@@ -187,12 +174,12 @@ const register = () => {
   );
 };
 
-export default register;
+export default AppRegister;
 
 const styles = StyleSheet.create({
   registerBox: {
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
     width: screenWidth,
     height: '100%',
     gap: 0,
@@ -208,7 +195,7 @@ const styles = StyleSheet.create({
     maxHeight: '60%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: Sizes.$ieRegularPadding,
   },
   brandImage: {
     alignSelf: 'center',
@@ -220,17 +207,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 0,
     opacity: 0.8,
-    paddingHorizontal: 24,
+    paddingHorizontal: Sizes.$ieLargePadding,
     width: screenWidth,
   },
   title: {
     color: Colors.$black,
-    fontSize: 30,
-    fontFamily: 'Marker Felt',
+    fontSize: Sizes.$ieTitleFont,
     textTransform: 'uppercase',
   },
   switchScreen: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginVertical: Sizes.$ieLargeMargin,
   },
 });

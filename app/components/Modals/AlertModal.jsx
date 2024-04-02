@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MasterModal from '@/components/Modals/MasterModal';
 import MasterButton from '@/components/MasterButton';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
 import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
 
@@ -15,6 +15,7 @@ const AlertModal = (props) => {
     onClose = () => {},
     statusMessage = 'Success!',
     alertIcon = 'warning',
+    iconFamily,
   } = props;
 
   const [modalOpen, setModalOpen] = useState('close');
@@ -27,9 +28,22 @@ const AlertModal = (props) => {
     }
   }, [modalStatus]);
 
+  const getIcon = () => {
+    switch (iconFamily) {
+      case 'Ionicons':
+        return <Ionicons name={alertIcon} size={72} color='black' />;
+      case 'Entypo':
+        return <Entypo name={alertIcon} size={72} color='black' />;
+      case 'AntDesign':
+        return <AntDesign name={alertIcon} size={72} color='black' />;
+      default:
+        return <FontAwesome name={alertIcon} size={72} color='black' />;
+    }
+  };
+
   return (
     <MasterModal
-      bodyHeight='30%'
+      bodyHeight={250}
       bodyWidth='70%'
       bgColor={Colors.$modalBodyBg}
       status={modalOpen}
@@ -37,7 +51,7 @@ const AlertModal = (props) => {
       onClose={onClose}
     >
       <View style={styles.bodyContent}>
-        <Ionicons name={alertIcon} size={72} color='black' />
+        {getIcon()}
         <Text style={styles.actionText}>{statusMessage}</Text>
         {afterAction ? (
           <MasterButton

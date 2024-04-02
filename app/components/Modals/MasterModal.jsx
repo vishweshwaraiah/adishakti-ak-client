@@ -39,7 +39,7 @@ const MasterModal = (props) => {
         useNativeDriver: true,
       }).start();
     } else {
-      setTimeout(() => setVisibility(value), 200);
+      setTimeout(() => setVisibility(value), 500);
       setStatus(value);
       Animated.timing(scaleValue, {
         toValue: 0,
@@ -106,14 +106,14 @@ const MasterModal = (props) => {
       borderBottomWidth: modalTitle ? 2 : 0,
       position: 'relative',
       width: '100%',
-      height: modalTitle ? '10%' : 0,
+      height: modalTitle ? '10%' : 25,
       minHeight: modalTitle ? 50 : 25,
       justifyContent: 'center',
       alignItems: 'center',
     },
     modalTitle: {
       textAlignVertical: 'center',
-      fontSize: 18,
+      fontSize: Sizes.$ieLargeFont,
       fontWeight: 'bold',
     },
     modalClose: {

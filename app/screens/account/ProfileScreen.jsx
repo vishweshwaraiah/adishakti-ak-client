@@ -1,89 +1,95 @@
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import UpdateModal from '@/components/Modals/UpdateModal';
-import { useSelector } from 'react-redux';
-import { LinearGradient } from 'expo-linear-gradient';
+import SettingsRow from '@/components/Settings/SettingsRow';
 import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
-import { Entypo } from '@expo/vector-icons';
+import MasterAvatar from '@/components/Settings/MasterAvatar';
+import UploadModal from '@/components/Modals/UploadModal';
 
 const ProfileScreen = () => {
   const { user } = useSelector((state) => state.userSlice);
 
-  const [modalStatus, setModalStatus] = useState('close');
+  const [updateModal, setUpdateModal] = useState('close');
+  const [uploadModal, setUploadModal] = useState('close');
   const [statusMessage, setStatusMessage] = useState('');
   const [afterAction, setAfterAction] = useState(false);
   const [alertIcon, setAlertIcon] = useState('checkmark');
 
-  const handleCancel = () => {
-    setModalStatus('close');
+  const openModal = () => {
+    setUpdateModal('open');
   };
 
-  const openModal = () => {
-    setModalStatus('open');
+  const handleCancel = () => {
+    setUpdateModal('close');
+  };
+
+  const openUploadModal = () => {
+    setUploadModal('open');
+  };
+
+  const handleUploadCancel = () => {
+    setUploadModal('close');
   };
 
   const handleSubmit = () => {
     // on submit logic goes here
   };
 
+  const handleCameraUpload = () => {
+    // on submit logic goes here
+  };
+
+  const handleGalleryUpload = () => {};
+
+  const handleRemoveUpload = () => {};
+
   return (
     <AuthTemplate screenName='Edit Profile'>
       <ScrollView contentContainerStyle={styles.profileContainer}>
-        <LinearGradient
-          colors={Colors.$profileGradients}
-          start={{ x: 0.7, y: 0.3 }}
-          end={{ x: 0.3, y: 0.7 }}
-          locations={[0.2, 0.5, 0.8]}
-          style={styles.topContainer}
-        >
-          <View style={styles.imageBox}>
-            <Image
-              style={styles.profileImage}
-              source={require('@/assets/images/logo.png')}
+        <MasterAvatar
+          userContent={user}
+          onEditPress={openUploadModal}
+          direction='column'
+        />
+        <View style={styles.bottomContainer}>
+          <View style={styles.settingsRows}>
+            <SettingsRow
+              rowTitle={user.mobile}
+              subTitle='Update mobile number'
+              onRowPress={openModal}
+              startIcon='mobile'
+              endIcon='edit'
+              iconFamily='Entypo'
+            />
+            <SettingsRow
+              rowTitle={user.email}
+              subTitle='Update email id'
+              onRowPress={openModal}
+              startIcon='email'
+              endIcon='edit'
+              iconFamily='Entypo'
             />
           </View>
-          <Text style={styles.nameText}>{user.name}</Text>
-          <Text style={styles.emailText}>{user.email}</Text>
-        </LinearGradient>
-        <View style={styles.bottomContainer}>
-          <UpdateModal
-            onCancel={handleCancel}
-            onSubmit={handleSubmit}
-            modalStatus={modalStatus}
-            statusMessage={statusMessage}
-            afterAction={afterAction}
-            onClose={handleCancel}
-            alertIcon={alertIcon}
-          />
-          <TouchableOpacity onPress={openModal} style={styles.editableRow}>
-            <Text style={{ color: 'white' }}>{user.mobile}</Text>
-            <Entypo
-              style={styles.editIcon}
-              name='edit'
-              size={24}
-              color={'white'}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={openModal} style={styles.editableRow}>
-            <Text style={{ color: 'white' }}>{user.email}</Text>
-            <Entypo
-              style={styles.editIcon}
-              name='edit'
-              size={24}
-              color={'white'}
-            />
-          </TouchableOpacity>
         </View>
+        <UpdateModal
+          onCancel={handleCancel}
+          onSubmit={handleSubmit}
+          modalStatus={updateModal}
+          statusMessage={statusMessage}
+          afterAction={afterAction}
+          onClose={handleCancel}
+          alertIcon={alertIcon}
+        />
+        <UploadModal
+          handleCamera={handleCameraUpload}
+          handleGallery={handleGalleryUpload}
+          handleRemove={handleRemoveUpload}
+          modalStatus={uploadModal}
+          afterAction={afterAction}
+          onClose={handleUploadCancel}
+        />
       </ScrollView>
     </AuthTemplate>
   );
@@ -99,59 +105,13 @@ const styles = StyleSheet.create({
     gap: Sizes.$ieFlexGap,
     padding: Sizes.$ieRegularPadding,
   },
-  topContainer: {
-    borderRadius: Sizes.$ieLargeRadius,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    paddingBottom: 50,
-  },
   bottomContainer: {
-    width: '90%',
     borderRadius: Sizes.$ieLargeRadius,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.$white,
-    padding: Sizes.$ieExtraPadding,
-    marginTop: -50,
+    paddingHorizontal: Sizes.$ieExtraPadding,
   },
-  imageBox: {
-    width: 200,
-    height: 200,
-    position: 'relative',
-    alignSelf: 'center',
-    padding: Sizes.$ieRegularPadding,
-  },
-  profileImage: {
-    width: '100%',
-    height: '100%',
-    alignSelf: 'center',
-    borderWidth: 10,
-    borderColor: Colors.$white,
-    borderRadius: 100,
-    overflow: 'hidden',
-  },
-  editableRow: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Sizes.$ieRegularMargin,
-    padding: Sizes.$ieRegularPadding,
-    backgroundColor: Colors.$secondary,
-    borderRadius: Sizes.$ieRegularRadius,
-  },
-  editIcon: {
-    padding: Sizes.$ieSmallPadding,
-  },
-  nameText: {
-    fontSize: Sizes.$ieTitleFont,
-    fontWeight: 'bold',
-    color: Colors.$white,
-    backgroundColor: 'transparent',
-  },
-  emailText: {
-    fontSize: Sizes.$ieLargeFont,
-    color: Colors.$orange,
+  settingsRows: {
+    gap: Sizes.$ieRegularMargin,
   },
 });

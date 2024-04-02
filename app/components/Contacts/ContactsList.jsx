@@ -19,6 +19,7 @@ const ContactsList = (props) => {
     toolsBar = true,
     bgColor = 'transparent',
     fetchSelected = () => {},
+    onSelectText = () => {},
   } = props;
 
   const [keyword, setKeyword] = useState('');
@@ -84,6 +85,13 @@ const ContactsList = (props) => {
     fetchSelected(selectedArray);
   }, [selectedArray]);
 
+  useEffect(() => {
+    onSelectText({
+      selected: selectedArray.length,
+      total: contactsSorted.length,
+    });
+  }, [allContacts, selectedArray]);
+
   const keyExtractor = (i, idx) => {
     return i?.id?.toString() || idx.toString();
   };
@@ -121,7 +129,6 @@ const ContactsList = (props) => {
               color='dark'
               isIntermediate={false}
             />
-            <Text>{contactsSorted.length} Contacts</Text>
             <TouchableOpacity onPress={toggleOrder}>
               {order === 'Asc' ? (
                 <FontAwesome5 name='sort-alpha-down' size={24} color='black' />
@@ -160,17 +167,35 @@ const ContactsList = (props) => {
       paddingHorizontal: Sizes.$ieRegularPadding,
       marginTop: Sizes.$ieRegularMargin,
     },
+    contactsView: {
+      flex: 1,
+    },
+    noContactsText: {
+      paddingHorizontal: Sizes.$ieRegularPadding,
+      paddingVertical: Sizes.$ieLargePadding,
+      fontSize: Sizes.$ieLargeFont,
+      textAlign: 'center',
+      fontWeight: '600',
+    },
   });
 
   return (
-    <FlatList
-      data={contactsSorted}
-      ListHeaderComponent={contactsListHeader()}
-      renderItem={renderItem}
-      keyExtractor={keyExtractor}
-      style={styles.contactsList}
-      removeClippedSubviews={true}
-    />
+    <View style={styles.contactsView}>
+      {contactsSorted?.length ? (
+        <FlatList
+          data={contactsSorted}
+          ListHeaderComponent={contactsListHeader()}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          style={styles.contactsList}
+          removeClippedSubviews={true}
+        />
+      ) : (
+        <Text style={styles.noContactsText}>
+          Looks like there are no contacts in your device!
+        </Text>
+      )}
+    </View>
   );
 };
 

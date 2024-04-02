@@ -23,7 +23,7 @@ const MessagesScreen = () => {
 
   const selectOptions = [
     { label: 'Send to few numbers', value: 'to_few' },
-    { label: 'Send to a contacts group', value: 'to_group' },
+    { label: 'Send to contacts group', value: 'to_group' },
     { label: 'Send to all contacts', value: 'to_all' },
   ];
 
@@ -111,6 +111,7 @@ const MessagesScreen = () => {
         afterAction={afterAction}
         onClose={handleCancel}
         alertIcon={alertIcon}
+        iconFamily='Ionicons'
       />
     </AuthTemplate>
   );

@@ -8,19 +8,30 @@ const initialState = {
   user: {},
 };
 
-export const fetchUser = createAsyncThunk('fetchUser', async () => {
+export const fetchUser = createAsyncThunk('fetchUser', async (thunkAPI) => {
   const token = await AsyncStorage.getItem('auth');
-  const uri = ServerUri + '/get_user/' + token;
+  const fetchUserUrl = ServerUri + '/get_user/' + token;
 
-  const response = await axios.get(uri);
-
-  return response.data;
+  try {
+    const response = await axios.get(fetchUserUrl);
+    return response.data;
+  } catch (err) {
+    if (!err.response) {
+      throw err; // Rethrow non-response errors
+    }
+    return thunkAPI.rejectWithValue(err.response.data);
+  }
 });
 
 //State slice
 export const userData = createSlice({
   name: 'userData',
   initialState,
+  reducers: {
+    clearUser: (state) => {
+      state.user = {};
+    },
+  },
   extraReducers: (builder) => {
     // register a user
     builder.addCase(fetchUser.fulfilled, (state, action) => {
@@ -32,9 +43,11 @@ export const userData = createSlice({
     });
     builder.addCase(fetchUser.rejected, (state, action) => {
       state.status = 'error';
-      console.log('Error: ', action);
+      state.message = action.payload?.message;
     });
   },
 });
+
+export const { clearUser } = userData.actions;
 
 export default userData.reducer;

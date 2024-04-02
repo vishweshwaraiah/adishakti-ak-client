@@ -8,3 +8,12 @@ export const ValidNumber = (num) => {
   const clearNum = num.replace(clearRegex, '');
   return phoneRegex.test(clearNum);
 };
+
+export const trimmedText = (text, size = 15) => {
+  if (!text) return false;
+
+  const displayText =
+    text.length <= size ? `${text}` : `${text.substring(0, size)}...`;
+
+  return displayText;
+};

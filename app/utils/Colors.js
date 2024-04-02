@@ -1,6 +1,8 @@
 export default {
   $black: '#000000',
   $white: '#ffffff',
+  $transwhite: '#ffffffcf',
+  $transblack: '#000000cf',
   $primary: '#0d6efd',
   $secondary: '#6c757d',
   $success: '#198754',

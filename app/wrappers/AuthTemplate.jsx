@@ -6,30 +6,47 @@ import {
   ImageBackground,
   View,
   Pressable,
-  TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import { clearUser } from '@/redux/slice/userData';
+import AlertModal from '@/components/Modals/AlertModal';
+import MasterStyles from '@/utils/MasterStyles';
 import Colors from '@/utils/Colors';
-import Sizes from '@/utils/Sizes';
+import { useDispatch } from 'react-redux';
 
 const screenWidth = Dimensions.get('window').width;
 
 const AuthTemplate = (props) => {
   const { children, screenName = '', rightHeader = null } = props;
+  const dispatch = useDispatch();
 
   const router = useRouter();
   const navigation = useNavigation();
+
   const [lastScreen, setLastScreen] = useState(false);
+  const [modalStatus, setModalStatus] = useState('close');
 
-  useEffect(() => {
-    const x = router.canGoBack();
-    if (!x) setLastScreen(true);
-  }, []);
+  const statusMessage = 'Are you sure to logout?';
 
+  const logoutUser = async () => {
+    await AsyncStorage.removeItem('auth');
+    await AsyncStorage.clear();
+    dispatch(clearUser());
+    router.push('/auth/login');
+    setModalStatus('close');
+  };
+
+  const handleCancel = () => {
+    setModalStatus('close');
+  };
+
+  const pressLogout = () => {
+    setModalStatus('open');
+  };
   const goBack = () => {
     if (router.canGoBack()) {
       setLastScreen(false);
@@ -42,13 +59,20 @@ const AuthTemplate = (props) => {
   const leftHeaderNode = () => (
     <View style={styles.headerView}>
       {lastScreen ? (
-        <View style={styles.isHome}>
-          <Ionicons name='home' size={24} color='black' />
+        <View style={MasterStyles.actionBtn}>
+          <Ionicons name='home' size={20} color='black' />
         </View>
       ) : (
-        <TouchableOpacity onPress={goBack}>
-          <FontAwesome name='chevron-circle-left' size={32} color='black' />
-        </TouchableOpacity>
+        <Pressable
+          style={({ pressed }) => [
+            MasterStyles.actionBtn,
+            pressed && styles.pressedBtn,
+          ]}
+          onPress={goBack}
+          variant='trans'
+        >
+          <FontAwesome name='chevron-left' size={20} color='black' />
+        </Pressable>
       )}
     </View>
   );
@@ -57,10 +81,10 @@ const AuthTemplate = (props) => {
     rightHeader || (
       <Pressable
         style={({ pressed }) => [
-          styles.logoutBtn,
+          MasterStyles.actionBtn,
           pressed && styles.pressedBtn,
         ]}
-        onPress={logoutUser}
+        onPress={pressLogout}
         variant='trans'
       >
         <FontAwesome name='sign-out' size={20} color='black' />
@@ -70,16 +94,16 @@ const AuthTemplate = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: screenName,
+      headerTitleAlign: 'center',
       headerLeft: leftHeaderNode,
       headerRight: rightHeaderNode,
     });
   }, [lastScreen]);
 
-  const logoutUser = async () => {
-    await AsyncStorage.removeItem('auth');
-    await AsyncStorage.clear();
-    router.push('/auth/login');
-  };
+  useEffect(() => {
+    const x = router.canGoBack();
+    if (!x) setLastScreen(true);
+  }, []);
 
   return (
     <LinearGradient colors={Colors.$gradientsArray} style={styles.container}>
@@ -91,6 +115,14 @@ const AuthTemplate = (props) => {
       >
         <SafeAreaView style={styles.safeArea}>{children}</SafeAreaView>
       </ImageBackground>
+      <AlertModal
+        onCancel={handleCancel}
+        onSubmit={logoutUser}
+        modalStatus={modalStatus}
+        statusMessage={statusMessage}
+        onClose={handleCancel}
+        alertIcon={'sign-out'}
+      />
     </LinearGradient>
   );
 };
@@ -114,15 +146,8 @@ const styles = StyleSheet.create({
     width: screenWidth,
     height: '100%',
   },
-  logoutBtn: {
-    position: 'relative',
-    backgroundColor: Colors.$orange,
-    padding: Sizes.$ieRegularPadding,
-    borderRadius: Sizes.$ieRegularMargin,
-  },
   pressedBtn: {
     opacity: 0.5,
-    padding: Sizes.$ieRegularPadding + 2,
   },
   headerView: {
     flexDirection: 'row',
@@ -134,11 +159,6 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 15,
     resizeMode: 'cover',
-  },
-  isHome: {
-    backgroundColor: Colors.$orange,
-    borderRadius: Sizes.$ieRegularRadius,
-    padding: Sizes.$ieSmallPadding,
   },
 });
 

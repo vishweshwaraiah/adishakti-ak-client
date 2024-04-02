@@ -115,7 +115,9 @@ const getUserByToken = async (req, res) => {
 
     const decoded = jwt.decode(token);
 
-    const user = await User.findOne(decoded._id);
+    const user = await User.findOne({
+      _id: decoded.userId,
+    });
 
     if (!user) {
       return res.status(404).json({ message: 'Invalid user id!' });
