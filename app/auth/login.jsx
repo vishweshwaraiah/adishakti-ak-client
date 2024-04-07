@@ -12,15 +12,15 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'expo-router';
+import { loginUser, clearToken } from '@/redux/slice/authData';
+import BaseTemplate from '@/wrappers/BaseTemplate';
 import MasterButton from '@/components/MasterButton';
 import MasterInput from '@/components/MasterInput';
 import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
-import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import BaseTemplate from '@/wrappers/BaseTemplate';
-import { loginUser, clearToken } from '@/redux/slice/authData';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -50,6 +50,7 @@ const AppLogin = () => {
   };
 
   const handleLogin = async () => {
+    // make sure there's no previous user's data exists
     await AsyncStorage.removeItem('auth');
     await AsyncStorage.clear();
     dispatch(clearToken());
@@ -79,10 +80,14 @@ const AppLogin = () => {
   }, [message, status]);
 
   useEffect(() => {
-    if (token) {
-      AsyncStorage.setItem('auth', token);
-      router.replace('/screens/home');
-    }
+    const setAuthToken = async () => {
+      if (token !== null) {
+        await AsyncStorage.setItem('auth', token);
+        router.replace('/auth/loader');
+      }
+    };
+
+    setAuthToken();
   }, [token]);
 
   return (

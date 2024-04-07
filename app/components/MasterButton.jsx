@@ -74,7 +74,7 @@ const MasterButton = (props) => {
       backgroundColor: Colors.$info,
     },
     light: {
-      backgroundColor: Colors.$white,
+      backgroundColor: Colors.$light,
     },
     dark: {
       backgroundColor: Colors.$black,

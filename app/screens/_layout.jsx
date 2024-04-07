@@ -1,21 +1,26 @@
 import React from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Dimensions,
-  Platform,
-} from 'react-native';
-import { Provider } from 'react-redux';
-import { store } from '@/redux/store';
+import { StyleSheet, TouchableOpacity, View, Platform } from 'react-native';
 import { Tabs, useRouter } from 'expo-router';
 import { Entypo, Feather, AntDesign, Ionicons } from '@expo/vector-icons';
+import MasterStyles from '@/utils/MasterStyles';
 import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
-import MasterStyles from '@/utils/MasterStyles';
 
 const Layout = () => {
   const router = useRouter();
+
+  const floatingNavBtn = () => {
+    return (
+      <View>
+        <TouchableOpacity
+          onPress={() => router.push('screens/account/ProfileScreen')}
+          style={[styles.floatingBtn]}
+        >
+          <AntDesign name='home' size={24} color='yellow' />
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   const CustomTabBarButton = (props) => {
     const { children, onPress } = props;
@@ -59,53 +64,45 @@ const Layout = () => {
   };
 
   return (
-    <Provider store={store}>
-      <Tabs>
-        <Tabs.Screen
-          name='home'
-          options={{
-            tabBarLabel: '',
-            title: 'Home',
-            headerShown: false,
-            tabBarLabelStyle: styles.tabBarLabelStyle,
-            tabBarStyle: styles.tabBarStyle,
-            tabBarItemStyle: styles.tabItemStyle,
-            tabBarIcon: (e) => CustomTabBarIcon(e, 'home'),
-          }}
-        />
-        <Tabs.Screen
-          name='messages'
-          options={{
-            tabBarLabel: '',
-            title: 'Messages',
-            headerShown: false,
-            tabBarLabelStyle: styles.tabBarLabelStyle,
-            tabBarStyle: styles.tabBarStyle,
-            tabBarItemStyle: styles.tabItemStyle,
-            tabBarIcon: (e) => CustomTabBarIcon(e, 'messages'),
-            tabBarButton: (props) => <CustomTabBarButton {...props} />,
-          }}
-        />
-        <Tabs.Screen
-          name='account'
-          options={{
-            tabBarLabel: '',
-            title: 'Account',
-            headerShown: false,
-            tabBarLabelStyle: styles.tabBarLabelStyle,
-            tabBarStyle: styles.tabBarStyle,
-            tabBarItemStyle: styles.tabItemStyle,
-            tabBarIcon: (e) => CustomTabBarIcon(e, 'account'),
-          }}
-        />
-      </Tabs>
-      <TouchableOpacity
-        onPress={() => router.push('screens/account/ProfileScreen')}
-        style={[styles.floatingBtn]}
-      >
-        <AntDesign name='home' size={24} color='yellow' />
-      </TouchableOpacity>
-    </Provider>
+    <Tabs backBehavior='none'>
+      <Tabs.Screen
+        name='home'
+        options={{
+          tabBarLabel: '',
+          title: 'Home',
+          headerShown: false,
+          tabBarLabelStyle: styles.tabBarLabelStyle,
+          tabBarStyle: styles.tabBarStyle,
+          tabBarItemStyle: styles.tabItemStyle,
+          tabBarIcon: (e) => CustomTabBarIcon(e, 'home'),
+        }}
+      />
+      <Tabs.Screen
+        name='messages'
+        options={{
+          tabBarLabel: '',
+          title: 'Messages',
+          headerShown: false,
+          tabBarLabelStyle: styles.tabBarLabelStyle,
+          tabBarStyle: styles.tabBarStyle,
+          tabBarItemStyle: styles.tabItemStyle,
+          tabBarIcon: (e) => CustomTabBarIcon(e, 'messages'),
+          tabBarButton: (props) => <CustomTabBarButton {...props} />,
+        }}
+      />
+      <Tabs.Screen
+        name='account'
+        options={{
+          tabBarLabel: '',
+          title: 'Account',
+          headerShown: false,
+          tabBarLabelStyle: styles.tabBarLabelStyle,
+          tabBarStyle: styles.tabBarStyle,
+          tabBarItemStyle: styles.tabItemStyle,
+          tabBarIcon: (e) => CustomTabBarIcon(e, 'account'),
+        }}
+      />
+    </Tabs>
   );
 };
 

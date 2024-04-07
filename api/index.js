@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 require('module-alias/register');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -39,5 +40,11 @@ app.get('/up', async (req, res) => {
 // End points for user actions
 app.use('/', userRouter);
 
-// End points for usmessaginger actions
+// End points for user messaging actions
 app.use('/', msgRouter);
+
+// to get images
+app.get('/assets/uploads/:image', (req, res) => {
+  const image = req.params.image;
+  res.sendFile(path.join(__dirname, './assets/uploads/' + image));
+});

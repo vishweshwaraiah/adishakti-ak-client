@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['male', 'female', 'other'],
   },
+  dob: {
+    type: Date,
+    required: false,
+  },
   verified: {
     type: Boolean,
     default: false,
@@ -29,6 +33,7 @@ const userSchema = new mongoose.Schema({
   verificationToken: String,
   profileImage: {
     type: String,
+    required: false,
   },
 });
 

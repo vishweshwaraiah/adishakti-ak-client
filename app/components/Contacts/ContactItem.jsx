@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 30,
     overflow: 'hidden',
-    backgroundColor: Colors.$white,
+    backgroundColor: Colors.$light,
     alignItems: 'center',
     justifyContent: 'center',
   },

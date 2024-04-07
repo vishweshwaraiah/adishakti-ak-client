@@ -12,7 +12,7 @@ const UploadModal = (props) => {
     handleGallery = () => {},
     handleRemove = () => {},
     modalStatus = 'close',
-    afterAction = false,
+    afterAction = 'initial',
     onClose = () => {},
     statusMessage = 'Success!',
   } = props;
@@ -30,13 +30,13 @@ const UploadModal = (props) => {
   const getIcon = (iconFamily, iconName) => {
     switch (iconFamily) {
       case 'Ionicons':
-        return <Ionicons name={iconName} size={24} color='black' />;
+        return <Ionicons name={iconName} size={24} color='orange' />;
       case 'Entypo':
-        return <Entypo name={iconName} size={24} color='black' />;
+        return <Entypo name={iconName} size={24} color='orange' />;
       case 'AntDesign':
-        return <AntDesign name={iconName} size={24} color='black' />;
+        return <AntDesign name={iconName} size={24} color='orange' />;
       default:
-        return <FontAwesome name={iconName} size={24} color='black' />;
+        return <FontAwesome name={iconName} size={24} color='orange' />;
     }
   };
 
@@ -50,9 +50,9 @@ const UploadModal = (props) => {
       onClose={onClose}
     >
       <View style={styles.bodyContent}>
-        {afterAction ? (
+        {afterAction === 'error' || afterAction === 'done' ? (
           <View>
-            <Text style={styles.actionText}>{statusMessage}</Text>
+            <Text style={styles.statusText}>{statusMessage}</Text>
             <MasterButton
               onPress={onClose}
               title='Close'
@@ -115,5 +115,12 @@ const styles = StyleSheet.create({
     padding: Sizes.$ieRegularPadding,
     marginBottom: Sizes.$ieSmallMargin,
     fontSize: Sizes.$ieLargeFont,
+  },
+  statusText: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: Sizes.$ieRegularPadding,
+    marginBottom: Sizes.$ieLargeMargin,
+    fontSize: Sizes.$ieRegularFont,
   },
 });

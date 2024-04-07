@@ -11,7 +11,7 @@ const AlertModal = (props) => {
     onCancel = () => {},
     onSubmit = () => {},
     modalStatus = 'close',
-    afterAction = false,
+    afterAction = 'initial',
     onClose = () => {},
     statusMessage = 'Success!',
     alertIcon = 'warning',
@@ -53,7 +53,7 @@ const AlertModal = (props) => {
       <View style={styles.bodyContent}>
         {getIcon()}
         <Text style={styles.actionText}>{statusMessage}</Text>
-        {afterAction ? (
+        {afterAction === 'error' || afterAction === 'done' ? (
           <MasterButton
             onPress={onClose}
             title='Close'

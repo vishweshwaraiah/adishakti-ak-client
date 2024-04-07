@@ -11,10 +11,12 @@ const UpdateModal = (props) => {
     onCancel = () => {},
     onSubmit = () => {},
     modalStatus = 'close',
-    afterAction = false,
+    afterAction = 'initial',
     onClose = () => {},
     statusMessage = 'Success!',
     alertIcon = 'warning',
+    cancelText = 'Cancel',
+    submitText = 'Submit',
   } = props;
 
   const [modalOpen, setModalOpen] = useState('close');
@@ -39,7 +41,7 @@ const UpdateModal = (props) => {
       <View style={styles.bodyContent}>
         <Ionicons name={alertIcon} size={72} color='black' />
         <Text style={styles.actionText}>{statusMessage}</Text>
-        {afterAction ? (
+        {afterAction === 'error' ? (
           <MasterButton
             onPress={onClose}
             title='Close'
@@ -49,12 +51,12 @@ const UpdateModal = (props) => {
           <View style={styles.groupActions}>
             <MasterButton
               onPress={onCancel}
-              title='Cancel'
+              title={cancelText}
               variant='light'
             ></MasterButton>
             <MasterButton
               onPress={onSubmit}
-              title='Yes'
+              title={submitText}
               variant='success'
             ></MasterButton>
           </View>

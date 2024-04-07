@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import Sizes from '@/utils/Sizes';
-import { router } from 'expo-router';
 
 const HomeScreen = () => {
-  const contactsScreen = () => router.navigate('screens/home/ContactsScreen');
   return (
     <AuthTemplate screenName='Home'>
       <View style={styles.titleContainer}>
@@ -13,7 +11,7 @@ const HomeScreen = () => {
       </View>
       <View style={styles.homeContent}>
         <Text style={styles.sectionTitle}>
-          Welcome to the great Janagoud's world..!.
+          Welcome to The Janagouda's World..!.
         </Text>
       </View>
     </AuthTemplate>

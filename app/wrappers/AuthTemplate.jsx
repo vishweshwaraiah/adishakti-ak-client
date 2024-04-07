@@ -6,17 +6,17 @@ import {
   ImageBackground,
   View,
   Pressable,
+  NativeModules,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter, useNavigation } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
+import { useDispatch } from 'react-redux';
 import { clearUser } from '@/redux/slice/userData';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import AlertModal from '@/components/Modals/AlertModal';
 import MasterStyles from '@/utils/MasterStyles';
 import Colors from '@/utils/Colors';
-import { useDispatch } from 'react-redux';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -36,8 +36,8 @@ const AuthTemplate = (props) => {
     await AsyncStorage.removeItem('auth');
     await AsyncStorage.clear();
     dispatch(clearUser());
-    router.push('/auth/login');
     setModalStatus('close');
+    NativeModules.DevSettings.reload();
   };
 
   const handleCancel = () => {
@@ -47,6 +47,7 @@ const AuthTemplate = (props) => {
   const pressLogout = () => {
     setModalStatus('open');
   };
+
   const goBack = () => {
     if (router.canGoBack()) {
       setLastScreen(false);

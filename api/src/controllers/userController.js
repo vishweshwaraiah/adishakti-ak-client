@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const fs = require('fs');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const User = require('@api/models/user');
@@ -108,12 +109,14 @@ const userLogin = async (req, res) => {
 const getUserByToken = async (req, res) => {
   try {
     const { token } = req.params;
-
-    if (!token) {
+    console.log('Token', token);
+    if (!token || token === null) {
       return res.status(404).json({ message: 'Invalid token!' });
     }
 
     const decoded = jwt.decode(token);
+
+    console.log('Token decoded', decoded);
 
     const user = await User.findOne({
       _id: decoded.userId,
@@ -132,13 +135,13 @@ const getUserByToken = async (req, res) => {
 
 const getUserByEmail = async (req, res) => {
   try {
-    const { email } = req.params;
+    const { email } = req.body;
 
     if (!email) {
       return res.status(404).json({ message: 'Invalid email id!' });
     }
 
-    const user = await User.findOne(email);
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: 'Invalid user email id!' });
@@ -151,10 +154,73 @@ const getUserByEmail = async (req, res) => {
   }
 };
 
+const updateUserByEmail = async (filter, update) => {
+  const currentUser = await User.findOne(filter);
+
+  const oldImageFile = currentUser?.profileImage;
+
+  if (fs.existsSync(oldImageFile)) {
+    // Delete the old image file
+    fs.unlinkSync(oldImageFile);
+  }
+
+  const options = {
+    new: true,
+  };
+
+  const updatedUser = await User.findOneAndUpdate(filter, update, options);
+
+  return updatedUser;
+};
+
+const updateUserImage = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const file = req.file;
+    if (!email || !file) {
+      return res
+        .status(404)
+        .json({ message: 'Invalid file or missing email id!' });
+    }
+
+    const filter = { email: email };
+    const update = { profileImage: file.path };
+
+    const updatedUser = await updateUserByEmail(filter, update);
+
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log('error', error);
+    res.status(500).json({ message: "User doesn't exists!" });
+  }
+};
+
+const deleteUserImage = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(404).json({ message: 'Invalid user!' });
+    }
+
+    const filter = { email: email };
+    const update = { profileImage: null };
+
+    const updatedUser = await updateUserByEmail(filter, update);
+
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log('error', error);
+    res.status(500).json({ message: "User doesn't exists!" });
+  }
+};
+
 module.exports = {
   registerUser,
   verifyUserToken,
   userLogin,
   getUserByToken,
   getUserByEmail,
+  updateUserImage,
+  deleteUserImage,
 };

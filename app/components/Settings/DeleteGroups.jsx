@@ -23,6 +23,7 @@ const DeleteGroups = () => {
   const [modalStatus, setModalStatus] = useState('close');
   const [deleteItem, setDeleteItem] = useState(undefined);
   const [statusMessage, setStatusMessage] = useState('');
+  const [afterAction, setAfterAction] = useState('initial');
 
   useEffect(() => {
     if (isDeleted) {
@@ -45,6 +46,7 @@ const DeleteGroups = () => {
   const deleteGroup = () => {
     if (deleteItem) {
       dispatch(deleteNumsGroup(deleteItem));
+      setAfterAction('done');
     } else {
       setStatusMessage('Looks like you already deleted the group!');
     }
@@ -58,6 +60,7 @@ const DeleteGroups = () => {
 
   const handleCancel = () => {
     setModalStatus('close');
+    setAfterAction('initial');
   };
 
   const renderItem = ({ item }) => (
@@ -98,6 +101,7 @@ const DeleteGroups = () => {
         statusMessage={statusMessage}
         onClose={handleCancel}
         alertIcon='trash'
+        afterAction={afterAction}
       />
     </View>
   );

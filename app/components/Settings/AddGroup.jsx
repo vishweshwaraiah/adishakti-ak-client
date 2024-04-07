@@ -14,7 +14,6 @@ import MasterStyles from '@/utils/MasterStyles';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
-  const { message } = useSelector((state) => state.groupsSlice);
 
   const [contactNums, setContactNums] = useState([]);
   const [groupName, setGroupName] = useState('');
@@ -69,7 +68,7 @@ const AddGroup = () => {
   };
 
   useEffect(() => {
-    if (!modalOpen) {
+    if (modalOpen === 'close') {
       setContactsError(false);
       setNameError(false);
     }

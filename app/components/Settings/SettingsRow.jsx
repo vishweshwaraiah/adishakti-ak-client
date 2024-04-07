@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { Ionicons, Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
 import Colors from '@/utils/Colors';
@@ -16,9 +16,51 @@ const SettingsRow = (props) => {
     iconFamily,
     routePath = null,
     onRowPress = () => {},
+    brType = '',
   } = props;
 
   const router = useRouter();
+
+  const [radiusStyle, setRadiusStyle] = useState({});
+
+  useEffect(() => {
+    switch (brType) {
+      case 'top-side':
+        setRadiusStyle({
+          borderTopLeftRadius: Sizes.$ieRegularRadius,
+          borderTopRightRadius: Sizes.$ieRegularRadius,
+        });
+        break;
+      case 'bottom-side':
+        setRadiusStyle({
+          borderBottomLeftRadius: Sizes.$ieRegularRadius,
+          borderBottomRightRadius: Sizes.$ieRegularRadius,
+        });
+        break;
+      case 'left-side':
+        setRadiusStyle({
+          borderTopLeftRadius: Sizes.$ieRegularRadius,
+          borderBottomLeftRadius: Sizes.$ieRegularRadius,
+        });
+        break;
+      case 'right-side':
+        setRadiusStyle({
+          borderTopRightRadius: Sizes.$ieRegularRadius,
+          borderBottomRightRadius: Sizes.$ieRegularRadius,
+        });
+        break;
+      case 'all-side':
+        setRadiusStyle({
+          borderRadius: Sizes.$ieRegularRadius,
+        });
+        break;
+      default:
+        setRadiusStyle({
+          borderRadius: 0,
+        });
+        break;
+    }
+  }, [brType]);
 
   const handlePress = () => {
     if (routePath) {
@@ -41,13 +83,53 @@ const SettingsRow = (props) => {
     }
   };
 
+  const styles = StyleSheet.create({
+    settingsRow: {
+      width: '100%',
+      flexDirection: 'row',
+      backgroundColor: Colors.$white,
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: Sizes.$ieExtraPadding,
+      ...radiusStyle,
+      ...MasterStyles.commonShadow,
+    },
+    titleView: {
+      flexDirection: 'row',
+      gap: Sizes.$ieLargeMargin,
+      alignItems: 'center',
+    },
+    titleTextBox: {
+      width: '90%',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      gap: 5,
+    },
+    rowTitle: {
+      fontSize: Sizes.$ieRegularFont,
+      color: Colors.$black,
+      flexWrap: 'nowrap',
+    },
+    subTitle: {
+      fontSize: Sizes.$ieSmallFont,
+      color: Colors.$gray,
+    },
+    rightIcon: {
+      position: 'absolute',
+      right: Sizes.$ieLargeMargin,
+    },
+  });
+
   return (
     <TouchableOpacity onPress={handlePress} style={styles.settingsRow}>
       <View style={styles.titleView}>
         {startIcon && getIcon()}
         <View style={styles.titleTextBox}>
-          <Text style={styles.rowTitle}>{trimmedText(rowTitle, 20)}</Text>
-          <Text style={styles.subTitle}>{subTitle}</Text>
+          {rowTitle && (
+            <Text style={styles.rowTitle}>{trimmedText(rowTitle, 20)}</Text>
+          )}
+          {subTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
         </View>
       </View>
       <View style={styles.rightIcon}>
@@ -58,41 +140,3 @@ const SettingsRow = (props) => {
 };
 
 export default SettingsRow;
-
-const styles = StyleSheet.create({
-  settingsRow: {
-    width: '100%',
-    flexDirection: 'row',
-    backgroundColor: Colors.$white,
-    borderRadius: Sizes.$ieRegularRadius,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: Sizes.$ieExtraPadding,
-    ...MasterStyles.commonShadow,
-  },
-  titleView: {
-    flexDirection: 'row',
-    gap: Sizes.$ieLargeMargin,
-    alignItems: 'center',
-  },
-  titleTextBox: {
-    width: '90%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    gap: 5,
-  },
-  rowTitle: {
-    fontSize: Sizes.$ieRegularFont,
-    color: Colors.$black,
-    flexWrap: 'nowrap',
-  },
-  subTitle: {
-    fontSize: Sizes.$ieSmallFont,
-    color: Colors.$gray,
-  },
-  rightIcon: {
-    position: 'absolute',
-    right: Sizes.$ieLargeMargin,
-  },
-});

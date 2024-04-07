@@ -19,7 +19,7 @@ const BaseTemplate = (props) => {
     <LinearGradient colors={Colors.$gradientsArray} style={styles.container}>
       <ImageBackground
         style={styles.loginImage}
-        source={require('@/assets/images/placeholder.jpg')}
+        source={require('@/assets/images/bg.jpg')}
         resizeMode='cover'
         imageStyle={styles.imageBackground}
       >

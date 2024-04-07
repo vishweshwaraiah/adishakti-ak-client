@@ -1,23 +1,29 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import UpdateModal from '@/components/Modals/UpdateModal';
 import SettingsRow from '@/components/Settings/SettingsRow';
 import Sizes from '@/utils/Sizes';
 import MasterAvatar from '@/components/Settings/MasterAvatar';
-import UploadModal from '@/components/Modals/UploadModal';
 
 const ProfileScreen = () => {
   const { user } = useSelector((state) => state.userSlice);
 
   const [updateModal, setUpdateModal] = useState('close');
-  const [uploadModal, setUploadModal] = useState('close');
   const [statusMessage, setStatusMessage] = useState('');
-  const [afterAction, setAfterAction] = useState(false);
-  const [alertIcon, setAlertIcon] = useState('checkmark');
+  const [afterAction, setAfterAction] = useState('initial');
+  const [alertIcon, setAlertIcon] = useState('thumbs-up');
+  const [userArray, setUserArray] = useState([]);
 
   const openModal = () => {
+    setStatusMessage('This feature is not fully enabled yet');
     setUpdateModal('open');
   };
 
@@ -25,52 +31,88 @@ const ProfileScreen = () => {
     setUpdateModal('close');
   };
 
-  const openUploadModal = () => {
-    setUploadModal('open');
-  };
-
-  const handleUploadCancel = () => {
-    setUploadModal('close');
-  };
-
   const handleSubmit = () => {
     // on submit logic goes here
   };
 
-  const handleCameraUpload = () => {
-    // on submit logic goes here
+  const getBrType = (idx) => {
+    if (idx === 0) {
+      return 'top-side';
+    } else if (idx === userArray.length - 1) {
+      return 'bottom-side';
+    } else {
+      return '';
+    }
   };
 
-  const handleGalleryUpload = () => {};
-
-  const handleRemoveUpload = () => {};
+  useEffect(() => {
+    const userData = [];
+    if (user.name) {
+      userData.push({
+        name: user.name.trim(),
+        subname: 'User Name',
+        icon: 'user',
+        iconFamily: 'Entypo',
+      });
+    }
+    if (user.email) {
+      userData.push({
+        name: user.email,
+        subname: 'Email ID',
+        icon: 'email',
+        iconFamily: 'Entypo',
+      });
+    }
+    if (user.mobile) {
+      userData.push({
+        name: user.mobile,
+        subname: 'User Mobile',
+        icon: 'mobile',
+        iconFamily: 'Entypo',
+      });
+    }
+    if (user.gender) {
+      userData.push({
+        name: user.gender,
+        subname: 'User Gender',
+        icon: 'male-female',
+        iconFamily: 'Ionicons',
+      });
+    }
+    if (user.dob) {
+      userData.push({
+        name: user.dob,
+        subname: 'Date of birth',
+        icon: 'calendar-number',
+        iconFamily: 'Ionicons',
+      });
+    }
+    setUserArray(userData);
+  }, [user]);
 
   return (
     <AuthTemplate screenName='Edit Profile'>
       <ScrollView contentContainerStyle={styles.profileContainer}>
-        <MasterAvatar
-          userContent={user}
-          onEditPress={openUploadModal}
-          direction='column'
-        />
+        <MasterAvatar direction='column' uploadAble={true} />
         <View style={styles.bottomContainer}>
+          <View style={styles.titleAction}>
+            <Text>Personal Info</Text>
+            <TouchableOpacity onPress={openModal}>
+              <Text>Edit</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.settingsRows}>
-            <SettingsRow
-              rowTitle={user.mobile}
-              subTitle='Update mobile number'
-              onRowPress={openModal}
-              startIcon='mobile'
-              endIcon='edit'
-              iconFamily='Entypo'
-            />
-            <SettingsRow
-              rowTitle={user.email}
-              subTitle='Update email id'
-              onRowPress={openModal}
-              startIcon='email'
-              endIcon='edit'
-              iconFamily='Entypo'
-            />
+            {userArray?.map((item, idx) => (
+              <SettingsRow
+                rowTitle={item.name}
+                subTitle={item.subname}
+                startIcon={item.icon}
+                endIcon=''
+                iconFamily={item.iconFamily}
+                brType={getBrType(idx)}
+                key={item.name}
+              />
+            ))}
           </View>
         </View>
         <UpdateModal
@@ -81,14 +123,8 @@ const ProfileScreen = () => {
           afterAction={afterAction}
           onClose={handleCancel}
           alertIcon={alertIcon}
-        />
-        <UploadModal
-          handleCamera={handleCameraUpload}
-          handleGallery={handleGalleryUpload}
-          handleRemove={handleRemoveUpload}
-          modalStatus={uploadModal}
-          afterAction={afterAction}
-          onClose={handleUploadCancel}
+          cancelText='Cancel'
+          submitText='Okay'
         />
       </ScrollView>
     </AuthTemplate>
@@ -109,9 +145,16 @@ const styles = StyleSheet.create({
     borderRadius: Sizes.$ieLargeRadius,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: Sizes.$ieExtraPadding,
+    paddingHorizontal: Sizes.$ieRegularPadding,
   },
   settingsRows: {
     gap: Sizes.$ieRegularMargin,
+  },
+  titleAction: {
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginVertical: Sizes.$ieLargeMargin,
   },
 });

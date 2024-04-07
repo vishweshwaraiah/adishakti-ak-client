@@ -12,7 +12,7 @@ const MessagesScreen = () => {
   const [numbersList, setNumbersList] = useState([]);
   const [modalStatus, setModalStatus] = useState('close');
   const [statusMessage, setStatusMessage] = useState('');
-  const [afterAction, setAfterAction] = useState(false);
+  const [afterAction, setAfterAction] = useState('initial');
   const [alertIcon, setAlertIcon] = useState('checkmark');
 
   const [selectedNumbers, setSelectedNumbers] = useState([]);
@@ -34,14 +34,14 @@ const MessagesScreen = () => {
 
     if (phonesArray.length && textMessage && sendType) {
       setStatusMessage('Do you really want to send message?');
-      setAfterAction(false);
+      setAfterAction('initial');
       setAlertIcon('help-circle');
       setSelectedNumbers(phonesArray);
       setMessageContent();
       setSelectType();
     } else {
       setStatusMessage('Message and numbers are required!');
-      setAfterAction(true);
+      setAfterAction('error');
       setAlertIcon('alert-circle');
       setSelectedNumbers([]);
       setMessageContent(textMessage);
@@ -72,14 +72,14 @@ const MessagesScreen = () => {
     //     if (response.data) {
     //       setModalStatus('open');
     //       setStatusMessage('Successfully sent!');
-    //       setAfterAction(true);
+    //       setAfterAction('done');
     //       setAlertIcon('alert-circle');
     //     }
     //   })
     //   .catch((err) => {
     //     setModalStatus('open');
     //     setStatusMessage(err.message);
-    //     setAfterAction(false);
+    //     setAfterAction('error');
     //     setAlertIcon('alert-circle');
     //   });
   };

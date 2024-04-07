@@ -104,7 +104,7 @@ const MasterChats = (props) => {
         enabled
         style={styles.container}
       >
-        <Text style={styles.mbRegular}>Choose numbers from</Text>
+        <Text style={styles.messageTitle}>Choose an option below</Text>
         <View style={styles.mbRegular}>
           <MasterSelect
             defaultSelect={defLabel}
@@ -187,5 +187,10 @@ const styles = StyleSheet.create({
   },
   mbRegular: {
     marginBottom: Sizes.$ieRegularMargin,
+  },
+  messageTitle: {
+    fontSize: Sizes.$ieTitleFont,
+    marginBottom: Sizes.$ieRegularMargin,
+    fontWeight: 'bold',
   },
 });

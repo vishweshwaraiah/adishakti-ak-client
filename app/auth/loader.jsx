@@ -1,40 +1,75 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '@/redux/slice/userData';
 import BaseTemplate from '@/wrappers/BaseTemplate';
+import MasterButton from '@/components/MasterButton';
 import { useRouter } from 'expo-router';
 import Sizes from '@/utils/Sizes';
+import Colors from '@/utils/Colors';
 
 const Loader = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { user, status, message } = useSelector((state) => state.userSlice);
 
   const [loaderMessage, setLoaderMessage] = useState('Loading you app!');
 
+  const goToLogin = () => {
+    router.replace('/auth/login');
+  };
+
+  const goToHome = () => {
+    router.replace('/screens/home');
+  };
+
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const token = await AsyncStorage.getItem('auth');
-        if (token) {
-          router.replace('/screens/home');
+    if (status === 'error') {
+      setLoaderMessage(message);
+    }
+
+    if (status === 'loading') {
+      setLoaderMessage('Loading The Page...!');
+    }
+
+    if (status === 'loaded') {
+      const checkLoginStatus = () => {
+        if (user.email && user.mobile) {
+          goToHome();
         } else {
-          router.replace('/auth/login');
+          goToLogin();
         }
-      } catch (error) {
-        if (error.message) {
-          setLoaderMessage(error.message);
-        } else {
-          setLoaderMessage('Something went wrong!, please reload app');
-        }
+      };
+
+      checkLoginStatus();
+    }
+  }, [user, status]);
+
+  useEffect(() => {
+    const authTokenCheck = async () => {
+      const userToken = await AsyncStorage.getItem('auth');
+
+      if (userToken !== null) {
+        dispatch(fetchUser(userToken));
+      } else {
+        goToLogin();
       }
     };
 
-    checkLoginStatus();
+    authTokenCheck();
   }, []);
 
   return (
     <BaseTemplate>
       <View style={styles.loaderView}>
+        <ActivityIndicator
+          animating={true}
+          size='large'
+          color={Colors.$green}
+        />
         <Text style={styles.loaderText}>{loaderMessage}</Text>
+        <MasterButton onPress={goToLogin} title='Login again' />
       </View>
     </BaseTemplate>
   );
@@ -50,7 +85,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   loaderText: {
-    fontSize: Sizes.$ieTitleFont,
+    fontSize: Sizes.$ieRegularFont,
+    color: Colors.$green,
     fontWeight: 'bold',
+    textAlign: 'center',
+    padding: Sizes.$ieLargePadding,
   },
 });

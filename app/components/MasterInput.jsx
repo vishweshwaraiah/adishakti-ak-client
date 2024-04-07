@@ -256,7 +256,7 @@ export default MasterInput;
 const styles = StyleSheet.create({
   container: {
     marginVertical: Sizes.$ieRegularMargin,
-    backgroundColor: Colors.$white,
+    backgroundColor: Colors.$light,
     paddingHorizontal: Sizes.$ieRegularPadding,
     alignSelf: 'center',
     maxHeight: Sizes.$ieMaxHeight,
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     lineHeight: Sizes.$ieSmallFont,
     paddingHorizontal: Sizes.$ieRegularPadding,
     paddingVertical: Sizes.$ieRegularPadding,
-    backgroundColor: Colors.$white,
+    backgroundColor: Colors.$light,
     borderRadius: 5,
     overflow: 'hidden',
     zIndex: 201,
