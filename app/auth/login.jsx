@@ -15,12 +15,13 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
-import { loginUser, clearToken } from '@/redux/slice/authData';
+import { loginUser, logoutUser } from '@/redux/slice/authData';
 import BaseTemplate from '@/wrappers/BaseTemplate';
 import MasterButton from '@/components/MasterButton';
 import MasterInput from '@/components/MasterInput';
 import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
+import MonoText from '@/components/MonoText';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -53,7 +54,7 @@ const AppLogin = () => {
     // make sure there's no previous user's data exists
     await AsyncStorage.removeItem('auth');
     await AsyncStorage.clear();
-    dispatch(clearToken());
+    dispatch(logoutUser());
 
     const user = {
       email: username,
@@ -96,7 +97,7 @@ const AppLogin = () => {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.loginBox}>
             <View style={styles.titleText}>
-              <Text style={styles.title}>Log in!</Text>
+              <MonoText style={styles.title}>Log in!</MonoText>
             </View>
             <Animated.View style={styles.topView}>
               <Image

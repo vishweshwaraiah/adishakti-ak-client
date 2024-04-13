@@ -10,6 +10,7 @@ const MasterButton = (props) => {
     title = '',
     marginTop,
     variant = 'primary',
+    textColor = Colors.$white,
     width = 'auto',
     shape = 'round',
     height = 'regular',
@@ -31,8 +32,6 @@ const MasterButton = (props) => {
 
     return defStyle;
   })();
-
-  const textColor = variant === 'light' ? Colors.$black : Colors.$white;
 
   const styles = StyleSheet.create({
     button: {

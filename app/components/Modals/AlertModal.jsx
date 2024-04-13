@@ -65,6 +65,7 @@ const AlertModal = (props) => {
               onPress={onCancel}
               title='Cancel'
               variant='light'
+              textColor='black'
             ></MasterButton>
             <MasterButton
               onPress={onSubmit}

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { ServerUri } from '@/utils/Globals';
 
@@ -42,15 +43,26 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  'logoutUser',
+  async (_, thunkAPI) => {
+    try {
+      await AsyncStorage.removeItem('auth');
+      await AsyncStorage.clear();
+      return true;
+    } catch (error) {
+      if (!err.response) {
+        throw err; // Rethrow non-response errors
+      }
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
 //State slice
 export const authData = createSlice({
   name: 'authData',
   initialState,
-  reducers: {
-    clearToken: (state) => {
-      state.token = null;
-    },
-  },
   extraReducers: (builder) => {
     // register a user
     builder.addCase(registerUser.fulfilled, (state, action) => {
@@ -77,9 +89,21 @@ export const authData = createSlice({
       state.status = 'error';
       state.message = action.payload?.message;
     });
+
+    // logout a user
+    builder.addCase(logoutUser.fulfilled, (state, action) => {
+      state.status = 'loaded';
+      state.token = null;
+    });
+    builder.addCase(logoutUser.pending, (state, action) => {
+      state.token = null;
+      state.status = 'loading';
+    });
+    builder.addCase(logoutUser.rejected, (state, action) => {
+      state.status = 'error';
+      state.message = action.payload?.message;
+    });
   },
 });
-
-export const { clearToken } = authData.actions;
 
 export default authData.reducer;

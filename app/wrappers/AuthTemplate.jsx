@@ -6,13 +6,12 @@ import {
   ImageBackground,
   View,
   Pressable,
-  NativeModules,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter, useNavigation } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '@/redux/slice/userData';
+import { logoutUser } from '@/redux/slice/authData';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import AlertModal from '@/components/Modals/AlertModal';
 import MasterStyles from '@/utils/MasterStyles';
@@ -32,12 +31,13 @@ const AuthTemplate = (props) => {
 
   const statusMessage = 'Are you sure to logout?';
 
-  const logoutUser = async () => {
-    await AsyncStorage.removeItem('auth');
-    await AsyncStorage.clear();
-    dispatch(clearUser());
+  const logoutCurrentUser = () => {
     setModalStatus('close');
-    NativeModules.DevSettings.reload();
+    setTimeout(() => {
+      dispatch(logoutUser());
+      dispatch(clearUser());
+      router.replace('/auth/login');
+    }, 1000);
   };
 
   const handleCancel = () => {
@@ -118,7 +118,7 @@ const AuthTemplate = (props) => {
       </ImageBackground>
       <AlertModal
         onCancel={handleCancel}
-        onSubmit={logoutUser}
+        onSubmit={logoutCurrentUser}
         modalStatus={modalStatus}
         statusMessage={statusMessage}
         onClose={handleCancel}

@@ -53,6 +53,7 @@ const UpdateModal = (props) => {
               onPress={onCancel}
               title={cancelText}
               variant='light'
+              textColor='black'
             ></MasterButton>
             <MasterButton
               onPress={onSubmit}

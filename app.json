@@ -30,6 +30,12 @@
         {
           "contactsPermission": "Allow $(PRODUCT_NAME) to access your contacts."
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": ["./app/assets/fonts/SpaceMono-Regular.ttf"]
+        }
       ]
     ]
   }

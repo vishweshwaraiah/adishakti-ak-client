@@ -145,6 +145,7 @@ const AddGroup = () => {
             onPress={handleCancel}
             title='Cancel'
             variant='light'
+            textColor='black'
           ></MasterButton>
           <MasterButton
             onPress={handleSubmit}

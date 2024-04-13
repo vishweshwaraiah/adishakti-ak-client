@@ -21,6 +21,7 @@ import { useRouter } from 'expo-router';
 import BaseTemplate from '@/wrappers/BaseTemplate';
 import { registerUser } from '@/redux/slice/authData';
 import { clearUser } from '@/redux/slice/userData';
+import MonoText from '@/components/MonoText';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -74,8 +75,7 @@ const AppRegister = () => {
       Alert.alert('Registration Failed', message);
     }
 
-    if (status === 'loaded' && message !== '') {
-      Alert.alert('Success!', message);
+    if (status === 'loaded') {
       clearInputs();
       dispatch(clearUser());
     }
@@ -101,7 +101,7 @@ const AppRegister = () => {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.registerBox}>
             <View style={styles.titleText}>
-              <Text style={styles.title}>Register!</Text>
+              <MonoText style={styles.title}>Register!</MonoText>
             </View>
             <Animated.View style={styles.topView}>
               <Image
