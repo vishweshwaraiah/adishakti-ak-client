@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { ServerUri } from '@/utils/Globals';
+import { ProdServerUri } from '@/utils/Globals';
 
 const initialState = {
   status: 'loading',
@@ -12,7 +12,7 @@ const initialState = {
 export const registerUser = createAsyncThunk(
   'registerUser',
   async (userData, thunkAPI) => {
-    const registerUrl = ServerUri + '/register';
+    const registerUrl = ProdServerUri + '/register';
 
     try {
       const response = await axios.post(registerUrl, userData);
@@ -29,7 +29,7 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   'loginUser',
   async (userData, thunkAPI) => {
-    const loginUrl = ServerUri + '/login';
+    const loginUrl = ProdServerUri + '/login';
 
     try {
       const response = await axios.post(loginUrl, userData);

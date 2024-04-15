@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ServerUri } from '@/utils/Globals';
+import { ProdServerUri } from '@/utils/Globals';
 
-axios.defaults.baseURL = ServerUri;
+axios.defaults.baseURL = ProdServerUri;
 
 export const useAxios = (axiosParams) => {
   const [response, setResponse] = useState(undefined);

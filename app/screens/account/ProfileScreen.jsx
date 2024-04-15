@@ -93,7 +93,11 @@ const ProfileScreen = () => {
   return (
     <AuthTemplate screenName='Edit Profile'>
       <ScrollView contentContainerStyle={styles.profileContainer}>
-        <MasterAvatar direction='column' uploadAble={true} />
+        <MasterAvatar
+          direction='column'
+          uploadAble={true}
+          textPosition='center'
+        />
         <View style={styles.bottomContainer}>
           <View style={styles.titleAction}>
             <Text>Personal Info</Text>

@@ -12,8 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import UploadModal from '@/components/Modals/UploadModal';
-import { ServerUri, trimmedText } from '@/utils/Globals';
-import { updateImage, deleteImage } from '@/redux/slice/userData';
+import { trimmedText } from '@/utils/Globals';
+import { updateImage, deleteImage, fetchImage } from '@/redux/slice/userData';
 import placeHolder from '@/assets/images/profile.jpg';
 import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
@@ -23,10 +23,11 @@ const MasterAvatar = (props) => {
     direction = 'column',
     onEditPress = () => {},
     uploadAble = false,
+    textPosition = 'center',
   } = props;
 
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.userSlice);
+  const { user, imageUri } = useSelector((state) => state.userSlice);
 
   const [imageSize, setImageSize] = useState(0);
   const [nameSize, setNameSize] = useState(0);
@@ -38,22 +39,24 @@ const MasterAvatar = (props) => {
   const [uploadModal, setUploadModal] = useState('close');
   const [afterUpload, setAfterUpload] = useState('initial');
   const [uploadStatus, setUploadStatus] = useState('');
-  const [imageUri, setImageUri] = useState('');
 
   const [userContent, setUserContent] = useState({});
 
   const deleteUserImage = () => {
-    const { email } = userContent;
+    const { email, profileImage } = userContent;
+
     const usrData = {
       email,
+      profileImage,
     };
 
     setAfterUpload('done');
-    if (email) {
+
+    if (email && profileImage) {
       dispatch(deleteImage(usrData));
-      setUploadStatus('Removed picture!');
+      setUploadStatus('Removed picture for user ' + email);
     } else {
-      setUploadStatus('Email ID is required!');
+      setUploadStatus('Both email and picture must be valid!');
     }
   };
 
@@ -147,12 +150,7 @@ const MasterAvatar = (props) => {
   useEffect(() => {
     setUserContent(user);
     const imagePath = user?.profileImage;
-    const imgUri = ServerUri + '/' + imagePath;
-    if (imagePath) {
-      setImageUri(imgUri);
-    } else {
-      setImageUri('');
-    }
+    dispatch(fetchImage(imagePath));
   }, [user]);
 
   const styles = StyleSheet.create({
@@ -200,14 +198,12 @@ const MasterAvatar = (props) => {
       fontSize: nameSize,
       fontWeight: 'bold',
       color: Colors.$white,
-      textAlign: 'center',
-      alignSelf: 'center',
+      alignSelf: textPosition,
     },
     emailText: {
       fontSize: emailSize,
       color: Colors.$orange,
-      textAlign: 'center',
-      alignSelf: 'center',
+      alignSelf: textPosition,
     },
   });
 

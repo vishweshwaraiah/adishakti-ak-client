@@ -15,7 +15,11 @@ const AccountScreen = () => {
   return (
     <AuthTemplate screenName='Account'>
       <View style={styles.profileBox}>
-        <MasterAvatar onEditPress={editProfile} direction='row' />
+        <MasterAvatar
+          onEditPress={editProfile}
+          direction='row'
+          textPosition='flex-start'
+        />
       </View>
       <ScrollView contentContainerStyle={styles.settingsRows}>
         <SettingsRow

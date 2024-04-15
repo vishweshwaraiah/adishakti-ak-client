@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import Sizes from '@/utils/Sizes';
+import OfferCard from '@/components/OfferCard';
 
 const HomeScreen = () => {
   return (
@@ -10,9 +11,7 @@ const HomeScreen = () => {
         <Text style={styles.sectionTitle}>Home</Text>
       </View>
       <View style={styles.homeContent}>
-        <Text style={styles.sectionTitle}>
-          Welcome to The Janagouda's World..!.
-        </Text>
+        <OfferCard />
       </View>
     </AuthTemplate>
   );

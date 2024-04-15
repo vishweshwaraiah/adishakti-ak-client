@@ -75,7 +75,7 @@ const AppLogin = () => {
   };
 
   useEffect(() => {
-    if (message !== '' && status === 'error') {
+    if (message && status === 'error') {
       Alert.alert('Login failed!', message);
     }
   }, [message, status]);

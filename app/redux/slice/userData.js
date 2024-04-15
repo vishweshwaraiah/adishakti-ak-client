@@ -1,17 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { ServerUri } from '@/utils/Globals';
+import { ProdServerUri } from '@/utils/Globals';
 
 const initialState = {
   status: 'loading',
   user: {},
   message: '',
+  imageUri: '',
 };
 
 export const deleteImage = createAsyncThunk(
   'deleteImage',
   async (usrData, thunkAPI) => {
-    const deleteImageUrl = ServerUri + '/delete_image/';
+    const deleteImageUrl = ProdServerUri + '/delete_image/';
 
     try {
       const response = await axios.put(deleteImageUrl, usrData);
@@ -28,7 +29,7 @@ export const deleteImage = createAsyncThunk(
 export const updateImage = createAsyncThunk(
   'updateImage',
   async (usrData, thunkAPI) => {
-    const uploadImageUrl = ServerUri + '/upload_image/';
+    const uploadImageUrl = ProdServerUri + '/upload_image/';
     const formData = new FormData();
 
     const { image, email } = usrData;
@@ -71,10 +72,27 @@ export const updateImage = createAsyncThunk(
   }
 );
 
+export const fetchImage = createAsyncThunk(
+  'fetchImage',
+  async (imageName, thunkAPI) => {
+    const fetchImageUrl = ProdServerUri + '/fetch_image/' + imageName;
+
+    try {
+      const response = await axios.get(fetchImageUrl);
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err; // Rethrow non-response errors
+      }
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const fetchUser = createAsyncThunk(
   'fetchUser',
   async (token, thunkAPI) => {
-    const fetchUserUrl = ServerUri + '/get_user/' + token;
+    const fetchUserUrl = ProdServerUri + '/get_user/' + token;
 
     try {
       const response = await axios.get(fetchUserUrl);
@@ -133,6 +151,19 @@ export const userData = createSlice({
       state.status = 'loading';
     });
     builder.addCase(deleteImage.rejected, (state, action) => {
+      state.status = 'error';
+      state.message = action.payload?.message;
+    });
+
+    // fetch user image
+    builder.addCase(fetchImage.fulfilled, (state, action) => {
+      state.status = 'loaded';
+      state.imageUri = action.payload;
+    });
+    builder.addCase(fetchImage.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(fetchImage.rejected, (state, action) => {
       state.status = 'error';
       state.message = action.payload?.message;
     });

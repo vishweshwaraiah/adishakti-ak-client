@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import axios from 'axios';
-import { ServerUri, ValidNumber } from '@/utils/Globals';
+import { ProdServerUri, ValidNumber } from '@/utils/Globals';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import MasterChats from '@/components/MasterChats';
 import AlertModal from '@/components/Modals/AlertModal';
@@ -67,7 +67,7 @@ const MessagesScreen = () => {
     //   message: textMessage,
     // };
     // axios
-    //   .post(ServerUri + '/message', data)
+    //   .post(ProdServerUri + '/message', data)
     //   .then((response) => {
     //     if (response.data) {
     //       setModalStatus('open');

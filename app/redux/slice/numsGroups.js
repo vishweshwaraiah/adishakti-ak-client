@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { ServerUri } from '@/utils/Globals';
+import { ProdServerUri } from '@/utils/Globals';
 
 const initialState = {
   status: 'loading',
@@ -10,14 +10,14 @@ const initialState = {
 };
 
 export const fetchNumsGroups = createAsyncThunk('fetchNumsGroups', async () => {
-  const response = await axios.get(ServerUri + '/fetchgroups');
+  const response = await axios.get(ProdServerUri + '/fetchgroups');
   return response.data;
 });
 
 export const addNumsGroups = createAsyncThunk(
   'addNumsGroups',
   async (groupData, thunkAPI) => {
-    const createUrl = `${ServerUri}/creategroup`;
+    const createUrl = `${ProdServerUri}/creategroup`;
 
     try {
       const response = await axios.post(createUrl, groupData);
@@ -34,7 +34,7 @@ export const addNumsGroups = createAsyncThunk(
 export const deleteNumsGroup = createAsyncThunk(
   'deleteNumsGroup',
   async (groupData) => {
-    const deleteUrl = `${ServerUri}/delete/${groupData.group_name}`;
+    const deleteUrl = `${ProdServerUri}/delete/${groupData.group_name}`;
     const response = await axios.delete(deleteUrl);
     return response.data;
   }
