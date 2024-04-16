@@ -123,10 +123,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     overflow: 'hidden',
+    borderRadius: Sizes.$ieRegularRadius,
     borderBottomWidth: 1,
     borderBottomColor: Colors.$white,
     height: Sizes.$ieRegularHeight,
     paddingHorizontal: Sizes.$ieExtraPadding,
+    marginBottom: Sizes.$ieSmallMargin,
   },
   groupItemText: {
     color: Colors.$white,

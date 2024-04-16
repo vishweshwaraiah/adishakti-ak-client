@@ -12,7 +12,7 @@ const initialState = {
 export const deleteImage = createAsyncThunk(
   'deleteImage',
   async (usrData, thunkAPI) => {
-    const deleteImageUrl = ProdServerUri + '/delete_image/';
+    const deleteImageUrl = ProdServerUri + '/delete_image';
 
     try {
       const response = await axios.put(deleteImageUrl, usrData);
@@ -29,10 +29,16 @@ export const deleteImage = createAsyncThunk(
 export const updateImage = createAsyncThunk(
   'updateImage',
   async (usrData, thunkAPI) => {
-    const uploadImageUrl = ProdServerUri + '/upload_image/';
+    const uploadImageUrl = ProdServerUri + '/upload_image';
     const formData = new FormData();
 
-    const { image, email } = usrData;
+    const { image, email, profileImage } = usrData;
+
+    if (!image || !email) {
+      return thunkAPI.rejectWithValue({
+        message: 'Both email and file are required!',
+      });
+    }
 
     formData.append('avatar', {
       name: '_avatar',
@@ -41,6 +47,7 @@ export const updateImage = createAsyncThunk(
     });
 
     formData.append('email', email);
+    formData.append('currentImage', profileImage);
 
     const updateProgress = (progress) => {
       console.log(`Upload progress: ${progress}%`);
@@ -67,6 +74,7 @@ export const updateImage = createAsyncThunk(
       if (!err.response) {
         throw err; // Rethrow non-response errors
       }
+
       return thunkAPI.rejectWithValue(err.response.data);
     }
   }
@@ -75,6 +83,8 @@ export const updateImage = createAsyncThunk(
 export const fetchImage = createAsyncThunk(
   'fetchImage',
   async (imageName, thunkAPI) => {
+    if (!imageName) return false;
+
     const fetchImageUrl = ProdServerUri + '/fetch_image/' + imageName;
 
     try {

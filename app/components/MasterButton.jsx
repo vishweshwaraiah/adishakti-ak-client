@@ -16,7 +16,7 @@ const MasterButton = (props) => {
     height = 'regular',
   } = props;
 
-  const customStyles = (() => {
+  const customStyles = () => {
     const defStyle = {};
 
     if (width) defStyle.width = width;
@@ -31,7 +31,7 @@ const MasterButton = (props) => {
     }
 
     return defStyle;
-  })();
+  };
 
   const styles = StyleSheet.create({
     button: {
@@ -82,7 +82,7 @@ const MasterButton = (props) => {
 
   return (
     <TouchableOpacity
-      style={[styles.button, styles[variant], customStyles]}
+      style={[styles.button, styles[variant], customStyles()]}
       onPress={onPress}
     >
       {title && <Text style={styles.text}>{title}</Text>}

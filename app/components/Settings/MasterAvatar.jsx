@@ -27,7 +27,7 @@ const MasterAvatar = (props) => {
   } = props;
 
   const dispatch = useDispatch();
-  const { user, imageUri } = useSelector((state) => state.userSlice);
+  const { user, imageUri, message } = useSelector((state) => state.userSlice);
 
   const [imageSize, setImageSize] = useState(0);
   const [nameSize, setNameSize] = useState(0);
@@ -61,10 +61,12 @@ const MasterAvatar = (props) => {
   };
 
   const saveImage = async (image) => {
-    const { email } = userContent;
+    const { email, profileImage } = userContent;
+
     const usrData = {
       image,
       email,
+      profileImage,
     };
     if (email) {
       dispatch(updateImage(usrData));
@@ -148,9 +150,11 @@ const MasterAvatar = (props) => {
   }, [direction]);
 
   useEffect(() => {
-    setUserContent(user);
-    const imagePath = user?.profileImage;
-    dispatch(fetchImage(imagePath));
+    if (user) {
+      setUserContent(user);
+      const imagePath = user?.profileImage;
+      dispatch(fetchImage(imagePath));
+    }
   }, [user]);
 
   const styles = StyleSheet.create({
@@ -231,6 +235,7 @@ const MasterAvatar = (props) => {
           {trimmedText(userContent?.email, 20)}
         </Text>
       </View>
+      {message && <Text>{message}</Text>}
       <UploadModal
         handleCamera={onCameraOpen}
         handleGallery={onGalleryOpen}

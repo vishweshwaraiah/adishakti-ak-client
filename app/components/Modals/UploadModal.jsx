@@ -57,6 +57,7 @@ const UploadModal = (props) => {
               onPress={onClose}
               title='Close'
               variant='light'
+              textColor='black'
             ></MasterButton>
           </View>
         ) : (
@@ -66,6 +67,7 @@ const UploadModal = (props) => {
               <MasterButton
                 onPress={handleCamera}
                 variant='light'
+                textColor='black'
                 height='xlarge'
               >
                 {getIcon('Ionicons', 'camera')}
@@ -74,6 +76,7 @@ const UploadModal = (props) => {
               <MasterButton
                 onPress={handleGallery}
                 variant='light'
+                textColor='black'
                 height='xlarge'
               >
                 {getIcon('Ionicons', 'images')}
@@ -82,6 +85,7 @@ const UploadModal = (props) => {
               <MasterButton
                 onPress={handleRemove}
                 variant='light'
+                textColor='black'
                 height='xlarge'
               >
                 {getIcon('Ionicons', 'trash')}

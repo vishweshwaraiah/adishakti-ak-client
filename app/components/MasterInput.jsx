@@ -15,6 +15,8 @@ import {
   MaterialIcons,
   FontAwesome,
   Feather,
+  Entypo,
+  Ionicons,
 } from '@expo/vector-icons';
 import MasterStyles from '@/utils/MasterStyles';
 
@@ -51,6 +53,11 @@ const MasterInput = (props) => {
   const moveText = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    if (value === '' || value === undefined) {
+      animateText(0);
+    } else {
+      animateText(1);
+    }
     setInputValue(value);
   }, [value]);
 
@@ -163,7 +170,7 @@ const MasterInput = (props) => {
   const animateText = (to) => {
     let toValue = to;
     if (to !== 0) {
-      toValue = 1.8;
+      toValue = 2;
     }
     Animated.timing(moveText, {
       toValue,
@@ -192,6 +199,10 @@ const MasterInput = (props) => {
       return <AntDesign name={startIcon} size={20} color='#000' />;
     } else if (iconFamily === 'FontAwesome') {
       return <FontAwesome name={startIcon} size={20} color='#000' />;
+    } else if (iconFamily === 'Entypo') {
+      return <Entypo name={startIcon} size={20} color='#000' />;
+    } else if (iconFamily === 'Ionicons') {
+      return <Ionicons name={startIcon} size={20} color='#000' />;
     } else {
       return <MaterialIcons name={startIcon} size={20} color='#000' />;
     }

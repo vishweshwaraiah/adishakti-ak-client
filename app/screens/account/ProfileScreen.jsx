@@ -23,8 +23,9 @@ const ProfileScreen = () => {
   const [userArray, setUserArray] = useState([]);
 
   const openModal = () => {
-    setStatusMessage('This feature is not fully enabled yet');
+    setStatusMessage('Update is done!');
     setUpdateModal('open');
+    setAfterAction('initial');
   };
 
   const handleCancel = () => {
@@ -32,6 +33,7 @@ const ProfileScreen = () => {
   };
 
   const handleSubmit = () => {
+    setAfterAction('done');
     // on submit logic goes here
   };
 

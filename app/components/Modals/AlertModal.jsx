@@ -43,7 +43,7 @@ const AlertModal = (props) => {
 
   return (
     <MasterModal
-      bodyHeight={250}
+      bodyHeight={260}
       bodyWidth='70%'
       bgColor={Colors.$modalBodyBg}
       status={modalOpen}
@@ -58,6 +58,7 @@ const AlertModal = (props) => {
             onPress={onClose}
             title='Close'
             variant='light'
+            textColor='black'
           ></MasterButton>
         ) : (
           <View style={styles.groupActions}>
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 10,
+    gap: 5,
   },
   groupActions: {
     flexDirection: 'row',

@@ -2,13 +2,13 @@ import Constants from 'expo-constants';
 import { phoneRegex, clearRegex } from '@/utils/AppConstants';
 
 // server url for production api endpoints
-// export const ProdServerUri = 'http://13.126.248.37/api';
+export const ProdServerUri = 'http://13.126.248.37/api';
 
 // server url for local api endpoints
-export const ProdServerUri = Constants?.expoConfig?.hostUri
-  ? 'http://' +
-    Constants.expoConfig.hostUri.split(`:`).shift().concat(`:8000/api`)
-  : 'http://localhost:8000/api';
+// export const ProdServerUri = Constants?.expoConfig?.hostUri
+//   ? 'http://' +
+//     Constants.expoConfig.hostUri.split(`:`).shift().concat(`:8000/api`)
+//   : 'http://localhost:8000/api';
 
 export const ValidNumber = (num) => {
   const clearNum = num.replace(clearRegex, '');

@@ -57,12 +57,23 @@ const AuthTemplate = (props) => {
     }
   };
 
+  const goHome = () => {
+    router.replace('/');
+  };
+
   const leftHeaderNode = () => (
     <View style={styles.headerView}>
       {lastScreen ? (
-        <View style={MasterStyles.actionBtn}>
+        <Pressable
+          style={({ pressed }) => [
+            MasterStyles.actionBtn,
+            pressed && styles.pressedBtn,
+          ]}
+          onPress={goHome}
+          variant='trans'
+        >
           <Ionicons name='home' size={20} color='black' />
-        </View>
+        </Pressable>
       ) : (
         <Pressable
           style={({ pressed }) => [

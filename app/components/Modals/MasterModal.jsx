@@ -127,7 +127,7 @@ const MasterModal = (props) => {
       position: 'relative',
       paddingBottom: Sizes.$ieExtraPadding,
       width: '100%',
-      height: '90%',
+      height: modalTitle ? '90%' : '100%',
     },
   });
 
@@ -137,7 +137,9 @@ const MasterModal = (props) => {
         <View style={styles.centeredBackground}>
           <Animated.View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{modalTitle}</Text>
+              {modalTitle && (
+                <Text style={styles.modalTitle}>{modalTitle}</Text>
+              )}
               <TouchableOpacity
                 style={styles.modalClose}
                 onPress={() => handleClose()}
