@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import { ProdServerUri } from '@/utils/Globals';
+import AxiosInstance from '@/utils/AxiosInstance';
 
 const initialState = {
   status: 'loading',
@@ -15,7 +15,7 @@ export const registerUser = createAsyncThunk(
     const registerUrl = ProdServerUri + '/register';
 
     try {
-      const response = await axios.post(registerUrl, userData);
+      const response = await AxiosInstance.post(registerUrl, userData);
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -32,7 +32,7 @@ export const loginUser = createAsyncThunk(
     const loginUrl = ProdServerUri + '/login';
 
     try {
-      const response = await axios.post(loginUrl, userData);
+      const response = await AxiosInstance.post(loginUrl, userData);
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -63,14 +63,22 @@ export const logoutUser = createAsyncThunk(
 export const authData = createSlice({
   name: 'authData',
   initialState,
+  reducers: {
+    resetState: (state) => {
+      state.status = 'loading';
+      state.token = null;
+      state.message = '';
+    },
+  },
   extraReducers: (builder) => {
     // register a user
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      state.status = 'loaded';
-      state.message = action.payload.message;
+      state.status = 'registered';
+      state.message =
+        action.payload.message + ' for id ' + action.payload.userEmail;
     });
     builder.addCase(registerUser.pending, (state) => {
-      state.status = 'loading';
+      state.status = 'registering';
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.status = 'error';
@@ -79,7 +87,7 @@ export const authData = createSlice({
 
     // login a user
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.status = 'loaded';
+      state.status = 'loggedin';
       state.token = action.payload.token;
     });
     builder.addCase(loginUser.pending, (state, action) => {
@@ -92,7 +100,7 @@ export const authData = createSlice({
 
     // logout a user
     builder.addCase(logoutUser.fulfilled, (state, action) => {
-      state.status = 'loaded';
+      state.status = 'loggedout';
       state.token = null;
     });
     builder.addCase(logoutUser.pending, (state, action) => {
@@ -105,5 +113,7 @@ export const authData = createSlice({
     });
   },
 });
+
+export const { resetState } = authData.actions;
 
 export default authData.reducer;

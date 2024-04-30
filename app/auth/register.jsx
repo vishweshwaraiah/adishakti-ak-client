@@ -19,9 +19,11 @@ import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
 import { useRouter } from 'expo-router';
 import BaseTemplate from '@/wrappers/BaseTemplate';
-import { registerUser } from '@/redux/slice/authData';
+import { registerUser, resetState } from '@/redux/slice/authData';
 import { clearUser } from '@/redux/slice/userData';
 import MonoText from '@/components/MonoText';
+import AlertModal from '@/components/Modals/AlertModal';
+import { ValidEmail, ValidNumber, ValidPassword } from '@/utils/Globals';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -30,17 +32,21 @@ const AppRegister = () => {
   const { status, message } = useSelector((state) => state.authSlice);
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState(false);
-  const [mobileError, setMobileError] = useState(false);
-  const [pwdError, setPwdError] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [userMobile, setUserMobile] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [mobileError, setMobileError] = useState('');
+  const [pwdError, setPwdError] = useState('');
+
+  const [modalStatus, setModalStatus] = useState('close');
+  const [statusMessage, setStatusMessage] = useState('');
+  const [afterAction, setAfterAction] = useState('loading');
 
   const clearInputs = () => {
-    setEmail('');
-    setMobile('');
-    setPassword('');
+    setUserEmail('');
+    setUserMobile('');
+    setUserPassword('');
   };
 
   const blurHandler = (name, error) => {
@@ -51,16 +57,16 @@ const AppRegister = () => {
 
   const handleRegister = () => {
     const user = {
-      email,
-      mobile,
-      password,
+      userEmail: userEmail,
+      userMobile: userMobile,
+      userPassword: userPassword,
     };
 
-    if (!email) setEmailError(true);
-    if (!mobile) setMobileError(true);
-    if (!password) setPwdError(true);
+    if (!userEmail) setEmailError('Email is required!');
+    if (!userMobile) setMobileError('Mobile is required!');
+    if (!userPassword) setPwdError('Password is required!');
 
-    const noData = !email || !mobile || !password;
+    const noData = !userEmail || !userMobile || !userPassword;
     const hasErrs = emailError || mobileError || pwdError;
 
     if (noData || hasErrs) {
@@ -70,28 +76,89 @@ const AppRegister = () => {
     dispatch(registerUser(user));
   };
 
+  const handleCancel = () => {
+    router.navigate('/auth/login');
+    setModalStatus('close');
+    setTimeout(() => {
+      setAfterAction('initial');
+    }, 500);
+  };
+
+  const handleSubmit = () => {
+    // after registration completed successfully
+  };
+
   useEffect(() => {
-    if (status === 'error' && message !== '') {
+    if (status === 'error') {
       Alert.alert('Registration Failed', message);
+      setTimeout(() => dispatch(resetState()), 500);
     }
 
-    if (status === 'loaded') {
+    if (status === 'registering') {
+      setStatusMessage('Registration in progress!');
+      setAfterAction('loading');
+      setModalStatus('open');
+    }
+
+    if (status === 'registered') {
+      setStatusMessage('Registration Success!');
+      setAfterAction('done');
+      setModalStatus('open');
+
+      setTimeout(() => {
+        dispatch(resetState());
+        dispatch(clearUser());
+      }, 500);
+
       clearInputs();
-      dispatch(clearUser());
     }
   }, [status, message]);
 
+  useEffect(() => {
+    const indNumber = '+91' + userMobile;
+    const validNum = ValidNumber(indNumber);
+
+    if (userMobile && !validNum) {
+      setMobileError('Invalid Mobile number!');
+    } else {
+      setMobileError('');
+    }
+  }, [userMobile]);
+
+  useEffect(() => {
+    const validEmail = ValidEmail(userEmail);
+
+    if (userEmail && !validEmail) {
+      setEmailError('Invalid Email ID!');
+    } else {
+      setEmailError('');
+    }
+  }, [userEmail]);
+
+  useEffect(() => {
+    const validPassword = ValidPassword(userPassword);
+
+    if (userPassword && !validPassword) {
+      setPwdError('Invalid Password!');
+    } else {
+      setPwdError('');
+    }
+  }, [userPassword]);
+
   const getValue = (obj) => {
     if (obj.name === 'email') {
-      setEmail(obj.value);
+      setUserEmail(obj.value);
+      setEmailError('');
     }
 
     if (obj.name === 'mobile') {
-      setMobile(obj.value);
+      setUserMobile(obj.value);
+      setMobileError('');
     }
 
     if (obj.name === 'password') {
-      setPassword(obj.value);
+      setUserPassword(obj.value);
+      setPwdError('');
     }
   };
 
@@ -100,15 +167,15 @@ const AppRegister = () => {
       <KeyboardAvoidingView behavior='position' style={styles.container}>
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.registerBox}>
-            <View style={styles.titleText}>
-              <MonoText style={styles.title}>Register!</MonoText>
-            </View>
             <Animated.View style={styles.topView}>
               <Image
                 style={styles.brandImage}
                 source={require('@/assets/images/logo.png')}
               ></Image>
             </Animated.View>
+            <View style={styles.titleText}>
+              <MonoText style={styles.title}>Register!</MonoText>
+            </View>
             <View style={styles.bottomView}>
               <MasterInput
                 inputLabel='Email'
@@ -118,9 +185,10 @@ const AppRegister = () => {
                 startIcon='email'
                 name='email'
                 type='email'
-                value={email}
+                value={userEmail}
                 error={emailError}
                 rounded={true}
+                required={true}
                 size='large'
               />
               <MasterInput
@@ -131,10 +199,11 @@ const AppRegister = () => {
                 onBlur={blurHandler}
                 startIcon='phone'
                 name='mobile'
-                value={mobile}
+                value={userMobile}
                 iconFamily='FontAwesome'
                 error={mobileError}
                 rounded={true}
+                required={true}
                 size='large'
               />
               <MasterInput
@@ -145,9 +214,10 @@ const AppRegister = () => {
                 onBlur={blurHandler}
                 startIcon='password'
                 name='password'
-                value={password}
+                value={userPassword}
                 error={pwdError}
                 rounded={true}
+                required={true}
                 size='large'
               />
 
@@ -170,6 +240,18 @@ const AppRegister = () => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
+      <AlertModal
+        onCancel={handleCancel}
+        onSubmit={handleSubmit}
+        modalStatus={modalStatus}
+        statusMessage={statusMessage}
+        onClose={handleCancel}
+        closeTitle='Login'
+        alertIcon='check-circle'
+        iconFamily='Feather'
+        afterAction={afterAction}
+        isClosable={false}
+      />
     </BaseTemplate>
   );
 };
@@ -179,10 +261,10 @@ export default AppRegister;
 const styles = StyleSheet.create({
   registerBox: {
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     width: screenWidth,
     height: '100%',
-    gap: 0,
+    gap: Sizes.$ieFlexGapXLarge,
   },
   topView: {
     justifyContent: 'center',

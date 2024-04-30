@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   contactsList: {
-    height: '80%',
+    flex: 1,
     paddingHorizontal: Sizes.$ieRegularPadding,
   },
   selectionText: {

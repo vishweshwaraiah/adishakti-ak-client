@@ -17,7 +17,7 @@ const Loader = () => {
   const { user, status, message } = useSelector((state) => state.userSlice);
 
   const [loaderMessage, setLoaderMessage] = useState('Loading you app!');
-  const [actionTitle, setActionTitle] = useState('');
+  const [actionTitle, setActionTitle] = useState('Retry');
   const [appStatus, setAppStatus] = useState('connected');
 
   const goToLogin = () => {
@@ -25,15 +25,15 @@ const Loader = () => {
   };
 
   const goToHome = () => {
-    router.replace('/screens/home');
+    router.replace('/main_views/home');
   };
 
   const handleBtnAction = () => {
     if (appStatus === 'connected') {
       goToLogin();
     } else {
-      loadApp();
       setLoaderMessage('Turn on internet please!');
+      setTimeout(() => loadApp(), 500);
     }
   };
 
@@ -43,12 +43,12 @@ const Loader = () => {
     }
 
     if (status === 'loading') {
-      setLoaderMessage('Loading The Page...!');
+      setLoaderMessage('Loading the page...!');
     }
 
     if (status === 'loaded') {
       const checkLoginStatus = () => {
-        if (user.email && user.mobile) {
+        if (user.userEmail && user.userMobile) {
           goToHome();
         } else {
           goToLogin();

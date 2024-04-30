@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Text, StyleSheet } from 'react-native';
-import axios from 'axios';
-import { ProdServerUri, ValidNumber } from '@/utils/Globals';
+import { StyleSheet } from 'react-native';
+import { ValidNumber } from '@/utils/Globals';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import MasterChats from '@/components/MasterChats';
 import AlertModal from '@/components/Modals/AlertModal';

@@ -10,17 +10,28 @@
     "platforms": ["ios", "android", "web"],
     "splash": {
       "image": "./app/assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#dddddd"
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSContactsUsageDescription": "Allow $(PRODUCT_NAME) to access your contacts."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/adaptive-icon.png",
         "backgroundColor": "#dddddd"
+      },
+      "permissions": [
+        "android.permission.READ_CONTACTS",
+        "android.permission.WRITE_CONTACTS"
+      ],
+      "package": "com.mastervish.adishaktikkmr",
+      "splash": {
+        "backgroundColor": "#ffffff"
       }
     },
     "plugins": [
@@ -37,6 +48,14 @@
           "fonts": ["./app/assets/fonts/SpaceMono-Regular.ttf"]
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b84589a8-3f85-4192-a256-4f7c460d30fa"
+      }
+    }
   }
 }

@@ -8,7 +8,7 @@ const AuthLayout = () => {
     <Provider store={store}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name='auth' />
-        <Stack.Screen name='screens' />
+        <Stack.Screen name='main_views' />
       </Stack>
     </Provider>
   );

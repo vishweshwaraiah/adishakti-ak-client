@@ -43,32 +43,32 @@ const MasterAvatar = (props) => {
   const [userContent, setUserContent] = useState({});
 
   const deleteUserImage = () => {
-    const { email, profileImage } = userContent;
+    const { userEmail, profileImage } = userContent;
 
     const usrData = {
-      email,
+      userEmail,
       profileImage,
     };
 
     setAfterUpload('done');
 
-    if (email && profileImage) {
+    if (userEmail && profileImage) {
       dispatch(deleteImage(usrData));
-      setUploadStatus('Removed picture for user ' + email);
+      setUploadStatus('Removed picture for user ' + userEmail);
     } else {
       setUploadStatus('Both email and picture must be valid!');
     }
   };
 
   const saveImage = async (image) => {
-    const { email, profileImage } = userContent;
+    const { userEmail, profileImage } = userContent;
 
     const usrData = {
       image,
-      email,
+      userEmail,
       profileImage,
     };
-    if (email) {
+    if (userEmail) {
       dispatch(updateImage(usrData));
       setUploadStatus('Sucessfully uploaded!');
       setAfterUpload('done');
@@ -161,7 +161,7 @@ const MasterAvatar = (props) => {
     avatarContainer: {
       flexDirection: direction,
       borderRadius: Sizes.$ieLargeRadius,
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       alignItems: 'center',
       width: '100%',
       paddingHorizontal: padx,
@@ -230,9 +230,11 @@ const MasterAvatar = (props) => {
         </TouchableOpacity>
       </View>
       <View style={styles.userDetails}>
-        <Text style={styles.nameText}>{userContent?.name}</Text>
+        {userContent?.name && (
+          <Text style={styles.nameText}>{userContent.name}</Text>
+        )}
         <Text style={styles.emailText}>
-          {trimmedText(userContent?.email, 20)}
+          {trimmedText(userContent?.userEmail, 20)}
         </Text>
       </View>
       {message && <Text>{message}</Text>}

@@ -22,6 +22,7 @@ const MasterModal = (props) => {
     status = 'close',
     setStatus = () => {},
     onClose = () => {},
+    isClosable = true,
   } = props;
 
   const [visibility, setVisibility] = useState('close');
@@ -67,27 +68,6 @@ const MasterModal = (props) => {
   }, [visibility]);
 
   const styles = StyleSheet.create({
-    modalBox: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    button: {
-      elevation: 2,
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      padding: Sizes.$ieRegularPadding,
-      backgroundColor: Colors.$primary,
-      overflow: 'hidden',
-    },
-    textStyle: {
-      color: Colors.$white,
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-    modalText: {
-      marginBottom: 15,
-      textAlign: 'center',
-    },
     centeredBackground: {
       flex: 1,
       justifyContent: 'center',
@@ -95,10 +75,10 @@ const MasterModal = (props) => {
       backgroundColor: Colors.$modalBackground,
     },
     modalContainer: {
-      width: bodyWidth || '80%',
       backgroundColor: bgColor,
       borderRadius: Sizes.$ieLargeRadius,
-      height: bodyHeight || '50%',
+      minHeight: bodyHeight || '50%',
+      width: bodyWidth || '80%',
       transform: [{ scale: scaleValue }],
       ...MasterStyles.commonShadow,
     },
@@ -124,34 +104,49 @@ const MasterModal = (props) => {
       zIndex: 201,
     },
     modalBody: {
+      flex: 1,
       position: 'relative',
       paddingBottom: Sizes.$ieExtraPadding,
       width: '100%',
-      height: modalTitle ? '90%' : '100%',
+    },
+    button: {
+      elevation: 2,
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      padding: Sizes.$ieRegularPadding,
+      backgroundColor: Colors.$primary,
+      overflow: 'hidden',
+    },
+    textStyle: {
+      color: Colors.$white,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: 'center',
     },
   });
 
   return (
-    <View style={styles.modalBox}>
-      <Modal transparent={true} visible={isOpen}>
-        <View style={styles.centeredBackground}>
-          <Animated.View style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              {modalTitle && (
-                <Text style={styles.modalTitle}>{modalTitle}</Text>
-              )}
+    <Modal transparent={true} visible={isOpen}>
+      <View style={styles.centeredBackground}>
+        <Animated.View style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            {modalTitle && <Text style={styles.modalTitle}>{modalTitle}</Text>}
+            {isClosable && (
               <TouchableOpacity
                 style={styles.modalClose}
                 onPress={() => handleClose()}
               >
                 <Ionicons name='close-circle' size={24} color='black' />
               </TouchableOpacity>
-            </View>
-            <View style={styles.modalBody}>{children}</View>
-          </Animated.View>
-        </View>
-      </Modal>
-    </View>
+            )}
+          </View>
+          <View style={styles.modalBody}>{children}</View>
+        </Animated.View>
+      </View>
+    </Modal>
   );
 };
 

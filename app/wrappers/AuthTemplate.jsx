@@ -7,7 +7,7 @@ import {
   View,
   Pressable,
 } from 'react-native';
-import { useRouter, useNavigation } from 'expo-router';
+import { useRouter, useNavigation, usePathname } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '@/redux/slice/userData';
@@ -16,8 +16,10 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import AlertModal from '@/components/Modals/AlertModal';
 import MasterStyles from '@/utils/MasterStyles';
 import Colors from '@/utils/Colors';
+import Sizes from '@/utils/Sizes';
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 const AuthTemplate = (props) => {
   const { children, screenName = '', rightHeader = null } = props;
@@ -25,6 +27,7 @@ const AuthTemplate = (props) => {
 
   const router = useRouter();
   const navigation = useNavigation();
+  const pathname = usePathname();
 
   const [lastScreen, setLastScreen] = useState(false);
   const [modalStatus, setModalStatus] = useState('close');
@@ -58,7 +61,10 @@ const AuthTemplate = (props) => {
   };
 
   const goHome = () => {
-    router.replace('/');
+    const homePath = '/main_views/home/HomeScreen';
+    if (pathname !== homePath) {
+      router.replace(homePath);
+    }
   };
 
   const leftHeaderNode = () => (
@@ -117,6 +123,43 @@ const AuthTemplate = (props) => {
     if (!x) setLastScreen(true);
   }, []);
 
+  const availableScreenHeight = screenHeight - Sizes.$ieMenuSpace;
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      maxHeight: '100%',
+      width: '100%',
+    },
+    loginImage: {
+      borderRadius: 25,
+    },
+    imageBackground: {
+      opacity: 0.25,
+    },
+    safeArea: {
+      position: 'relative',
+      width: screenWidth,
+      height: availableScreenHeight,
+    },
+    pressedBtn: {
+      opacity: 0.5,
+    },
+    headerView: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+    },
+    headerImage: {
+      width: 30,
+      height: 30,
+      borderRadius: 15,
+      resizeMode: 'cover',
+    },
+  });
+
   return (
     <LinearGradient colors={Colors.$gradientsArray} style={styles.container}>
       <ImageBackground
@@ -127,6 +170,7 @@ const AuthTemplate = (props) => {
       >
         <SafeAreaView style={styles.safeArea}>{children}</SafeAreaView>
       </ImageBackground>
+
       <AlertModal
         onCancel={handleCancel}
         onSubmit={logoutCurrentUser}
@@ -138,40 +182,5 @@ const AuthTemplate = (props) => {
     </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    maxHeight: '100%',
-    width: '100%',
-  },
-  loginImage: {
-    borderRadius: 25,
-  },
-  imageBackground: {
-    opacity: 0.25,
-  },
-  safeArea: {
-    position: 'relative',
-    width: screenWidth,
-    height: '100%',
-  },
-  pressedBtn: {
-    opacity: 0.5,
-  },
-  headerView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  headerImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    resizeMode: 'cover',
-  },
-});
 
 export default AuthTemplate;

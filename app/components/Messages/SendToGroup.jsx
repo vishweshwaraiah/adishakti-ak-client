@@ -66,7 +66,7 @@ const SendToGroup = (props) => {
             />
           ) : (
             <Text style={styles.infoText}>
-              No groups found!. Add one from Mange groups page.
+              No groups found! Add from settings page.
             </Text>
           )}
         </View>

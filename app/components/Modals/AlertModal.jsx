@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import MasterModal from '@/components/Modals/MasterModal';
 import MasterButton from '@/components/MasterButton';
-import { Ionicons, Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
+import {
+  Ionicons,
+  Entypo,
+  FontAwesome,
+  AntDesign,
+  Feather,
+} from '@expo/vector-icons';
 import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
 
@@ -13,9 +19,11 @@ const AlertModal = (props) => {
     modalStatus = 'close',
     afterAction = 'initial',
     onClose = () => {},
+    closeTitle = 'Close',
     statusMessage = 'Success!',
     alertIcon = 'warning',
     iconFamily,
+    isClosable = true,
   } = props;
 
   const [modalOpen, setModalOpen] = useState('close');
@@ -36,45 +44,77 @@ const AlertModal = (props) => {
         return <Entypo name={alertIcon} size={72} color='black' />;
       case 'AntDesign':
         return <AntDesign name={alertIcon} size={72} color='black' />;
+      case 'Feather':
+        return <Feather name={alertIcon} size={72} color='black' />;
       default:
         return <FontAwesome name={alertIcon} size={72} color='black' />;
     }
   };
 
+  const initialView = () => {
+    return (
+      <View style={styles.subView}>
+        {getIcon()}
+        <Text style={styles.actionText}>{statusMessage}</Text>
+        <View style={styles.groupActions}>
+          <MasterButton
+            onPress={onCancel}
+            title='Cancel'
+            variant='light'
+            textColor='black'
+          ></MasterButton>
+          <MasterButton
+            onPress={onSubmit}
+            title='Yes'
+            variant='success'
+          ></MasterButton>
+        </View>
+      </View>
+    );
+  };
+
+  const doneView = () => {
+    return (
+      <View style={styles.subView}>
+        {getIcon()}
+        <Text style={styles.actionText}>{statusMessage}</Text>
+        <MasterButton
+          onPress={onClose}
+          title={closeTitle}
+          variant='light'
+          textColor='black'
+        ></MasterButton>
+      </View>
+    );
+  };
+
+  const loadingView = () => {
+    return (
+      <View style={styles.subView}>
+        <ActivityIndicator
+          animating={true}
+          size='large'
+          color={Colors.$green}
+        />
+        <Text style={styles.actionText}>{statusMessage}</Text>
+      </View>
+    );
+  };
+
   return (
     <MasterModal
-      bodyHeight={260}
+      bodyHeight={280}
       bodyWidth='70%'
       bgColor={Colors.$modalBodyBg}
       status={modalOpen}
       setStatus={setModalOpen}
       onClose={onClose}
+      isClosable={isClosable}
     >
       <View style={styles.bodyContent}>
-        {getIcon()}
-        <Text style={styles.actionText}>{statusMessage}</Text>
-        {afterAction === 'error' || afterAction === 'done' ? (
-          <MasterButton
-            onPress={onClose}
-            title='Close'
-            variant='light'
-            textColor='black'
-          ></MasterButton>
-        ) : (
-          <View style={styles.groupActions}>
-            <MasterButton
-              onPress={onCancel}
-              title='Cancel'
-              variant='light'
-              textColor='black'
-            ></MasterButton>
-            <MasterButton
-              onPress={onSubmit}
-              title='Yes'
-              variant='success'
-            ></MasterButton>
-          </View>
-        )}
+        {(afterAction === 'error' || afterAction === 'done') && doneView()}
+        {afterAction === 'initial' && initialView()}
+        {afterAction === 'loading' && loadingView()}
       </View>
     </MasterModal>
   );
@@ -88,6 +128,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 5,
+  },
+  subView: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   groupActions: {
     flexDirection: 'row',

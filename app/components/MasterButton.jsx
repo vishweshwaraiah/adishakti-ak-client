@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
+import MasterStyles from '@/utils/MasterStyles';
 
 const MasterButton = (props) => {
   const {
@@ -43,6 +44,7 @@ const MasterButton = (props) => {
       height: Sizes.$ieRegularHeight,
       maxHeight: Sizes.$btnDimension,
       minWidth: Sizes.$btnDimension,
+      ...MasterStyles.commonShadow,
     },
     text: {
       fontSize: Sizes.$ieRegularFont,

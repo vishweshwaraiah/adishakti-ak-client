@@ -9,7 +9,7 @@ import MasterAvatar from '@/components/Settings/MasterAvatar';
 
 const AccountScreen = () => {
   const editProfile = () => {
-    router.navigate('screens/account/ProfileScreen');
+    router.navigate('sub_views/account/ProfileScreen');
   };
 
   return (
@@ -25,7 +25,7 @@ const AccountScreen = () => {
         <SettingsRow
           rowTitle='Manage Groups'
           subTitle='View, add, update and delete groups'
-          routePath='screens/account/GroupsScreen'
+          routePath='sub_views/account/GroupsScreen'
           startIcon='users'
           iconFamily='Entypo'
           brType='all-side'
@@ -33,7 +33,7 @@ const AccountScreen = () => {
         <SettingsRow
           rowTitle='View Contacts'
           subTitle='Browse, search and view contacts'
-          routePath='screens/account/ContactsScreen'
+          routePath='sub_views/account/ContactsScreen'
           startIcon='contacts'
           iconFamily='AntDesign'
           brType='all-side'

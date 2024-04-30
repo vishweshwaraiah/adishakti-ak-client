@@ -39,9 +39,10 @@ const ContactsList = (props) => {
     setOrder(newOrder);
   };
 
-  const contactListFiltered = allContacts.filter((contact) =>
-    contact?.name.toLowerCase().includes(keyword.toLowerCase())
-  );
+  const contactListFiltered = allContacts.filter((contact) => {
+    const { name } = contact;
+    return name?.toLowerCase().includes(keyword.toLowerCase());
+  });
 
   const contactsSorted = contactListFiltered.sort((a, b) => {
     if (order === 'Asc') {

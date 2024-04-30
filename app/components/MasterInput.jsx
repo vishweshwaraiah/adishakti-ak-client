@@ -8,8 +8,6 @@ import {
   Easing,
   Pressable,
 } from 'react-native';
-import Colors from '@/utils/Colors';
-import Sizes from '@/utils/Sizes';
 import {
   AntDesign,
   MaterialIcons,
@@ -18,33 +16,37 @@ import {
   Entypo,
   Ionicons,
 } from '@expo/vector-icons';
+import Colors from '@/utils/Colors';
+import Sizes from '@/utils/Sizes';
 import MasterStyles from '@/utils/MasterStyles';
 
 const MasterInput = (props) => {
   const {
     onInput = () => {},
     onBlur = () => {},
-    startIcon,
-    iconFamily,
+    startIcon = '',
+    iconFamily = '',
     type,
     name = 'input',
-    inputLabel,
-    value,
+    inputLabel = '',
+    value = '',
     error = false,
     required = false,
     rounded = false,
-    width = '90%',
-    textBefore,
+    inputWidth = '90%',
+    textBefore = '',
     maxLength,
     size = 'regular',
+    compact = false,
+    animated = true,
+    placeholder = '',
   } = props;
 
   const duration = 200;
 
   const [inputValue, setInputValue] = useState('');
   const [inputType, setInputType] = useState('default');
-  const [hasError, setHasError] = useState(false);
-  const [inputWidth, setInputWidth] = useState({});
+  const [hasError, setHasError] = useState('');
   const [inputHeight, setInputHeight] = useState({});
   const [labelPos, setLabelPos] = useState({});
   const [eyeIcon, setEyeIcon] = useState(true);
@@ -84,10 +86,11 @@ const MasterInput = (props) => {
       name,
       value: inputValue,
     });
+
     if (!inputValue && required) {
-      setHasError(true);
+      setHasError('This is a required field!');
     } else {
-      setHasError(false);
+      setHasError('');
     }
   }, [inputValue]);
 
@@ -96,18 +99,12 @@ const MasterInput = (props) => {
   }, [error]);
 
   useEffect(() => {
-    setInputWidth({
-      width: width,
-    });
-  }, [width]);
-
-  useEffect(() => {
     if (size === 'regular') {
       setInputHeight({
         height: Sizes.$ieRegularHeight,
       });
       setLabelPos({
-        active: 5,
+        active: 4,
         inactive: -8,
       });
     }
@@ -117,7 +114,7 @@ const MasterInput = (props) => {
         height: Sizes.$ieLargeHeight,
       });
       setLabelPos({
-        active: 10,
+        active: 8,
         inactive: -4,
       });
     }
@@ -128,7 +125,7 @@ const MasterInput = (props) => {
       });
       setLabelPos({
         active: 12,
-        inactive: -4,
+        inactive: 0,
       });
     }
   }, [size]);
@@ -144,13 +141,13 @@ const MasterInput = (props) => {
       animateText(0);
     }
 
-    let errorStatus;
+    let error;
     if (required) {
-      errorStatus = e.nativeEvent.text ? false : true;
-      setHasError(errorStatus);
+      error = e.nativeEvent.text ? '' : 'This is a required field!';
+      setHasError(error);
     }
 
-    onBlur(name, errorStatus);
+    onBlur(name, error);
   };
 
   const handleLabelClick = () => {
@@ -190,21 +187,39 @@ const MasterInput = (props) => {
     outputRange: [0, -16],
   });
 
-  const animStyle = {
+  const animationStyle = {
     transform: [{ translateY: yVal }, { translateX: xVal }],
   };
 
   const getIcon = () => {
     if (iconFamily === 'AntDesign') {
-      return <AntDesign name={startIcon} size={20} color='#000' />;
+      return (
+        <AntDesign name={startIcon} size={Sizes.$startIconSize} color='#000' />
+      );
     } else if (iconFamily === 'FontAwesome') {
-      return <FontAwesome name={startIcon} size={20} color='#000' />;
+      return (
+        <FontAwesome
+          name={startIcon}
+          size={Sizes.$startIconSize}
+          color='#000'
+        />
+      );
     } else if (iconFamily === 'Entypo') {
-      return <Entypo name={startIcon} size={20} color='#000' />;
+      return (
+        <Entypo name={startIcon} size={Sizes.$startIconSize} color='#000' />
+      );
     } else if (iconFamily === 'Ionicons') {
-      return <Ionicons name={startIcon} size={20} color='#000' />;
+      return (
+        <Ionicons name={startIcon} size={Sizes.$startIconSize} color='#000' />
+      );
     } else {
-      return <MaterialIcons name={startIcon} size={20} color='#000' />;
+      return (
+        <MaterialIcons
+          name={startIcon}
+          size={Sizes.$startIconSize}
+          color='#000'
+        />
+      );
     }
   };
 
@@ -225,91 +240,122 @@ const MasterInput = (props) => {
     );
   };
 
+  const styles = StyleSheet.create({
+    mainContainer: {
+      width: '100%',
+    },
+    subContainer: {
+      flexDirection: 'row',
+      marginVertical: compact ? 0 : Sizes.$ieRegularMargin,
+      backgroundColor: Colors.$light,
+      paddingHorizontal: Sizes.$ieRegularPadding,
+      alignSelf: 'center',
+      maxHeight: Sizes.$ieMaxHeight,
+      height: inputHeight,
+      width: inputWidth,
+      ...MasterStyles.commonShadow,
+    },
+    labelBox: {
+      flexDirection: 'row',
+      paddingHorizontal: Sizes.$ieRegularPadding + 5,
+      maxHeight: Sizes.$ieMaxHeight,
+    },
+    labelPos: {
+      position: 'relative',
+      top: 6,
+      left: 30,
+      zIndex: 201,
+    },
+    labelText: {
+      color: Colors.$secondary,
+      fontSize: Sizes.$ieSmallFont,
+      lineHeight: Sizes.$ieSmallFont,
+      zIndex: 201,
+      height: 'auto',
+      maxHeight: Sizes.$ieMaxHeight,
+      paddingHorizontal: Sizes.$ieRegularPadding,
+    },
+    animatedLabel: {
+      position: 'absolute',
+      backgroundColor: Colors.$light,
+      borderRadius: 5,
+      overflow: 'hidden',
+      paddingVertical: Sizes.$ieRegularPadding,
+    },
+    inputBox: {
+      flexDirection: 'row',
+      gap: 10,
+      alignItems: 'center',
+      alignSelf: 'center',
+    },
+    textInput: {
+      flex: 1,
+      fontSize: inputValue ? Sizes.$ieRegularFont : Sizes.$ieSmallFont,
+      maxHeight: Sizes.$ieMaxHeight,
+      color: Colors.$black,
+    },
+    errorText: {
+      fontSize: Sizes.$ieSmallFont,
+      color: Colors.$danger,
+      textAlign: 'left',
+      alignSelf: 'center',
+      width: inputWidth,
+    },
+    inputError: {
+      borderColor: Colors.$danger,
+      borderWidth: 2,
+    },
+    isRounded: {
+      borderRadius: Sizes.$ieRegularRadius,
+    },
+  });
+
   return (
-    <View
-      style={[
-        styles.container,
-        inputWidth,
-        inputHeight,
-        hasError && styles.inputError,
-        rounded && styles.isRounded,
-      ]}
-    >
-      <Animated.View style={[styles.labelPos, animStyle]}>
-        <Pressable onPress={handleLabelClick}>
-          <Animated.Text style={styles.labelText}>{inputLabel}</Animated.Text>
-        </Pressable>
-      </Animated.View>
-      <View style={styles.inputBox}>
-        {getIcon()}
-        <Text>{textBefore}</Text>
-        <TextInput
-          ref={inputRef}
-          value={inputValue}
-          onBlur={onBlurHandler}
-          style={[styles.textInput, inputHeight]}
-          onFocus={onFocusHandler}
-          onChangeText={onChangeText}
-          clearButtonMode='while-editing'
-          secureTextEntry={type === 'password' && eyeIcon}
-          keyboardType={inputType}
-          name={name}
-          autoCapitalize='none'
-          maxLength={maxLength}
-        />
-        {type === 'password' && showPwdIcon()}
+    <View stylele={styles.mainContainer}>
+      {!animated && (
+        <View style={styles.labelBox}>
+          <Text style={styles.labelText}>{inputLabel}</Text>
+        </View>
+      )}
+      <View
+        style={[
+          styles.subContainer,
+          hasError && styles.inputError,
+          rounded && styles.isRounded,
+        ]}
+      >
+        {animated && (
+          <Animated.View style={[styles.labelPos, animationStyle]}>
+            <Pressable onPress={handleLabelClick}>
+              <Animated.Text style={[styles.labelText, styles.animatedLabel]}>
+                {inputLabel}
+              </Animated.Text>
+            </Pressable>
+          </Animated.View>
+        )}
+        <View style={styles.inputBox}>
+          {getIcon()}
+          <Text>{textBefore}</Text>
+          <TextInput
+            ref={inputRef}
+            value={inputValue}
+            onBlur={onBlurHandler}
+            style={[styles.textInput, inputHeight]}
+            onFocus={onFocusHandler}
+            onChangeText={onChangeText}
+            clearButtonMode='while-editing'
+            secureTextEntry={type === 'password' && eyeIcon}
+            keyboardType={inputType}
+            name={name}
+            autoCapitalize='none'
+            maxLength={maxLength}
+            placeholder={placeholder}
+          />
+          {type === 'password' && showPwdIcon()}
+        </View>
       </View>
+      {hasError && <Text style={styles.errorText}>{hasError}</Text>}
     </View>
   );
 };
 export default MasterInput;
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: Sizes.$ieRegularMargin,
-    backgroundColor: Colors.$light,
-    paddingHorizontal: Sizes.$ieRegularPadding,
-    alignSelf: 'center',
-    maxHeight: Sizes.$ieMaxHeight,
-    ...MasterStyles.commonShadow,
-  },
-  labelPos: {
-    position: 'relative',
-    top: 6,
-    left: 30,
-    zIndex: 201,
-  },
-  labelText: {
-    position: 'absolute',
-    height: 'auto',
-    maxHeight: Sizes.$ieMaxHeight,
-    color: 'grey',
-    fontSize: Sizes.$ieSmallFont,
-    lineHeight: Sizes.$ieSmallFont,
-    paddingHorizontal: Sizes.$ieRegularPadding,
-    paddingVertical: Sizes.$ieRegularPadding,
-    backgroundColor: Colors.$light,
-    borderRadius: 5,
-    overflow: 'hidden',
-    zIndex: 201,
-  },
-  inputBox: {
-    flexDirection: 'row',
-    gap: 10,
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  textInput: {
-    flex: 1,
-    fontSize: Sizes.$ieRegularFont,
-    maxHeight: Sizes.$ieMaxHeight,
-    color: Colors.$black,
-  },
-  inputError: {
-    borderColor: 'red',
-    borderWidth: 2,
-  },
-  isRounded: {
-    borderRadius: Sizes.$ieRegularRadius,
-  },
-});

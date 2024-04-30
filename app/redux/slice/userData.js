@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { ProdServerUri } from '@/utils/Globals';
+import AxiosInstance from '@/utils/AxiosInstance';
 
 const initialState = {
   status: 'loading',
@@ -15,7 +15,7 @@ export const deleteImage = createAsyncThunk(
     const deleteImageUrl = ProdServerUri + '/delete_image';
 
     try {
-      const response = await axios.put(deleteImageUrl, usrData);
+      const response = await AxiosInstance.put(deleteImageUrl, usrData);
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -32,9 +32,9 @@ export const updateImage = createAsyncThunk(
     const uploadImageUrl = ProdServerUri + '/upload_image';
     const formData = new FormData();
 
-    const { image, email, profileImage } = usrData;
+    const { image, userEmail, profileImage } = usrData;
 
-    if (!image || !email) {
+    if (!image || !userEmail) {
       return thunkAPI.rejectWithValue({
         message: 'Both email and file are required!',
       });
@@ -46,7 +46,7 @@ export const updateImage = createAsyncThunk(
       type: 'image/*',
     });
 
-    formData.append('email', email);
+    formData.append('userEmail', userEmail);
     formData.append('currentImage', profileImage);
 
     const updateProgress = (progress) => {
@@ -55,7 +55,6 @@ export const updateImage = createAsyncThunk(
 
     const config = {
       headers: {
-        Accept: 'application/json',
         'Content-Type': 'multipart/form-data',
       },
       onUploadProgress: ({ loaded, total }) => {
@@ -68,7 +67,11 @@ export const updateImage = createAsyncThunk(
     };
 
     try {
-      const response = await axios.put(uploadImageUrl, formData, config);
+      const response = await AxiosInstance.put(
+        uploadImageUrl,
+        formData,
+        config
+      );
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -88,7 +91,7 @@ export const fetchImage = createAsyncThunk(
     const fetchImageUrl = ProdServerUri + '/fetch_image/' + imageName;
 
     try {
-      const response = await axios.get(fetchImageUrl);
+      const response = await AxiosInstance.get(fetchImageUrl);
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -105,12 +108,38 @@ export const fetchUser = createAsyncThunk(
     const fetchUserUrl = ProdServerUri + '/get_user/' + token;
 
     try {
-      const response = await axios.get(fetchUserUrl);
+      const response = await AxiosInstance.get(fetchUserUrl);
       return response.data;
     } catch (err) {
       if (!err.response) {
         throw err; // Rethrow non-response errors
       }
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  'updateUser',
+  async (usrData, thunkAPI) => {
+    const updateUserUrl = ProdServerUri + '/update_user';
+
+    const { userEmail, userMobile } = usrData;
+
+    if (!userEmail || !userMobile) {
+      return thunkAPI.rejectWithValue({
+        message: 'Both email and mobile number are required!',
+      });
+    }
+
+    try {
+      const response = await AxiosInstance.put(updateUserUrl, usrData);
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err; // Rethrow non-response errors
+      }
+
       return thunkAPI.rejectWithValue(err.response.data);
     }
   }
@@ -123,6 +152,9 @@ export const userData = createSlice({
   reducers: {
     clearUser: (state) => {
       state.user = {};
+    },
+    resetStatus: (state) => {
+      state.status = 'loading';
     },
   },
   extraReducers: (builder) => {
@@ -141,7 +173,7 @@ export const userData = createSlice({
 
     // upload user image
     builder.addCase(updateImage.fulfilled, (state, action) => {
-      state.status = 'loaded';
+      state.status = 'uploaded';
       state.user = action.payload;
     });
     builder.addCase(updateImage.pending, (state) => {
@@ -154,7 +186,7 @@ export const userData = createSlice({
 
     // delete user image
     builder.addCase(deleteImage.fulfilled, (state, action) => {
-      state.status = 'loaded';
+      state.status = 'deleted';
       state.user = action.payload;
     });
     builder.addCase(deleteImage.pending, (state) => {
@@ -174,6 +206,19 @@ export const userData = createSlice({
       state.status = 'loading';
     });
     builder.addCase(fetchImage.rejected, (state, action) => {
+      state.status = 'error';
+      state.message = action.payload?.message;
+    });
+
+    // update user details
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.status = 'updated';
+      state.user = action.payload;
+    });
+    builder.addCase(updateUser.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(updateUser.rejected, (state, action) => {
       state.status = 'error';
       state.message = action.payload?.message;
     });

@@ -13,7 +13,7 @@ const Layout = () => {
     return (
       <View>
         <TouchableOpacity
-          onPress={() => router.push('screens/account/ProfileScreen')}
+          onPress={() => router.push('sub_views/account/ProfileScreen')}
           style={[styles.floatingBtn]}
         >
           <AntDesign name='home' size={24} color='yellow' />
@@ -63,6 +63,57 @@ const Layout = () => {
     return <View style={styles.iconView}>{element}</View>;
   };
 
+  const styles = StyleSheet.create({
+    tabBarStyle: {
+      position: 'absolute',
+      bottom: Sizes.$ieMenuBottomSpace,
+      backgroundColor: Colors.$white,
+      borderRadius: Sizes.$ieRegularRadius * 2,
+      width: '90%',
+      left: '5%',
+      right: '5%',
+      height: Sizes.$navDimension,
+      maxHeight: Sizes.$ieMenuMaxHeight,
+      ...MasterStyles.navShadow,
+    },
+    tabItemStyle: {
+      top: Platform.OS === 'ios' ? 20 : 10,
+      position: 'relative',
+    },
+    tabBarLabelStyle: {},
+    iconView: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      top: 0,
+    },
+    customTabBarButton: {
+      top: -15,
+      alignItems: 'center',
+      justifyContent: 'center',
+      ...MasterStyles.navShadow,
+    },
+    buttonView: {
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
+      borderRadius: 35,
+      backgroundColor: Colors.$activeBar,
+      paddingTop: Sizes.$ieRegularPadding,
+    },
+    floatingBtn: {
+      display: 'none',
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
+      borderRadius: 35,
+      backgroundColor: Colors.$midblue,
+      padding: Sizes.$ieRegularPadding,
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'absolute',
+      bottom: 50,
+      right: 25,
+    },
+  });
+
   return (
     <Tabs backBehavior='none'>
       <Tabs.Screen
@@ -107,54 +158,3 @@ const Layout = () => {
 };
 
 export default Layout;
-
-const styles = StyleSheet.create({
-  tabBarStyle: {
-    position: 'absolute',
-    bottom: 25,
-    backgroundColor: Colors.$white,
-    borderRadius: Sizes.$ieRegularRadius * 2,
-    width: '90%',
-    left: '5%',
-    right: '5%',
-    height: Sizes.$navDimension,
-    maxHeight: 75,
-    ...MasterStyles.navShadow,
-  },
-  tabItemStyle: {
-    top: Platform.OS === 'ios' ? 20 : 10,
-    position: 'relative',
-  },
-  tabBarLabelStyle: {},
-  iconView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 0,
-  },
-  customTabBarButton: {
-    top: -15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...MasterStyles.navShadow,
-  },
-  buttonView: {
-    width: Sizes.$btnDimension,
-    height: Sizes.$btnDimension,
-    borderRadius: 35,
-    backgroundColor: Colors.$activeBar,
-    paddingTop: Sizes.$ieRegularPadding,
-  },
-  floatingBtn: {
-    display: 'none',
-    width: Sizes.$btnDimension,
-    height: Sizes.$btnDimension,
-    borderRadius: 35,
-    backgroundColor: Colors.$midblue,
-    padding: Sizes.$ieRegularPadding,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 50,
-    right: 25,
-  },
-});

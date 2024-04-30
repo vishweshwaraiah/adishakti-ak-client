@@ -8,33 +8,20 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import AuthTemplate from '@/wrappers/AuthTemplate';
-import UpdateModal from '@/components/Modals/UpdateModal';
 import SettingsRow from '@/components/Settings/SettingsRow';
 import Sizes from '@/utils/Sizes';
 import MasterAvatar from '@/components/Settings/MasterAvatar';
+import { router } from 'expo-router';
 
 const ProfileScreen = () => {
   const { user } = useSelector((state) => state.userSlice);
-
-  const [updateModal, setUpdateModal] = useState('close');
-  const [statusMessage, setStatusMessage] = useState('');
-  const [afterAction, setAfterAction] = useState('initial');
-  const [alertIcon, setAlertIcon] = useState('thumbs-up');
   const [userArray, setUserArray] = useState([]);
 
-  const openModal = () => {
-    setStatusMessage('Update is done!');
-    setUpdateModal('open');
-    setAfterAction('initial');
-  };
+  const [editMode, setEditMode] = useState(false);
 
-  const handleCancel = () => {
-    setUpdateModal('close');
-  };
-
-  const handleSubmit = () => {
-    setAfterAction('done');
-    // on submit logic goes here
+  const updateDetails = () => {
+    setEditMode(!editMode);
+    router.push('sub_views/account/UpdateDetails');
   };
 
   const getBrType = (idx) => {
@@ -49,52 +36,51 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     const userData = [];
-    if (user.name) {
-      userData.push({
-        name: user.name.trim(),
-        subname: 'User Name',
-        icon: 'user',
-        iconFamily: 'Entypo',
-      });
-    }
-    if (user.email) {
-      userData.push({
-        name: user.email,
-        subname: 'Email ID',
-        icon: 'email',
-        iconFamily: 'Entypo',
-      });
-    }
-    if (user.mobile) {
-      userData.push({
-        name: user.mobile,
-        subname: 'User Mobile',
-        icon: 'mobile',
-        iconFamily: 'Entypo',
-      });
-    }
-    if (user.gender) {
-      userData.push({
-        name: user.gender,
-        subname: 'User Gender',
-        icon: 'male-female',
-        iconFamily: 'Ionicons',
-      });
-    }
-    if (user.dob) {
-      userData.push({
-        name: user.dob,
-        subname: 'Date of birth',
-        icon: 'calendar-number',
-        iconFamily: 'Ionicons',
-      });
-    }
+
+    userData.push({
+      name: user.userName?.trim(),
+      subname: 'User Name',
+      icon: 'user',
+      iconFamily: 'Entypo',
+    });
+
+    userData.push({
+      name: user.userEmail,
+      subname: 'Email ID',
+      icon: 'email',
+      iconFamily: 'Entypo',
+    });
+
+    userData.push({
+      name: user.userMobile,
+      subname: 'User Mobile',
+      icon: 'mobile',
+      iconFamily: 'Entypo',
+    });
+
+    userData.push({
+      name: user.userGender,
+      subname: 'User Gender',
+      icon: 'male-female',
+      iconFamily: 'Ionicons',
+    });
+
+    userData.push({
+      name: user.userDob,
+      subname: 'Date of birth',
+      icon: 'calendar-number',
+      iconFamily: 'Ionicons',
+    });
+
     setUserArray(userData);
   }, [user]);
 
   return (
     <AuthTemplate screenName='Edit Profile'>
-      <ScrollView contentContainerStyle={styles.profileContainer}>
+      <ScrollView
+        automaticallyAdjustKeyboardInsets={true}
+        contentContainerStyle={styles.profileContainer}
+      >
         <MasterAvatar
           direction='column'
           uploadAble={true}
@@ -103,8 +89,8 @@ const ProfileScreen = () => {
         <View style={styles.bottomContainer}>
           <View style={styles.titleAction}>
             <Text>Personal Info</Text>
-            <TouchableOpacity onPress={openModal}>
-              <Text>Edit</Text>
+            <TouchableOpacity onPress={updateDetails}>
+              <Text>Update</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.settingsRows}>
@@ -116,22 +102,11 @@ const ProfileScreen = () => {
                 endIcon=''
                 iconFamily={item.iconFamily}
                 brType={getBrType(idx)}
-                key={item.name}
+                key={item.subname}
               />
             ))}
           </View>
         </View>
-        <UpdateModal
-          onCancel={handleCancel}
-          onSubmit={handleSubmit}
-          modalStatus={updateModal}
-          statusMessage={statusMessage}
-          afterAction={afterAction}
-          onClose={handleCancel}
-          alertIcon={alertIcon}
-          cancelText='Cancel'
-          submitText='Okay'
-        />
       </ScrollView>
     </AuthTemplate>
   );
@@ -146,15 +121,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Sizes.$ieFlexGap,
     padding: Sizes.$ieRegularPadding,
+    paddingBottom: 100,
   },
   bottomContainer: {
     borderRadius: Sizes.$ieLargeRadius,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: Sizes.$ieRegularPadding,
+    width: '90%',
   },
   settingsRows: {
-    gap: Sizes.$ieRegularMargin,
+    gap: Sizes.$ieFlexGap,
   },
   titleAction: {
     width: '100%',

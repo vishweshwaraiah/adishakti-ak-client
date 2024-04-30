@@ -15,7 +15,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
-import { loginUser, logoutUser } from '@/redux/slice/authData';
+import { loginUser, resetState } from '@/redux/slice/authData';
 import BaseTemplate from '@/wrappers/BaseTemplate';
 import MasterButton from '@/components/MasterButton';
 import MasterInput from '@/components/MasterInput';
@@ -32,8 +32,8 @@ const AppLogin = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [userError, setUserError] = useState(false);
-  const [pwdError, setPwdError] = useState(false);
+  const [userError, setUserError] = useState('');
+  const [pwdError, setPwdError] = useState('');
 
   const getValue = (obj) => {
     if (obj.name === 'username') {
@@ -54,15 +54,14 @@ const AppLogin = () => {
     // make sure there's no previous user's data exists
     await AsyncStorage.removeItem('auth');
     await AsyncStorage.clear();
-    dispatch(logoutUser());
 
     const user = {
-      email: username,
-      password,
+      userEmail: username,
+      userPassword: password,
     };
 
-    if (!username) setUserError(true);
-    if (!password) setPwdError(true);
+    if (!username) setUserError('Username is required!');
+    if (!password) setPwdError('Password is required!');
 
     const noData = !username || !password;
     const hasErrs = userError || pwdError;
@@ -77,6 +76,10 @@ const AppLogin = () => {
   useEffect(() => {
     if (message && status === 'error') {
       Alert.alert('Login failed!', message);
+      setTimeout(() => dispatch(resetState()), 500);
+    }
+    if (status === 'loggedin') {
+      console.log('Logged In!');
     }
   }, [message, status]);
 
@@ -96,15 +99,15 @@ const AppLogin = () => {
       <KeyboardAvoidingView behavior='position' style={styles.container}>
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.loginBox}>
-            <View style={styles.titleText}>
-              <MonoText style={styles.title}>Log in!</MonoText>
-            </View>
             <Animated.View style={styles.topView}>
               <Image
                 style={styles.brandImage}
                 source={require('@/assets/images/logo.png')}
               ></Image>
             </Animated.View>
+            <View style={styles.titleText}>
+              <MonoText style={styles.title}>Log in!</MonoText>
+            </View>
             <View style={styles.bottomView}>
               <MasterInput
                 inputLabel='Email/Mobile'
@@ -118,6 +121,7 @@ const AppLogin = () => {
                 value={username}
                 error={userError}
                 rounded={true}
+                required={true}
                 size='large'
               />
               <MasterInput
@@ -131,6 +135,7 @@ const AppLogin = () => {
                 value={password}
                 error={pwdError}
                 rounded={true}
+                required={true}
                 size='large'
               />
               <View style={styles.others}>
@@ -165,10 +170,10 @@ export default AppLogin;
 const styles = StyleSheet.create({
   loginBox: {
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     width: screenWidth,
     height: '100%',
-    gap: 0,
+    gap: Sizes.$ieFlexGapXLarge,
   },
   topView: {
     justifyContent: 'center',

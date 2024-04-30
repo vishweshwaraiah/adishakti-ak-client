@@ -1,9 +1,4 @@
 export default {
-  $ieRegularHeight: 48,
-  $ieLargeHeight: 56,
-  $ieXLargeHeight: 64,
-  $ieMaxHeight: 64,
-  $ieMinHeight: 48,
   $ieActionBtn: 36,
   $ieRegularPadding: 8,
   $ieSmallPadding: 4,
@@ -19,6 +14,7 @@ export default {
   $btnDimension: 70,
   $ieFlexGap: 8,
   $ieFlexGapLarge: 16,
+  $ieFlexGapXLarge: 32,
   $ieLargeFont: 20,
   $ieSmallFont: 12,
   $ieRegularFont: 16,
@@ -27,4 +23,15 @@ export default {
   $navDimension: '10%',
   $ieRowAvatar: 75,
   $ieColumnAvatar: 150,
+  $ieMenuMaxHeight: 75,
+  $ieMenuBottomSpace: 25,
+  $ieMenuSpace: 100,
+
+  // Input elements specific
+  $startIconSize: 20,
+  $ieRegularHeight: 48,
+  $ieLargeHeight: 56,
+  $ieXLargeHeight: 64,
+  $ieMaxHeight: 64,
+  $ieMinHeight: 48,
 };

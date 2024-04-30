@@ -1,14 +1,12 @@
 import React from 'react';
 import {
-  SafeAreaView,
   Dimensions,
   StyleSheet,
   ImageBackground,
-  ScrollView,
   View,
+  SafeAreaView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Sizes from '@/utils/Sizes';
 import Colors from '@/utils/Colors';
 
 const screenWidth = Dimensions.get('window').width;
@@ -24,16 +22,9 @@ const BaseTemplate = (props) => {
       maxHeight: '100%',
       ...containerStyle,
     },
-    mainScreen: {
-      flexGrow: 1,
-      justifyContent: 'flex-start',
-      flexDirection: 'column',
-      paddingVertical: Sizes.$isLargePadding,
-    },
     loginImage: {
       borderRadius: 25,
       width: screenWidth,
-      height: '100%',
     },
     imageBackground: {
       opacity: 0.25,
@@ -49,9 +40,7 @@ const BaseTemplate = (props) => {
           resizeMode='cover'
           imageStyle={styles.imageBackground}
         >
-          <ScrollView contentContainerStyle={styles.mainScreen}>
-            <SafeAreaView>{children}</SafeAreaView>
-          </ScrollView>
+          <SafeAreaView>{children}</SafeAreaView>
         </ImageBackground>
       </LinearGradient>
     </View>
