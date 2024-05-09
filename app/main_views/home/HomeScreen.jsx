@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import Sizes from '@/utils/Sizes';
@@ -14,20 +14,7 @@ const HomeScreen = () => {
         nestedScrollEnabled={true}
         contentContainerStyle={styles.homeContent}
       >
-        <View>
-          <OfferCard
-            content='Card 1 and some default text to fill the view and check if it
-          overflows or not'
-          />
-          <OfferCard
-            content='Card 2 and some default text to fill the view and check if it
-          overflows or not'
-          />
-          <OfferCard
-            content='Card 3 and some default text to fill the view and check if it
-          overflows or not'
-          />
-        </View>
+        <OfferCard content='Some text goes here.' />
       </ScrollView>
     </AuthTemplate>
   );
@@ -45,10 +32,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   homeContent: {
-    height: '90%',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
   },
 });
 

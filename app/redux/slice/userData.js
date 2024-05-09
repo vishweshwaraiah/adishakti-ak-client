@@ -3,10 +3,12 @@ import { ProdServerUri } from '@/utils/Globals';
 import AxiosInstance from '@/utils/AxiosInstance';
 
 const initialState = {
-  status: 'loading',
+  userStatus: 'initial',
   user: {},
-  message: '',
+  imageMessage: '',
+  userMessage: '',
   imageUri: '',
+  imageStatus: 'initial',
 };
 
 export const deleteImage = createAsyncThunk(
@@ -153,78 +155,79 @@ export const userData = createSlice({
     clearUser: (state) => {
       state.user = {};
     },
-    resetStatus: (state) => {
-      state.status = 'loading';
+    resetUserStatus: (state) => {
+      state.userStatus = 'initial';
     },
   },
   extraReducers: (builder) => {
-    // fetch a user details
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
-      state.status = 'loaded';
-      state.user = action.payload;
-    });
-    builder.addCase(fetchUser.pending, (state) => {
-      state.status = 'loading';
-    });
-    builder.addCase(fetchUser.rejected, (state, action) => {
-      state.status = 'error';
-      state.message = action.payload?.message;
-    });
-
     // upload user image
     builder.addCase(updateImage.fulfilled, (state, action) => {
-      state.status = 'uploaded';
+      state.imageStatus = 'uploadedimage';
       state.user = action.payload;
     });
     builder.addCase(updateImage.pending, (state) => {
-      state.status = 'loading';
+      state.imageStatus = 'uploadingimage';
     });
     builder.addCase(updateImage.rejected, (state, action) => {
-      state.status = 'error';
-      state.message = action.payload?.message;
+      state.imageStatus = 'error';
+      state.imageMessage = action.payload?.message;
     });
 
     // delete user image
     builder.addCase(deleteImage.fulfilled, (state, action) => {
-      state.status = 'deleted';
+      state.imageStatus = 'deletedimage';
       state.user = action.payload;
     });
     builder.addCase(deleteImage.pending, (state) => {
-      state.status = 'loading';
+      state.imageStatus = 'deletingimage';
     });
     builder.addCase(deleteImage.rejected, (state, action) => {
-      state.status = 'error';
-      state.message = action.payload?.message;
+      state.imageStatus = 'error';
+      state.imageMessage = action.payload?.message;
     });
 
     // fetch user image
     builder.addCase(fetchImage.fulfilled, (state, action) => {
-      state.status = 'loaded';
+      state.imageStatus = 'fetchedimage';
       state.imageUri = action.payload;
     });
     builder.addCase(fetchImage.pending, (state) => {
-      state.status = 'loading';
+      state.imageStatus = 'fetchingimage';
     });
     builder.addCase(fetchImage.rejected, (state, action) => {
-      state.status = 'error';
-      state.message = action.payload?.message;
+      state.imageStatus = 'error';
+      state.imageMessage = action.payload?.message;
+    });
+
+    // fetch user details
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      state.userStatus = 'fetcheduser';
+      state.user = action.payload;
+    });
+    builder.addCase(fetchUser.pending, (state) => {
+      state.userStatus = 'fetchinguser';
+    });
+    builder.addCase(fetchUser.rejected, (state, action) => {
+      state.userStatus = 'error';
+      state.userMessage = action.payload?.message;
     });
 
     // update user details
     builder.addCase(updateUser.fulfilled, (state, action) => {
-      state.status = 'updated';
+      state.userStatus = 'updateduser';
       state.user = action.payload;
+      state.userMessage = 'Details Updated Successfully!';
     });
     builder.addCase(updateUser.pending, (state) => {
-      state.status = 'loading';
+      state.userStatus = 'updatinguser';
     });
     builder.addCase(updateUser.rejected, (state, action) => {
-      state.status = 'error';
-      state.message = action.payload?.message;
+      state.userStatus = 'error';
+      state.userMessage = action.payload?.message;
     });
   },
 });
 
-export const { clearUser } = userData.actions;
+export const { clearUser, resetUserStatus } = userData.actions;
 
 export default userData.reducer;

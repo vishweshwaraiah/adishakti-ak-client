@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import MasterButton from '@/components/MasterButton';
 import { Ionicons } from '@expo/vector-icons';
 import Sizes from '@/utils/Sizes';
@@ -7,15 +14,16 @@ import MasterInput from '../../components/MasterInput';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import { router } from 'expo-router';
 import GenderSelector from '@/components/GenderSelector';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetUserStatus, updateUser } from '@/redux/slice/userData';
 
-const UpdateDetails = (props) => {
-  const {
-    afterAction = 'initial',
-    statusMessage = 'Success!',
-    alertIcon = 'warning',
-    cancelText = 'Cancel',
-    submitText = 'Submit',
-  } = props;
+const screenWidth = Dimensions.get('window').width;
+
+const UpdateDetails = () => {
+  const dispatch = useDispatch();
+  const { user, userStatus, userMessage } = useSelector(
+    (state) => state.userSlice
+  );
 
   const [userName, setUserName] = useState('');
   const [nameError, setNameError] = useState('');
@@ -32,34 +40,58 @@ const UpdateDetails = (props) => {
   const [userDob, setUserDob] = useState('');
   const [dobError, setDobError] = useState('');
 
+  const [afterAction, setAfterAction] = useState('initial');
+  const [statusIcon, setStatusIcon] = useState('warning');
+
+  const [dataChanged, setDataChanged] = useState(false);
+
   const getValue = (obj) => {
     if (obj.name === 'username') {
-      setUserName(obj.value);
+      if (obj.value !== user.userName) {
+        setUserName(obj.value);
+        setDataChanged(true);
+      } else {
+        setDataChanged(false);
+      }
     }
 
     if (obj.name === 'useremail') {
-      setUserEmail(obj.value);
+      if (obj.value !== user.userEmail) {
+        setUserEmail(obj.value);
+        setDataChanged(true);
+      } else {
+        setDataChanged(false);
+      }
     }
 
     if (obj.name === 'usermobile') {
-      setUserMobile(obj.value);
+      if (obj.value !== user.userMobile) {
+        setUserMobile(obj.value);
+        setDataChanged(true);
+      } else {
+        setDataChanged(false);
+      }
     }
 
     if (obj.name === 'userdob') {
-      setUserDob(obj.value);
+      if (obj.value !== user.userDob) {
+        setUserDob(obj.value);
+        setDataChanged(true);
+      } else {
+        setDataChanged(false);
+      }
     }
   };
 
   const onCancel = () => {
+    clearInputs();
+    setAfterAction('initial');
+    dispatch(resetUserStatus());
     if (router.canGoBack()) {
       router.back();
     } else {
       router.push('sub_views/account/ProfileScreen');
     }
-  };
-
-  const onSubmit = () => {
-    router.push('sub_views/account/UpdateDetails');
   };
 
   const blurHandler = (name, error) => {
@@ -84,7 +116,7 @@ const UpdateDetails = (props) => {
     setDobError('');
   };
 
-  const handleData = () => {
+  const handleSubmitData = () => {
     const userData = {
       userName,
       userEmail,
@@ -123,18 +155,87 @@ const UpdateDetails = (props) => {
       return false;
     }
 
-    onSubmit(userData);
+    if (dataChanged) {
+      dispatch(updateUser(userData));
+    } else {
+      Alert.alert('Nothing much to update!');
+    }
   };
 
   const handleGender = (value) => {
-    if (value === 'M') {
-      setUserGender('male');
-    } else if (value === 'F') {
-      setUserGender('female');
+    if (value !== user.userGender) {
+      setDataChanged(true);
+      setUserGender(value);
     } else {
-      setUserGender('others');
+      setDataChanged(false);
     }
   };
+
+  useEffect(() => {
+    if (userStatus === 'updatinguser') {
+      setAfterAction('done');
+      setStatusIcon('warning');
+    }
+
+    if (userStatus === 'updateduser') {
+      setAfterAction('done');
+      setStatusIcon('checkmark-circle');
+    }
+
+    if (userStatus === 'error') {
+      setAfterAction('error');
+      setStatusIcon('warning');
+    }
+  }, [userStatus]);
+
+  useEffect(() => {
+    setUserName(user.userName);
+    setUserEmail(user.userEmail);
+    setUserMobile(user.userMobile);
+    setUserGender(user.userGender);
+    setUserDob(user.userDob);
+  }, [user]);
+
+  const styles = StyleSheet.create({
+    bodyContent: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    groupActions: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 10,
+      marginTop: Sizes.$ieRegularMargin,
+    },
+    actionText: {
+      justifyContent: 'center',
+      textAlign: 'center',
+      padding: Sizes.$ieExtraPadding,
+      marginBottom: Sizes.$ieRegularMargin,
+    },
+    sectionTitle: {
+      fontSize: 32,
+      paddingVertical: Sizes.$ieRegularPadding,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    titleContainer: {
+      borderBottomWidth: 1,
+    },
+    doneView: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 10,
+      paddingTop: Sizes.$ieLargePadding,
+    },
+    inputsBox: {
+      width: screenWidth,
+      maxHeight: '60%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingTop: Sizes.$ieLargePadding,
+    },
+  });
 
   return (
     <AuthTemplate screenName='Edit Profile'>
@@ -147,11 +248,11 @@ const UpdateDetails = (props) => {
       >
         {afterAction === 'error' || afterAction === 'done' ? (
           <View style={styles.doneView}>
-            <Ionicons name={alertIcon} size={72} color='black' />
-            <Text style={styles.actionText}>{statusMessage}</Text>
+            <Ionicons name={statusIcon} size={72} color='black' />
+            <Text style={styles.actionText}>{userMessage}</Text>
             <MasterButton
-              onPress={onClose}
-              title='Close'
+              onPress={onCancel}
+              title='Return'
               variant='light'
               textColor='black'
             ></MasterButton>
@@ -173,6 +274,7 @@ const UpdateDetails = (props) => {
               size='large'
               animated={false}
               placeholder='Enter your full name'
+              spacing={10}
             />
             <MasterInput
               inputLabel='Email ID'
@@ -189,6 +291,7 @@ const UpdateDetails = (props) => {
               size='large'
               animated={false}
               placeholder='Enter your email id'
+              spacing={10}
             />
             <MasterInput
               inputLabel='User Mobile'
@@ -205,8 +308,15 @@ const UpdateDetails = (props) => {
               size='large'
               animated={false}
               placeholder='Enter your mobile number'
+              spacing={10}
             />
-            <GenderSelector error={genderError} onSelect={handleGender} />
+            <GenderSelector
+              error={genderError}
+              onSelect={handleGender}
+              spacing={10}
+              required={true}
+              value={userGender}
+            />
             <MasterInput
               inputLabel='Date of birth'
               textColor='light'
@@ -215,26 +325,28 @@ const UpdateDetails = (props) => {
               startIcon='calendar-number'
               iconFamily='Ionicons'
               name='userdob'
-              type='text'
+              type='date'
               value={userDob}
               error={dobError}
               rounded={true}
               size='large'
               animated={false}
               placeholder='Select your date of birth'
+              spacing={10}
             />
+
             <View style={styles.groupActions}>
               <MasterButton
                 onPress={onCancel}
-                title={cancelText}
+                title='Cancel'
                 variant='light'
                 textColor='black'
                 height='large'
                 width='44%'
               ></MasterButton>
               <MasterButton
-                onPress={handleData}
-                title={submitText}
+                onPress={handleSubmitData}
+                title='Submit'
                 variant='success'
                 height='large'
                 width='44%'
@@ -248,40 +360,3 @@ const UpdateDetails = (props) => {
 };
 
 export default UpdateDetails;
-
-const styles = StyleSheet.create({
-  bodyContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  groupActions: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
-    marginTop: Sizes.$ieRegularMargin,
-  },
-  actionText: {
-    justifyContent: 'center',
-    textAlign: 'center',
-    padding: Sizes.$ieExtraPadding,
-    marginBottom: Sizes.$ieRegularMargin,
-  },
-  sectionTitle: {
-    fontSize: 32,
-    paddingVertical: Sizes.$ieRegularPadding,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  titleContainer: {
-    borderBottomWidth: 1,
-  },
-  doneView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-  },
-  inputsBox: {
-    width: '100%',
-    paddingTop: Sizes.$ieLargePadding,
-  },
-});

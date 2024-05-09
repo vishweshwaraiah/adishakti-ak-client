@@ -65,8 +65,11 @@ const ProfileScreen = () => {
       iconFamily: 'Ionicons',
     });
 
+    const newDate = new Date(user?.userDob);
+    const strDate = newDate.toDateString();
+
     userData.push({
-      name: user.userDob,
+      name: strDate,
       subname: 'Date of birth',
       icon: 'calendar-number',
       iconFamily: 'Ionicons',
@@ -103,6 +106,7 @@ const ProfileScreen = () => {
                 iconFamily={item.iconFamily}
                 brType={getBrType(idx)}
                 key={item.subname}
+                titleFirst={false}
               />
             ))}
           </View>
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
     borderRadius: Sizes.$ieLargeRadius,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '90%',
+    width: '95%',
   },
   settingsRows: {
     gap: Sizes.$ieFlexGap,

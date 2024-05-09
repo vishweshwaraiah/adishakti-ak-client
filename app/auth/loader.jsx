@@ -14,7 +14,7 @@ import MasterStyles from '@/utils/MasterStyles';
 const Loader = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { user, status, message } = useSelector((state) => state.userSlice);
+  const { user, userStatus, message } = useSelector((state) => state.userSlice);
 
   const [loaderMessage, setLoaderMessage] = useState('Loading you app!');
   const [actionTitle, setActionTitle] = useState('Retry');
@@ -38,15 +38,15 @@ const Loader = () => {
   };
 
   useEffect(() => {
-    if (status === 'error') {
+    if (userStatus === 'error') {
       setLoaderMessage(message);
     }
 
-    if (status === 'loading') {
+    if (userStatus === 'fetchinguser') {
       setLoaderMessage('Loading the page...!');
     }
 
-    if (status === 'loaded') {
+    if (userStatus === 'fetcheduser') {
       const checkLoginStatus = () => {
         if (user.userEmail && user.userMobile) {
           goToHome();
@@ -57,7 +57,7 @@ const Loader = () => {
 
       checkLoginStatus();
     }
-  }, [user, status]);
+  }, [user, userStatus]);
 
   const authTokenCheck = async () => {
     const userToken = await AsyncStorage.getItem('auth');
@@ -129,7 +129,7 @@ const Loader = () => {
             color={Colors.$green}
           />
           <Text style={styles.loaderText}>{loaderMessage}</Text>
-          {(status === 'error' || appStatus === 'disconnected') && (
+          {(userStatus === 'error' || appStatus === 'disconnected') && (
             <MasterButton
               onPress={handleBtnAction}
               variant='light'

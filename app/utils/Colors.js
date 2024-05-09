@@ -14,6 +14,7 @@ export default {
   $gray: '#bdbdbd',
   $yellow: 'yellow',
   $activeBar: 'orange',
+  $theme: 'orange',
   $orange: 'orange',
   $inactiveBar: 'gray',
   $shadow: '#171717',
@@ -24,4 +25,12 @@ export default {
   $modalBackground: 'rgba(0,0,0,0.5)',
   $modalBodyBg: 'rgba(255,255,255,255)',
   $light: '#f0f0f0',
+
+  // themeable tokens
+  $itemBg: '#ffffff',
+  $trackTrue: '#81b0ff',
+  $trackFalse: '#767577',
+  $thumbTrue: '#f5dd4b',
+  $thumbFalse: '#f4f3f4',
+  $iOsBgColor: '#3e3e3e',
 };

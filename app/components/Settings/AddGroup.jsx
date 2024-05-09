@@ -17,7 +17,7 @@ const AddGroup = () => {
 
   const [contactNums, setContactNums] = useState([]);
   const [groupName, setGroupName] = useState('');
-  const [nameError, setNameError] = useState(false);
+  const [nameError, setNameError] = useState('');
   const [modalOpen, setModalOpen] = useState('close');
   const [contactsError, setContactsError] = useState(false);
 
@@ -25,6 +25,8 @@ const AddGroup = () => {
     if (obj && obj.value) {
       const groupName = obj.value.trim();
       setGroupName(groupName);
+    } else {
+      setGroupName('');
     }
   };
 
@@ -46,7 +48,7 @@ const AddGroup = () => {
 
   const handleSubmit = () => {
     if (!groupName) {
-      setNameError(true);
+      setNameError('Group name is required!');
       return false;
     }
 
@@ -70,7 +72,7 @@ const AddGroup = () => {
   useEffect(() => {
     if (modalOpen === 'close') {
       setContactsError(false);
-      setNameError(false);
+      setNameError('');
     }
   }, [modalOpen]);
 
@@ -86,6 +88,7 @@ const AddGroup = () => {
     inputBox: {
       borderBottomWidth: 1,
       borderBottomColor: Colors.$secondary,
+      alignItems: 'center',
     },
     groupActions: {
       flexDirection: 'row',
@@ -128,6 +131,7 @@ const AddGroup = () => {
             onInput={handleInput}
             onBlur={blurHandler}
             error={nameError}
+            spacing={10}
           />
         </View>
         {contactsError && (

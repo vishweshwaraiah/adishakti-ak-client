@@ -162,6 +162,50 @@ const AppRegister = () => {
     }
   };
 
+  const styles = StyleSheet.create({
+    registerBox: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: screenWidth,
+      height: '100%',
+      gap: Sizes.$ieFlexGapXLarge,
+    },
+    topView: {
+      justifyContent: 'center',
+      alignSelf: 'center',
+      width: screenWidth - 150,
+      height: screenWidth - 150,
+    },
+    bottomView: {
+      width: screenWidth,
+      maxHeight: '60%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingTop: Sizes.$ieRegularPadding,
+    },
+    brandImage: {
+      alignSelf: 'center',
+      width: '100%',
+      height: '100%',
+    },
+    titleText: {
+      alignSelf: 'center',
+      alignItems: 'center',
+      marginVertical: 0,
+      opacity: 0.8,
+      paddingHorizontal: Sizes.$ieLargePadding,
+      width: screenWidth,
+    },
+    title: {
+      color: Colors.$black,
+      fontSize: Sizes.$ieTitleFont,
+      textTransform: 'uppercase',
+    },
+    switchScreen: {
+      marginVertical: Sizes.$ieLargeMargin,
+    },
+  });
+
   return (
     <BaseTemplate>
       <KeyboardAvoidingView behavior='position' style={styles.container}>
@@ -190,6 +234,7 @@ const AppRegister = () => {
                 rounded={true}
                 required={true}
                 size='large'
+                spacing={10}
               />
               <MasterInput
                 inputLabel='Mobile'
@@ -205,6 +250,7 @@ const AppRegister = () => {
                 rounded={true}
                 required={true}
                 size='large'
+                spacing={10}
               />
               <MasterInput
                 inputLabel='Password'
@@ -219,6 +265,7 @@ const AppRegister = () => {
                 rounded={true}
                 required={true}
                 size='large'
+                spacing={10}
               />
 
               <MasterButton
@@ -257,47 +304,3 @@ const AppRegister = () => {
 };
 
 export default AppRegister;
-
-const styles = StyleSheet.create({
-  registerBox: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: screenWidth,
-    height: '100%',
-    gap: Sizes.$ieFlexGapXLarge,
-  },
-  topView: {
-    justifyContent: 'center',
-    alignSelf: 'center',
-    width: screenWidth - 100,
-    height: screenWidth - 100,
-  },
-  bottomView: {
-    width: screenWidth,
-    maxHeight: '60%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: Sizes.$ieRegularPadding,
-  },
-  brandImage: {
-    alignSelf: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  titleText: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    marginVertical: 0,
-    opacity: 0.8,
-    paddingHorizontal: Sizes.$ieLargePadding,
-    width: screenWidth,
-  },
-  title: {
-    color: Colors.$black,
-    fontSize: Sizes.$ieTitleFont,
-    textTransform: 'uppercase',
-  },
-  switchScreen: {
-    marginVertical: Sizes.$ieLargeMargin,
-  },
-});

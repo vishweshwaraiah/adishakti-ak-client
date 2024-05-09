@@ -6,37 +6,50 @@ import MasterStyles from '@/utils/MasterStyles';
 import { Ionicons } from '@expo/vector-icons';
 
 const GenderSelector = (props) => {
-  const { error = '', onSelect = () => {} } = props;
+  const {
+    error = '',
+    onSelect = () => {},
+    spacing = 0,
+    value = '',
+    required = false,
+  } = props;
 
+  const [genderValue, setGenderValue] = useState('');
   const [genderError, setGenderError] = useState('');
 
   const handleGender = (value) => {
+    if (!value && required) {
+      setGenderError('This is a required field!');
+    }
     onSelect(value);
-    if (value) setGenderError('');
+    setGenderValue(value);
   };
 
   useEffect(() => {
     setGenderError(error);
   }, [error]);
 
+  useEffect(() => {
+    setGenderValue(value);
+  }, [value]);
+
   const styles = StyleSheet.create({
     genderContainer: {
       width: '90%',
       justifyContent: 'center',
       alignSelf: 'center',
-      marginTop: Sizes.$ieRegularMargin,
     },
     genderBox: {
       flexDirection: 'row',
       gap: Sizes.$ieFlexGapLarge,
-      marginTop: Sizes.$ieRegularMargin,
       alignSelf: 'center',
       justifyContent: 'space-between',
       ...MasterStyles.commonShadow,
     },
     genderBtn: {
       flex: 1,
-      marginVertical: Sizes.$ieSmallMargin,
+      marginBottom: spacing,
+      marginTop: spacing ? spacing / 2 : 0,
       backgroundColor: Colors.$light,
       borderRadius: Sizes.$ieRegularRadius,
       overflow: 'hidden',
@@ -47,10 +60,16 @@ const GenderSelector = (props) => {
       flexDirection: 'row',
       gap: Sizes.$ieFlexGap,
     },
-    genderText: {
-      color: Colors.$secondary,
+    labelText: {
       fontSize: Sizes.$ieSmallFont,
       lineHeight: Sizes.$ieSmallFont,
+      marginTop: spacing,
+      color: Colors.$secondary,
+    },
+    genderText: {
+      fontSize: Sizes.$ieSmallFont,
+      lineHeight: Sizes.$ieSmallFont,
+      color: Colors.$secondary,
     },
     errorText: {
       fontSize: Sizes.$ieSmallFont,
@@ -58,38 +77,47 @@ const GenderSelector = (props) => {
       textAlign: 'left',
       alignSelf: 'flex-start',
     },
-    inputError: {
-      borderColor: Colors.$danger,
+    inputSelected: {
+      borderColor: Colors.$secondary,
       borderWidth: 2,
     },
   });
   return (
     <View style={styles.genderContainer}>
-      <Text style={styles.genderText}>Select Gender</Text>
+      <Text style={styles.labelText}>Select Gender</Text>
       <View style={styles.genderBox}>
         <TouchableOpacity
-          style={styles.genderBtn}
-          onPress={() => handleGender('M')}
+          style={[
+            styles.genderBtn,
+            genderValue === 'Male' && styles.inputSelected,
+          ]}
+          onPress={() => handleGender('Male')}
         >
           <Ionicons name='male' size={20} color='black' />
           <Text style={styles.genderText}>Male</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.genderBtn}
-          onPress={() => handleGender('F')}
+          style={[
+            styles.genderBtn,
+            genderValue === 'Female' && styles.inputSelected,
+          ]}
+          onPress={() => handleGender('Female')}
         >
           <Ionicons name='female' size={20} color='black' />
           <Text style={styles.genderText}>Female</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.genderBtn}
-          onPress={() => handleGender('O')}
+          style={[
+            styles.genderBtn,
+            genderValue === 'Others' && styles.inputSelected,
+          ]}
+          onPress={() => handleGender('Others')}
         >
           <Ionicons name='male-female' size={20} color='black' />
           <Text style={styles.genderText}>Others</Text>
         </TouchableOpacity>
       </View>
-      {genderError && <Text style={styles.errorText}>Invalid Gender!</Text>}
+      {genderError && <Text style={styles.errorText}>{genderError}</Text>}
     </View>
   );
 };

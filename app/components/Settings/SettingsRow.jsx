@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
-import { Ionicons, Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
+import {
+  Ionicons,
+  Entypo,
+  FontAwesome,
+  AntDesign,
+  Feather,
+} from '@expo/vector-icons';
 import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
 import MasterStyles from '@/utils/MasterStyles';
@@ -11,6 +17,7 @@ const SettingsRow = (props) => {
   const {
     rowTitle,
     subTitle,
+    titleFirst = true,
     startIcon,
     endIcon = 'chevron-right',
     iconFamily,
@@ -78,6 +85,8 @@ const SettingsRow = (props) => {
         return <Entypo name={startIcon} size={24} color='black' />;
       case 'AntDesign':
         return <AntDesign name={startIcon} size={24} color='black' />;
+      case 'Feather':
+        return <Feather name={startIcon} size={24} color='black' />;
       default:
         return <FontAwesome name={startIcon} size={24} color='black' />;
     }
@@ -126,10 +135,15 @@ const SettingsRow = (props) => {
       <View style={styles.titleView}>
         {startIcon && getIcon()}
         <View style={styles.titleTextBox}>
+          {subTitle && !titleFirst && (
+            <Text style={styles.subTitle}>{subTitle}</Text>
+          )}
           {rowTitle && (
             <Text style={styles.rowTitle}>{trimmedText(rowTitle, 20)}</Text>
           )}
-          {subTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
+          {subTitle && titleFirst && (
+            <Text style={styles.subTitle}>{subTitle}</Text>
+          )}
         </View>
       </View>
       <View style={styles.rightIcon}>

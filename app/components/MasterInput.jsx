@@ -7,6 +7,7 @@ import {
   Animated,
   Easing,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import {
   AntDesign,
@@ -16,6 +17,7 @@ import {
   Entypo,
   Ionicons,
 } from '@expo/vector-icons';
+import MasterPicker from '@/components/MasterPicker';
 import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
 import MasterStyles from '@/utils/MasterStyles';
@@ -30,6 +32,7 @@ const MasterInput = (props) => {
     name = 'input',
     inputLabel = '',
     value = '',
+    showError = false,
     error = false,
     required = false,
     rounded = false,
@@ -37,9 +40,11 @@ const MasterInput = (props) => {
     textBefore = '',
     maxLength,
     size = 'regular',
-    compact = false,
+    spacing = 0,
     animated = true,
     placeholder = '',
+    editable = true,
+    onFocus = () => {},
   } = props;
 
   const duration = 200;
@@ -50,6 +55,7 @@ const MasterInput = (props) => {
   const [inputHeight, setInputHeight] = useState({});
   const [labelPos, setLabelPos] = useState({});
   const [eyeIcon, setEyeIcon] = useState(true);
+  const [modalStatus, setModalStatus] = useState('close');
 
   const inputRef = useRef(null);
   const moveText = useRef(new Animated.Value(0)).current;
@@ -60,7 +66,13 @@ const MasterInput = (props) => {
     } else {
       animateText(1);
     }
-    setInputValue(value);
+    if (inputType === 'date') {
+      const newDate = new Date(value);
+      const strDate = newDate.toDateString();
+      setInputValue(strDate);
+    } else {
+      setInputValue(value);
+    }
   }, [value]);
 
   useEffect(() => {
@@ -76,6 +88,8 @@ const MasterInput = (props) => {
       setInputType('default');
     } else if (type === 'url') {
       setInputType('url');
+    } else if (type === 'date') {
+      setInputType('date');
     } else {
       setInputType('default');
     }
@@ -134,6 +148,7 @@ const MasterInput = (props) => {
     if (!inputValue) {
       animateText(1);
     }
+    onFocus();
   };
 
   const onBlurHandler = (e) => {
@@ -162,6 +177,20 @@ const MasterInput = (props) => {
     } else if (inputValue === '') {
       animateText(0);
     }
+  };
+
+  const handleDate = () => {
+    setModalStatus('open');
+  };
+
+  const handleSelect = (date) => {
+    const val = date.toDateString();
+    setInputValue(val);
+    setModalStatus('close');
+  };
+
+  const handleCancel = () => {
+    setModalStatus('close');
   };
 
   const animateText = (to) => {
@@ -242,29 +271,13 @@ const MasterInput = (props) => {
 
   const styles = StyleSheet.create({
     mainContainer: {
-      width: '100%',
-    },
-    subContainer: {
-      flexDirection: 'row',
-      marginVertical: compact ? 0 : Sizes.$ieRegularMargin,
-      backgroundColor: Colors.$light,
-      paddingHorizontal: Sizes.$ieRegularPadding,
-      alignSelf: 'center',
-      maxHeight: Sizes.$ieMaxHeight,
-      height: inputHeight,
       width: inputWidth,
-      ...MasterStyles.commonShadow,
+      justifyContent: 'flex-start',
     },
     labelBox: {
       flexDirection: 'row',
-      paddingHorizontal: Sizes.$ieRegularPadding + 5,
       maxHeight: Sizes.$ieMaxHeight,
-    },
-    labelPos: {
-      position: 'relative',
-      top: 6,
-      left: 30,
-      zIndex: 201,
+      marginTop: spacing,
     },
     labelText: {
       color: Colors.$secondary,
@@ -273,7 +286,26 @@ const MasterInput = (props) => {
       zIndex: 201,
       height: 'auto',
       maxHeight: Sizes.$ieMaxHeight,
+    },
+    inputHolder: {
+      height: inputHeight,
+      width: '100%',
+      marginBottom: spacing,
+      marginTop: spacing,
+      ...MasterStyles.commonShadow,
+    },
+    subContainer: {
+      flexDirection: 'row',
+      marginBottom: spacing ? spacing / 2 : 0,
+      backgroundColor: Colors.$light,
       paddingHorizontal: Sizes.$ieRegularPadding,
+      maxHeight: Sizes.$ieMaxHeight,
+    },
+    labelPos: {
+      position: 'relative',
+      top: 6,
+      left: 30,
+      zIndex: 201,
     },
     animatedLabel: {
       position: 'absolute',
@@ -281,24 +313,29 @@ const MasterInput = (props) => {
       borderRadius: 5,
       overflow: 'hidden',
       paddingVertical: Sizes.$ieRegularPadding,
+      paddingHorizontal: Sizes.$ieRegularPadding,
     },
     inputBox: {
       flexDirection: 'row',
-      gap: 10,
       alignItems: 'center',
       alignSelf: 'center',
+      gap: 10,
     },
     textInput: {
       flex: 1,
       fontSize: inputValue ? Sizes.$ieRegularFont : Sizes.$ieSmallFont,
       maxHeight: Sizes.$ieMaxHeight,
       color: Colors.$black,
+      justifyContent: 'center',
+    },
+    placeHolder: {
+      fontSize: Sizes.$ieSmallFont,
+      color: Colors.$gray,
     },
     errorText: {
       fontSize: Sizes.$ieSmallFont,
       color: Colors.$danger,
       textAlign: 'left',
-      alignSelf: 'center',
       width: inputWidth,
     },
     inputError: {
@@ -311,50 +348,75 @@ const MasterInput = (props) => {
   });
 
   return (
-    <View stylele={styles.mainContainer}>
+    <View style={styles.mainContainer}>
       {!animated && (
         <View style={styles.labelBox}>
           <Text style={styles.labelText}>{inputLabel}</Text>
         </View>
       )}
-      <View
-        style={[
-          styles.subContainer,
-          hasError && styles.inputError,
-          rounded && styles.isRounded,
-        ]}
-      >
-        {animated && (
-          <Animated.View style={[styles.labelPos, animationStyle]}>
-            <Pressable onPress={handleLabelClick}>
-              <Animated.Text style={[styles.labelText, styles.animatedLabel]}>
-                {inputLabel}
-              </Animated.Text>
-            </Pressable>
-          </Animated.View>
-        )}
-        <View style={styles.inputBox}>
-          {getIcon()}
-          <Text>{textBefore}</Text>
-          <TextInput
-            ref={inputRef}
-            value={inputValue}
-            onBlur={onBlurHandler}
-            style={[styles.textInput, inputHeight]}
-            onFocus={onFocusHandler}
-            onChangeText={onChangeText}
-            clearButtonMode='while-editing'
-            secureTextEntry={type === 'password' && eyeIcon}
-            keyboardType={inputType}
-            name={name}
-            autoCapitalize='none'
-            maxLength={maxLength}
-            placeholder={placeholder}
-          />
-          {type === 'password' && showPwdIcon()}
+      <View style={styles.inputHolder}>
+        <View
+          style={[
+            styles.subContainer,
+            hasError && styles.inputError,
+            rounded && styles.isRounded,
+          ]}
+        >
+          {animated && (
+            <Animated.View style={[styles.labelPos, animationStyle]}>
+              <Pressable onPress={handleLabelClick}>
+                <Animated.Text style={[styles.labelText, styles.animatedLabel]}>
+                  {inputLabel}
+                </Animated.Text>
+              </Pressable>
+            </Animated.View>
+          )}
+          <View style={styles.inputBox}>
+            {getIcon()}
+            {textBefore && <Text>{textBefore}</Text>}
+            {inputType === 'date' ? (
+              <TouchableOpacity
+                onPress={handleDate}
+                style={[styles.textInput, inputHeight]}
+              >
+                {inputValue ? (
+                  <Text>{inputValue}</Text>
+                ) : (
+                  <Text style={styles.placeHolder}>Select a date!</Text>
+                )}
+                <MasterPicker
+                  modalStatus={modalStatus}
+                  onSelect={handleSelect}
+                  onCancel={handleCancel}
+                  inputDefDate={inputValue}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TextInput
+                ref={inputRef}
+                value={inputValue}
+                onBlur={onBlurHandler}
+                style={[styles.textInput, inputHeight]}
+                onFocus={onFocusHandler}
+                onChangeText={onChangeText}
+                clearButtonMode='while-editing'
+                secureTextEntry={type === 'password' && eyeIcon}
+                keyboardType={inputType}
+                name={name}
+                autoCapitalize='none'
+                maxLength={maxLength}
+                placeholder={placeholder}
+                editable={editable}
+              />
+            )}
+
+            {type === 'password' && showPwdIcon()}
+          </View>
         </View>
+        {hasError && showError && (
+          <Text style={styles.errorText}>{hasError}</Text>
+        )}
       </View>
-      {hasError && <Text style={styles.errorText}>{hasError}</Text>}
     </View>
   );
 };

@@ -38,6 +38,14 @@ const AccountScreen = () => {
           iconFamily='AntDesign'
           brType='all-side'
         ></SettingsRow>
+        <SettingsRow
+          rowTitle='App Settings'
+          subTitle='Change the application behaviours'
+          routePath='sub_views/settings/AppSettings'
+          startIcon='settings'
+          iconFamily='Feather'
+          brType='all-side'
+        ></SettingsRow>
       </ScrollView>
     </AuthTemplate>
   );

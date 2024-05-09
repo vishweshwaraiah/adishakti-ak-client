@@ -27,7 +27,9 @@ const MasterAvatar = (props) => {
   } = props;
 
   const dispatch = useDispatch();
-  const { user, imageUri, message } = useSelector((state) => state.userSlice);
+  const { user, imageUri, imageMessage } = useSelector(
+    (state) => state.userSlice
+  );
 
   const [imageSize, setImageSize] = useState(0);
   const [nameSize, setNameSize] = useState(0);
@@ -230,14 +232,16 @@ const MasterAvatar = (props) => {
         </TouchableOpacity>
       </View>
       <View style={styles.userDetails}>
-        {userContent?.name && (
-          <Text style={styles.nameText}>{userContent.name}</Text>
+        {userContent?.userName && (
+          <Text style={styles.nameText}>
+            {trimmedText(userContent?.userName, 15)}
+          </Text>
         )}
         <Text style={styles.emailText}>
           {trimmedText(userContent?.userEmail, 20)}
         </Text>
       </View>
-      {message && <Text>{message}</Text>}
+      {imageMessage && <Text>{imageMessage}</Text>}
       <UploadModal
         handleCamera={onCameraOpen}
         handleGallery={onGalleryOpen}

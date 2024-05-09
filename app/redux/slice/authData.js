@@ -51,10 +51,7 @@ export const logoutUser = createAsyncThunk(
       await AsyncStorage.clear();
       return true;
     } catch (error) {
-      if (!err.response) {
-        throw err; // Rethrow non-response errors
-      }
-      return thunkAPI.rejectWithValue(err.response.data);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

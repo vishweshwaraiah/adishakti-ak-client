@@ -118,7 +118,7 @@ const ContactsList = (props) => {
           value={keyword}
           error={keyError}
           rounded={true}
-          width='95%'
+          inputWidth='95%'
         />
 
         {toolsBar && (
@@ -158,6 +158,8 @@ const ContactsList = (props) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       flexDirection: 'row',
+      width: '95%',
+      marginTop: Sizes.$ieRegularMargin,
     },
     mbRegular: {
       marginBottom: Sizes.$ieRegularMargin,
@@ -167,6 +169,7 @@ const ContactsList = (props) => {
       paddingBottom: Sizes.$ieRegularPadding,
       paddingHorizontal: Sizes.$ieRegularPadding,
       marginTop: Sizes.$ieRegularMargin,
+      alignItems: 'center',
     },
     contactsView: {
       flex: 1,

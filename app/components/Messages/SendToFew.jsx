@@ -23,7 +23,7 @@ const SendToFew = (props) => {
   const { getList } = props;
 
   const [phone, setPhone] = useState('');
-  const [phoneError, setPhoneError] = useState(false);
+  const [phoneError, setPhoneError] = useState('');
   const [enteredList, setEnteredList] = useState([]);
 
   useEffect(() => {
@@ -50,10 +50,10 @@ const SendToFew = (props) => {
         },
       ]);
       setPhone('');
+      setPhoneError('');
     } else {
-      setPhoneError(true);
+      setPhoneError('Mobile number is required!');
       Alert.alert('Wrong phone number!');
-      return;
     }
   };
 
@@ -97,8 +97,9 @@ const SendToFew = (props) => {
           type='number'
           value={phone}
           error={phoneError}
+          showError={false}
           rounded={true}
-          width='80%'
+          inputWidth='80%'
           textBefore='+91'
           maxLength={10}
           size='large'
