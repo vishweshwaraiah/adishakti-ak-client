@@ -18,9 +18,9 @@ import {
   Ionicons,
 } from '@expo/vector-icons';
 import MasterPicker from '@/components/MasterPicker';
-import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterInput = (props) => {
   const {
@@ -48,6 +48,8 @@ const MasterInput = (props) => {
   } = props;
 
   const duration = 200;
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [inputValue, setInputValue] = useState('');
   const [inputType, setInputType] = useState('default');
@@ -280,7 +282,7 @@ const MasterInput = (props) => {
       marginTop: spacing,
     },
     labelText: {
-      color: Colors.$secondary,
+      color: theme.secondary,
       fontSize: Sizes.$ieSmallFont,
       lineHeight: Sizes.$ieSmallFont,
       zIndex: 201,
@@ -292,12 +294,12 @@ const MasterInput = (props) => {
       width: '100%',
       marginBottom: spacing,
       marginTop: spacing,
-      ...MasterStyles.commonShadow,
+      ...mStyles.commonShadow,
     },
     subContainer: {
       flexDirection: 'row',
       marginBottom: spacing ? spacing / 2 : 0,
-      backgroundColor: Colors.$light,
+      backgroundColor: theme.light,
       paddingHorizontal: Sizes.$ieRegularPadding,
       maxHeight: Sizes.$ieMaxHeight,
     },
@@ -309,7 +311,7 @@ const MasterInput = (props) => {
     },
     animatedLabel: {
       position: 'absolute',
-      backgroundColor: Colors.$light,
+      backgroundColor: theme.light,
       borderRadius: 5,
       overflow: 'hidden',
       paddingVertical: Sizes.$ieRegularPadding,
@@ -325,21 +327,21 @@ const MasterInput = (props) => {
       flex: 1,
       fontSize: inputValue ? Sizes.$ieRegularFont : Sizes.$ieSmallFont,
       maxHeight: Sizes.$ieMaxHeight,
-      color: Colors.$black,
+      color: theme.black,
       justifyContent: 'center',
     },
     placeHolder: {
       fontSize: Sizes.$ieSmallFont,
-      color: Colors.$gray,
+      color: theme.gray,
     },
     errorText: {
       fontSize: Sizes.$ieSmallFont,
-      color: Colors.$danger,
+      color: theme.danger,
       textAlign: 'left',
       width: inputWidth,
     },
     inputError: {
-      borderColor: Colors.$danger,
+      borderColor: theme.danger,
       borderWidth: 2,
     },
     isRounded: {

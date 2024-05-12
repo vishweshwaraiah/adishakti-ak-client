@@ -15,8 +15,8 @@ import UploadModal from '@/components/Modals/UploadModal';
 import { trimmedText } from '@/utils/Globals';
 import { updateImage, deleteImage, fetchImage } from '@/redux/slice/userData';
 import placeHolder from '@/assets/images/profile.jpg';
-import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterAvatar = (props) => {
   const {
@@ -27,6 +27,9 @@ const MasterAvatar = (props) => {
   } = props;
 
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
+
   const { user, imageUri, imageMessage } = useSelector(
     (state) => state.userSlice
   );
@@ -183,7 +186,7 @@ const MasterAvatar = (props) => {
       height: '100%',
       alignSelf: 'center',
       borderWidth: 5,
-      borderColor: Colors.$white,
+      borderColor: theme.white,
       borderRadius: 100,
       overflow: 'hidden',
     },
@@ -191,7 +194,7 @@ const MasterAvatar = (props) => {
       position: 'absolute',
       right: 0,
       bottom: 0,
-      backgroundColor: Colors.$transwhite,
+      backgroundColor: theme.transwhite,
       padding: Sizes.$ieSmallPadding,
       borderRadius: Sizes.$ieRegularRadius,
       overflow: 'hidden',
@@ -203,19 +206,19 @@ const MasterAvatar = (props) => {
     nameText: {
       fontSize: nameSize,
       fontWeight: 'bold',
-      color: Colors.$white,
+      color: theme.white,
       alignSelf: textPosition,
     },
     emailText: {
       fontSize: emailSize,
-      color: Colors.$orange,
+      color: theme.orange,
       alignSelf: textPosition,
     },
   });
 
   return (
     <LinearGradient
-      colors={Colors.$profileGradients}
+      colors={theme.profileGradients}
       style={styles.avatarContainer}
     >
       <View style={styles.imageBox}>

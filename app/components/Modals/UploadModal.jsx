@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import MasterModal from '@/components/Modals/MasterModal';
 import MasterButton from '@/components/MasterButton';
 import { Ionicons, Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
-import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const UploadModal = (props) => {
   const {
@@ -16,6 +16,8 @@ const UploadModal = (props) => {
     onClose = () => {},
     statusMessage = 'Success!',
   } = props;
+
+  const { theme } = useTheme();
 
   const [modalOpen, setModalOpen] = useState('close');
 
@@ -44,7 +46,7 @@ const UploadModal = (props) => {
     <MasterModal
       bodyHeight={160}
       bodyWidth='80%'
-      bgColor={Colors.$modalBodyBg}
+      bgColor={theme.modalBodyBg}
       status={modalOpen}
       setStatus={setModalOpen}
       onClose={onClose}

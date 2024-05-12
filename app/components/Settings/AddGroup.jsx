@@ -7,13 +7,16 @@ import ContactsList from '@/components/Contacts/ContactsList';
 import MasterInput from '@/components/MasterInput';
 import MasterButton from '@/components/MasterButton';
 import { FontAwesome } from '@expo/vector-icons';
-import Colors from '@/utils/Colors';
-import Sizes from '@/utils/Sizes';
 import MasterError from '@/components/MasterError';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
+import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [contactNums, setContactNums] = useState([]);
   const [groupName, setGroupName] = useState('');
@@ -87,7 +90,7 @@ const AddGroup = () => {
   const styles = StyleSheet.create({
     inputBox: {
       borderBottomWidth: 1,
-      borderBottomColor: Colors.$secondary,
+      borderBottomColor: theme.secondary,
       alignItems: 'center',
     },
     groupActions: {
@@ -106,12 +109,12 @@ const AddGroup = () => {
 
   return (
     <View>
-      <TouchableOpacity onPress={openModal} style={MasterStyles.actionBtn}>
-        <FontAwesome name='plus' size={20} color={Colors.$black} />
+      <TouchableOpacity onPress={openModal} style={mStyles.actionBtn}>
+        <FontAwesome name='plus' size={20} color={theme.black} />
       </TouchableOpacity>
       <MasterModal
         bodyHeight={500}
-        bgColor={Colors.$modalBodyBg}
+        bgColor={theme.modalBodyBg}
         modalTitle='New Group'
         status={modalOpen}
         setStatus={setModalOpen}

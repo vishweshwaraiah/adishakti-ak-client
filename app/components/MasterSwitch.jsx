@@ -1,12 +1,11 @@
-import Colors from '@/utils/Colors';
 import React, { useEffect, useState } from 'react';
 import { View, Switch, StyleSheet } from 'react-native';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterSwitch = (props) => {
   const { onChange = () => {}, defValue = false } = props;
 
-  const { $trackFalse, $trackTrue, $thumbTrue, $thumbFalse, $iOsBgColor } =
-    Colors;
+  const { theme } = useTheme();
 
   const [isEnabled, setIsEnabled] = useState(false);
 
@@ -26,8 +25,8 @@ const MasterSwitch = (props) => {
   const styles = StyleSheet.create({
     container: {},
     trackColor: {
-      false: $trackFalse,
-      true: $trackTrue,
+      false: theme.trackFalse,
+      true: theme.trackTrue,
     },
   });
 
@@ -35,8 +34,8 @@ const MasterSwitch = (props) => {
     <View style={styles.container}>
       <Switch
         trackColor={styles.trackColor}
-        thumbColor={isEnabled ? $thumbTrue : $thumbFalse}
-        ios_backgroundColor={$iOsBgColor}
+        thumbColor={isEnabled ? theme.thumbTrue : theme.thumbFalse}
+        ios_backgroundColor={theme.iOsBgColor}
         onValueChange={toggleSwitch}
         value={isEnabled}
       />

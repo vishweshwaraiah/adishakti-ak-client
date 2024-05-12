@@ -12,8 +12,8 @@ import {
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import MasterInput from '@/components/MasterInput';
 import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const numColumns = 2;
 const size = Dimensions.get('window').width / numColumns;
@@ -21,6 +21,9 @@ const screenHeight = Dimensions.get('window').height;
 
 const SendToFew = (props) => {
   const { getList } = props;
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [phone, setPhone] = useState('');
   const [phoneError, setPhoneError] = useState('');
@@ -81,6 +84,68 @@ const SendToFew = (props) => {
     setEnteredList(filteredList);
   };
 
+  const styles = StyleSheet.create({
+    contactsBox: {
+      flexDirection: 'row',
+      gap: 'auto',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderRadius: Sizes.$ieRegularRadius,
+      overflow: 'hidden',
+      minHeight: 80,
+      maxHeight: 200,
+    },
+    numberInput: {
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+    },
+    shadowProp: {
+      paddingHorizontal: 2,
+      width: '18%',
+      ...mStyles.commonShadow,
+    },
+    addIcon: {
+      backgroundColor: theme.white,
+      borderRadius: Sizes.$ieRegularRadius,
+      paddingVertical: 12,
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: Sizes.$ieLargeHeight,
+    },
+    phonesList: {
+      flexDirection: 'row',
+      maxHeight: screenHeight / 5,
+    },
+    styleLeft: {
+      width: size - Sizes.$ieRegularPadding,
+      paddingLeft: Sizes.$ieRegularPadding,
+      paddingBottom: Sizes.$ieRegularPadding,
+    },
+    styleRight: {
+      width: size - Sizes.$ieRegularPadding,
+      paddingRight: Sizes.$ieRegularPadding,
+      paddingBottom: Sizes.$ieRegularPadding,
+    },
+    numBox: {
+      backgroundColor: theme.black,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      overflow: 'hidden',
+      borderRadius: Sizes.$ieLargeRadius,
+      height: Sizes.$ieRegularHeight,
+    },
+    contactNum: {
+      color: theme.white,
+      paddingVertical: Sizes.$ieExtraPadding,
+      paddingHorizontal: Sizes.$ieRegularPadding,
+    },
+    removeIcon: {
+      paddingRight: Sizes.$ieRegularPadding,
+    },
+  });
+
   return (
     <SafeAreaView>
       <View style={styles.contactsBox}>
@@ -123,65 +188,3 @@ const SendToFew = (props) => {
 };
 
 export default SendToFew;
-
-const styles = StyleSheet.create({
-  contactsBox: {
-    flexDirection: 'row',
-    gap: 'auto',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderRadius: Sizes.$ieRegularRadius,
-    overflow: 'hidden',
-    minHeight: 80,
-    maxHeight: 200,
-  },
-  numberInput: {
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-  },
-  shadowProp: {
-    paddingHorizontal: 2,
-    width: '18%',
-    ...MasterStyles.commonShadow,
-  },
-  addIcon: {
-    backgroundColor: Colors.$white,
-    borderRadius: Sizes.$ieRegularRadius,
-    paddingVertical: 12,
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: Sizes.$ieLargeHeight,
-  },
-  phonesList: {
-    flexDirection: 'row',
-    maxHeight: screenHeight / 5,
-  },
-  styleLeft: {
-    width: size - Sizes.$ieRegularPadding,
-    paddingLeft: Sizes.$ieRegularPadding,
-    paddingBottom: Sizes.$ieRegularPadding,
-  },
-  styleRight: {
-    width: size - Sizes.$ieRegularPadding,
-    paddingRight: Sizes.$ieRegularPadding,
-    paddingBottom: Sizes.$ieRegularPadding,
-  },
-  numBox: {
-    backgroundColor: Colors.$black,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    overflow: 'hidden',
-    borderRadius: Sizes.$ieLargeRadius,
-    height: Sizes.$ieRegularHeight,
-  },
-  contactNum: {
-    color: Colors.$white,
-    paddingVertical: Sizes.$ieExtraPadding,
-    paddingHorizontal: Sizes.$ieRegularPadding,
-  },
-  removeIcon: {
-    paddingRight: Sizes.$ieRegularPadding,
-  },
-});

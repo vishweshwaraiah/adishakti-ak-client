@@ -8,18 +8,17 @@ import {
   AntDesign,
   FontAwesome,
 } from '@expo/vector-icons';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const screenWidth = Dimensions.get('window').width;
 
 const FloatingMenu = (props) => {
-  const {
-    menuItems = [],
-    headerShown = false,
-    themeColor = Colors.$theme,
-  } = props;
+  const { menuItems = [], headerShown = false, themeColor, iconsColor } = props;
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [menuStatus, setMenuStatus] = useState(false);
 
@@ -80,13 +79,14 @@ const FloatingMenu = (props) => {
 
   const CustomTabBarIcon = (event, options) => {
     const { focused } = event;
-    let { iconFamily, iconName, iconColor } = options;
+    let { iconFamily, iconName } = options;
     let iconSize = 16;
     let iconElement;
+    let iconColor = iconsColor;
 
     if (focused) {
       iconSize = 24;
-      iconColor = Colors.$selected;
+      iconColor = theme.selected;
     }
 
     if (options.isTrigger) iconSize = 32;
@@ -142,7 +142,7 @@ const FloatingMenu = (props) => {
       left: screenWidth - 50,
       right: 50,
       bottom: '5%',
-      ...MasterStyles.commonShadow,
+      ...mStyles.commonShadow,
     },
     triggerBtn: {
       position: 'absolute',

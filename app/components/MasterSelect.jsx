@@ -9,11 +9,14 @@ import {
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterSelect = (props) => {
   const { defaultSelect, selectData, onSelect } = props;
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const DropdownButton = useRef();
   const [visible, setVisible] = useState(false);
@@ -33,6 +36,7 @@ const MasterSelect = (props) => {
   };
 
   const onItemPress = (item) => {
+    item.selected = true;
     setSelected(item);
     onSelect(item);
     setVisible(false);
@@ -44,17 +48,20 @@ const MasterSelect = (props) => {
     setSelected(undefined);
   }, [defaultSelect]);
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={[
-        styles.selectOption,
-        item.value === selected?.value && styles.isSelected,
-      ]}
-      onPress={() => onItemPress(item)}
-    >
-      <Text>{item.label}</Text>
-    </TouchableOpacity>
-  );
+  const renderItem = ({ item }) => {
+    console.log('item', item);
+    return (
+      <TouchableOpacity
+        style={[
+          styles.selectOption,
+          item.value === selected?.value && styles.isSelected,
+        ]}
+        onPress={() => onItemPress(item)}
+      >
+        <Text>{item.label}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   const getLabel = (item) => {
     if (item) {
@@ -81,6 +88,61 @@ const MasterSelect = (props) => {
     );
   };
 
+  const styles = StyleSheet.create({
+    selectButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: theme.white,
+      height: Sizes.$ieLargeHeight,
+      zIndex: 1,
+      borderRadius: Sizes.$ieRegularRadius,
+      zIndex: 201,
+      ...mStyles.commonShadow,
+    },
+    buttonText: {
+      flex: 1,
+      textAlign: 'left',
+      marginLeft: Sizes.$ieRegularMargin,
+    },
+    icon: {
+      marginRight: Sizes.$ieRegularMargin,
+    },
+    selectDropdown: {
+      position: 'absolute',
+      backgroundColor: theme.white,
+      width: '95%',
+      paddingBottom: Sizes.$ieRegularPadding,
+      borderBottomLeftRadius: Sizes.$ieRegularRadius,
+      borderBottomRightRadius: Sizes.$ieRegularRadius,
+      borderTopWidth: 5,
+      borderColor: theme.primary,
+      ...mStyles.darkShadow,
+    },
+    selectOverlay: {
+      width: '100%',
+      height: '100%',
+      margin: 'auto',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+      backgroundColor: theme.modalBackground,
+      zIndex: 200,
+    },
+    dropdownList: {
+      width: '100%',
+    },
+    selectOption: {
+      padding: Sizes.$ieRegularPadding,
+      justifyContent: 'center',
+      height: Sizes.$ieLargeHeight,
+      borderBottomWidth: 0.3,
+    },
+    isSelected: {
+      backgroundColor: 'red', //theme.selected,
+    },
+  });
+
   return (
     <TouchableOpacity
       ref={DropdownButton}
@@ -98,60 +160,5 @@ const MasterSelect = (props) => {
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  selectButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.$white,
-    height: Sizes.$ieLargeHeight,
-    zIndex: 1,
-    borderRadius: Sizes.$ieRegularRadius,
-    zIndex: 201,
-    ...MasterStyles.commonShadow,
-  },
-  buttonText: {
-    flex: 1,
-    textAlign: 'left',
-    marginLeft: Sizes.$ieRegularMargin,
-  },
-  icon: {
-    marginRight: Sizes.$ieRegularMargin,
-  },
-  selectDropdown: {
-    position: 'absolute',
-    backgroundColor: Colors.$white,
-    width: '95%',
-    paddingBottom: Sizes.$ieRegularPadding,
-    borderBottomLeftRadius: Sizes.$ieRegularRadius,
-    borderBottomRightRadius: Sizes.$ieRegularRadius,
-    borderTopWidth: 5,
-    borderColor: Colors.$primary,
-    ...MasterStyles.darkShadow,
-  },
-  selectOverlay: {
-    width: '100%',
-    height: '100%',
-    margin: 'auto',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: Colors.$modalBackground,
-    zIndex: 200,
-  },
-  dropdownList: {
-    width: '100%',
-  },
-  selectOption: {
-    padding: Sizes.$ieRegularPadding,
-    justifyContent: 'center',
-    height: Sizes.$ieLargeHeight,
-    borderBottomWidth: 0.3,
-  },
-  isSelected: {
-    backgroundColor: Colors.$selected,
-  },
-});
 
 export default MasterSelect;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterButton = (props) => {
   const {
@@ -11,11 +11,14 @@ const MasterButton = (props) => {
     title = '',
     marginTop,
     variant = 'primary',
-    textColor = Colors.$white,
+    textColor,
     width = 'auto',
     shape = 'round',
     height = 'regular',
   } = props;
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const customStyles = () => {
     const defStyle = {};
@@ -44,7 +47,7 @@ const MasterButton = (props) => {
       height: Sizes.$ieRegularHeight,
       maxHeight: Sizes.$btnDimension,
       minWidth: Sizes.$btnDimension,
-      ...MasterStyles.commonShadow,
+      ...mStyles.commonShadow,
     },
     text: {
       fontSize: Sizes.$ieRegularFont,
@@ -57,28 +60,28 @@ const MasterButton = (props) => {
       backgroundColor: 'transparent',
     },
     primary: {
-      backgroundColor: Colors.$primary,
+      backgroundColor: theme.primary,
     },
     secondary: {
-      backgroundColor: Colors.$secondary,
+      backgroundColor: theme.secondary,
     },
     success: {
-      backgroundColor: Colors.$success,
+      backgroundColor: theme.success,
     },
     danger: {
-      backgroundColor: Colors.$danger,
+      backgroundColor: theme.danger,
     },
     warning: {
-      backgroundColor: Colors.$warning,
+      backgroundColor: theme.warning,
     },
     info: {
-      backgroundColor: Colors.$info,
+      backgroundColor: theme.info,
     },
     light: {
-      backgroundColor: Colors.$light,
+      backgroundColor: theme.light,
     },
     dark: {
-      backgroundColor: Colors.$black,
+      backgroundColor: theme.black,
     },
   });
 

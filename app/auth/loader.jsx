@@ -8,13 +8,16 @@ import BaseTemplate from '@/wrappers/BaseTemplate';
 import MasterButton from '@/components/MasterButton';
 import { useRouter } from 'expo-router';
 import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
-import MasterStyles from '@/utils/MasterStyles';
+import { useTheme } from '@/themes/ThemeProvider';
+import useMasterStyle from '@/utils/useMasterStyle';
 
 const Loader = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user, userStatus, message } = useSelector((state) => state.userSlice);
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [loaderMessage, setLoaderMessage] = useState('Loading you app!');
   const [actionTitle, setActionTitle] = useState('Retry');
@@ -93,7 +96,7 @@ const Loader = () => {
     loaderView: {
       width: '100%',
       height: '100%',
-      backgroundColor: Colors.$modalBackground,
+      backgroundColor: theme.modalBackground,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
@@ -105,14 +108,14 @@ const Loader = () => {
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      backgroundColor: Colors.$modalBodyBg,
+      backgroundColor: theme.modalBodyBg,
       borderRadius: Sizes.$ieLargeRadius,
       padding: Sizes.$ieExtraPadding,
-      ...MasterStyles.commonShadow,
+      ...mStyles.commonShadow,
     },
     loaderText: {
       fontSize: Sizes.$ieRegularFont,
-      color: Colors.$green,
+      color: theme.green,
       fontWeight: 'bold',
       textAlign: 'center',
       paddingTop: Sizes.$ieLargePadding,
@@ -126,14 +129,14 @@ const Loader = () => {
           <ActivityIndicator
             animating={true}
             size='large'
-            color={Colors.$green}
+            color={theme.green}
           />
           <Text style={styles.loaderText}>{loaderMessage}</Text>
           {(userStatus === 'error' || appStatus === 'disconnected') && (
             <MasterButton
               onPress={handleBtnAction}
               variant='light'
-              textColor={Colors.$green}
+              textColor={theme.green}
               title={actionTitle}
               marginTop={Sizes.$ieLargeMargin}
             />

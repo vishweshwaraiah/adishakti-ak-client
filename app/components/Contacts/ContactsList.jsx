@@ -7,12 +7,12 @@ import {
   View,
 } from 'react-native';
 import ContactItem from '@/components/Contacts/ContactItem';
-import MasterInput from '../MasterInput';
-import Colors from '@/utils/Colors';
-import Sizes from '@/utils/Sizes';
+import MasterInput from '@/components/MasterInput';
 import useContacts from '@/utils/useContacts';
 import MasterCheckbox from '@/components/MasterCheckbox';
 import { FontAwesome5 } from '@expo/vector-icons';
+import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const ContactsList = (props) => {
   const {
@@ -21,6 +21,8 @@ const ContactsList = (props) => {
     fetchSelected = () => {},
     onSelectText = () => {},
   } = props;
+
+  const { theme } = useTheme();
 
   const [keyword, setKeyword] = useState('');
   const [order, setOrder] = useState('Asc');
@@ -149,10 +151,10 @@ const ContactsList = (props) => {
       backgroundColor: bgColor,
     },
     sortButton: {
-      backgroundColor: Colors.$gray,
+      backgroundColor: theme.gray,
       padding: Sizes.$ieRegularPadding,
       borderRadius: Sizes.$ieRegularRadius,
-      borderBottomColor: Colors.$activeBar,
+      borderBottomColor: theme.activeBar,
       borderBottomWidth: 2,
       marginHorizontal: Sizes.$ieRegularMargin,
       justifyContent: 'space-between',

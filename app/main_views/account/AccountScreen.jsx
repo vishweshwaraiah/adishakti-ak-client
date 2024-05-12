@@ -3,14 +3,38 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import SettingsRow from '@/components/Settings/SettingsRow';
 import { router } from 'expo-router';
-import Colors from '@/utils/Colors';
-import Sizes from '@/utils/Sizes';
 import MasterAvatar from '@/components/Settings/MasterAvatar';
+import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const AccountScreen = () => {
+  const { theme } = useTheme();
+
   const editProfile = () => {
     router.navigate('sub_views/account/ProfileScreen');
   };
+
+  const styles = StyleSheet.create({
+    profileBox: {
+      padding: Sizes.$ieRegularPadding,
+    },
+    editBtn: {
+      position: 'absolute',
+      right: 0,
+      opacity: 0.8,
+      backgroundColor: theme.primary,
+      paddingHorizontal: Sizes.$ieExtraPadding,
+      paddingVertical: Sizes.$ieRegularPadding,
+      borderRadius: Sizes.$ieLargeRadius,
+    },
+    settingsRows: {
+      justifyContent: 'center',
+      width: '95%',
+      alignItems: 'center',
+      alignSelf: 'center',
+      gap: Sizes.$ieRegularMargin,
+    },
+  });
 
   return (
     <AuthTemplate screenName='Account'>
@@ -50,27 +74,5 @@ const AccountScreen = () => {
     </AuthTemplate>
   );
 };
-
-const styles = StyleSheet.create({
-  profileBox: {
-    padding: Sizes.$ieRegularPadding,
-  },
-  editBtn: {
-    position: 'absolute',
-    right: 0,
-    opacity: 0.8,
-    backgroundColor: Colors.$primary,
-    paddingHorizontal: Sizes.$ieExtraPadding,
-    paddingVertical: Sizes.$ieRegularPadding,
-    borderRadius: Sizes.$ieLargeRadius,
-  },
-  settingsRows: {
-    justifyContent: 'center',
-    width: '95%',
-    alignItems: 'center',
-    alignSelf: 'center',
-    gap: Sizes.$ieRegularMargin,
-  },
-});
 
 export default AccountScreen;

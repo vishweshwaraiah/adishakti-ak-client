@@ -10,9 +10,17 @@ const Layout = () => {
   return (
     <>
       {menuType === 'floating' ? (
-        <FloatingMenu menuItems={MenuRoutes} themeColor='orange' />
+        <FloatingMenu
+          menuItems={MenuRoutes}
+          themeColor='black'
+          iconsColor='white'
+        />
       ) : (
-        <BottomMenu menuItems={MenuRoutes} />
+        <BottomMenu
+          menuItems={MenuRoutes}
+          themeColor='white'
+          iconsColor='black'
+        />
       )}
     </>
   );

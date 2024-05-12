@@ -1,7 +1,6 @@
+import { useTheme } from '@/themes/ThemeProvider';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Colors from '@/utils/Colors';
-import Sizes from '@/utils/Sizes';
 
 const CalendarGrid = (props) => {
   const {
@@ -14,6 +13,8 @@ const CalendarGrid = (props) => {
     itemSpace = 0,
     onClick = () => {},
   } = props;
+
+  const { theme } = useTheme();
 
   const [rows, setRows] = useState(5);
 
@@ -42,22 +43,22 @@ const CalendarGrid = (props) => {
       padding: itemSpace,
     },
     activeDates: {
-      color: Colors.$black,
+      color: theme.black,
     },
     disabledDates: {
-      color: Colors.$gray,
+      color: theme.gray,
     },
     currentStyle: {
-      backgroundColor: Colors.$primary,
+      backgroundColor: theme.primary,
     },
     selectedStyle: {
-      backgroundColor: Colors.$secondary,
+      backgroundColor: theme.secondary,
     },
     selectedDate: {
-      color: Colors.$white,
+      color: theme.white,
     },
     headerBg: {
-      backgroundColor: Colors.$secondary,
+      backgroundColor: theme.secondary,
       marginBottom: 5,
     },
   });

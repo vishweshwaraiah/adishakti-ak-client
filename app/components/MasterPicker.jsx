@@ -4,9 +4,9 @@ import { Entypo, Feather } from '@expo/vector-icons';
 import { daysObjects, fetchMonth, toUTCDate } from '@/utils/DateTime';
 import CalendarGrid from '@/components/CalendarGrid';
 import MasterModal from '@/components/Modals/MasterModal';
-import Colors from '@/utils/Colors';
 import MasterButton from '@/components/MasterButton';
 import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterPicker = (props) => {
   const {
@@ -15,6 +15,8 @@ const MasterPicker = (props) => {
     onCancel = () => {},
     modalStatus = 'close',
   } = props;
+
+  const { theme } = useTheme();
 
   const [visibleDays, setVisibleDays] = useState([]);
   const [dateRef, setDateRef] = useState(new Date());
@@ -204,7 +206,7 @@ const MasterPicker = (props) => {
     <MasterModal
       bodyHeight={400}
       bodyWidth='80%'
-      bgColor={Colors.$modalBodyBg}
+      bgColor={theme.modalBodyBg}
       status={modalOpen}
       setStatus={setModalOpen}
       isClosable={false}

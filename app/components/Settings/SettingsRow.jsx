@@ -7,11 +7,11 @@ import {
   AntDesign,
   Feather,
 } from '@expo/vector-icons';
-import Colors from '@/utils/Colors';
-import Sizes from '@/utils/Sizes';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
 import { useRouter } from 'expo-router';
 import { trimmedText } from '@/utils/Globals';
+import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const SettingsRow = (props) => {
   const {
@@ -27,6 +27,9 @@ const SettingsRow = (props) => {
   } = props;
 
   const router = useRouter();
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [radiusStyle, setRadiusStyle] = useState({});
 
@@ -96,12 +99,12 @@ const SettingsRow = (props) => {
     settingsRow: {
       width: '100%',
       flexDirection: 'row',
-      backgroundColor: Colors.$white,
+      backgroundColor: theme.white,
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: Sizes.$ieExtraPadding,
       ...radiusStyle,
-      ...MasterStyles.commonShadow,
+      ...mStyles.commonShadow,
     },
     titleView: {
       flexDirection: 'row',
@@ -117,12 +120,12 @@ const SettingsRow = (props) => {
     },
     rowTitle: {
       fontSize: Sizes.$ieRegularFont,
-      color: Colors.$black,
+      color: theme.black,
       flexWrap: 'nowrap',
     },
     subTitle: {
       fontSize: Sizes.$ieSmallFont,
-      color: Colors.$gray,
+      color: theme.gray,
     },
     rightIcon: {
       position: 'absolute',

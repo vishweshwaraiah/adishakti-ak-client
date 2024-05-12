@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import MasterStyles from '@/utils/MasterStyles';
-import Colors from '@/utils/Colors';
+import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterModal = (props) => {
   const {
@@ -24,6 +24,9 @@ const MasterModal = (props) => {
     onClose = () => {},
     isClosable = true,
   } = props;
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [visibility, setVisibility] = useState('close');
   const [isOpen, setIsOpen] = useState(false);
@@ -72,7 +75,7 @@ const MasterModal = (props) => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: Colors.$modalBackground,
+      backgroundColor: theme.modalBackground,
     },
     modalContainer: {
       backgroundColor: bgColor,
@@ -80,7 +83,7 @@ const MasterModal = (props) => {
       minHeight: bodyHeight || '50%',
       width: bodyWidth || '80%',
       transform: [{ scale: scaleValue }],
-      ...MasterStyles.commonShadow,
+      ...mStyles.commonShadow,
     },
     modalHeader: {
       borderBottomWidth: modalTitle ? 2 : 0,
@@ -114,11 +117,11 @@ const MasterModal = (props) => {
       justifyContent: 'flex-start',
       alignItems: 'center',
       padding: Sizes.$ieRegularPadding,
-      backgroundColor: Colors.$primary,
+      backgroundColor: theme.primary,
       overflow: 'hidden',
     },
     textStyle: {
-      color: Colors.$white,
+      color: theme.white,
       fontWeight: 'bold',
       textAlign: 'center',
     },

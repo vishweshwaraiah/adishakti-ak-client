@@ -9,8 +9,8 @@ import {
   AntDesign,
   Feather,
 } from '@expo/vector-icons';
-import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const AlertModal = (props) => {
   const {
@@ -25,6 +25,8 @@ const AlertModal = (props) => {
     iconFamily,
     isClosable = true,
   } = props;
+
+  const { theme } = useTheme();
 
   const [modalOpen, setModalOpen] = useState('close');
 
@@ -91,21 +93,41 @@ const AlertModal = (props) => {
   const loadingView = () => {
     return (
       <View style={styles.subView}>
-        <ActivityIndicator
-          animating={true}
-          size='large'
-          color={Colors.$green}
-        />
+        <ActivityIndicator animating={true} size='large' color={theme.green} />
         <Text style={styles.actionText}>{statusMessage}</Text>
       </View>
     );
   };
 
+  const styles = StyleSheet.create({
+    bodyContent: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 5,
+    },
+    subView: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    groupActions: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 10,
+    },
+    actionText: {
+      justifyContent: 'center',
+      textAlign: 'center',
+      padding: Sizes.$ieExtraPadding,
+      marginBottom: Sizes.$ieRegularMargin,
+    },
+  });
+
   return (
     <MasterModal
       bodyHeight={280}
       bodyWidth='70%'
-      bgColor={Colors.$modalBodyBg}
+      bgColor={theme.modalBodyBg}
       status={modalOpen}
       setStatus={setModalOpen}
       onClose={onClose}
@@ -121,27 +143,3 @@ const AlertModal = (props) => {
 };
 
 export default AlertModal;
-
-const styles = StyleSheet.create({
-  bodyContent: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 5,
-  },
-  subView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  groupActions: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
-  },
-  actionText: {
-    justifyContent: 'center',
-    textAlign: 'center',
-    padding: Sizes.$ieExtraPadding,
-    marginBottom: Sizes.$ieRegularMargin,
-  },
-});

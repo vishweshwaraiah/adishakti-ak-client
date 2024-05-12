@@ -10,8 +10,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchNumsGroups } from '@/redux/slice/numsGroups';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const numColumns = 2;
 const size = Dimensions.get('window').width / numColumns;
@@ -19,7 +19,11 @@ const screenHeight = Dimensions.get('window').height;
 
 const SendToGroup = (props) => {
   const { getList } = props;
+
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
+
   const { groupsList, status } = useSelector((state) => state.groupsSlice);
 
   const [selectedGroup, setSelectedGroup] = useState({});
@@ -51,6 +55,49 @@ const SendToGroup = (props) => {
     </View>
   );
 
+  const styles = StyleSheet.create({
+    groupBox: {
+      height: 'auto',
+      width: '100%',
+      marginTop: Sizes.$ieRegularMargin,
+    },
+    groupsList: {
+      maxHeight: screenHeight / 5,
+    },
+    styleLeft: {
+      width: size - Sizes.$ieRegularPadding,
+      paddingLeft: Sizes.$ieRegularPadding,
+      paddingBottom: Sizes.$ieRegularPadding,
+    },
+    styleRight: {
+      width: size - Sizes.$ieRegularPadding,
+      paddingRight: Sizes.$ieRegularPadding,
+      paddingBottom: Sizes.$ieRegularPadding,
+    },
+    groupItem: {
+      backgroundColor: theme.black,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      overflow: 'hidden',
+      height: Sizes.$ieRegularHeight,
+      borderRadius: Sizes.$ieRegularRadius,
+      paddingHorizontal: Sizes.$ieRegularPadding,
+    },
+    groupItemText: {
+      color: theme.white,
+    },
+    infoText: {
+      textAlign: 'center',
+      backgroundColor: theme.info,
+      padding: Sizes.$ieRegularPadding,
+      marginBottom: Sizes.$ieSmallMargin,
+      borderRadius: Sizes.$ieSmallRadius,
+      overflow: 'hidden',
+      color: theme.white,
+    },
+  });
+
   return (
     <View style={styles.groupBox}>
       {status === 'loading' ? (
@@ -76,46 +123,3 @@ const SendToGroup = (props) => {
 };
 
 export default SendToGroup;
-
-const styles = StyleSheet.create({
-  groupBox: {
-    height: 'auto',
-    width: '100%',
-    marginTop: Sizes.$ieRegularMargin,
-  },
-  groupsList: {
-    maxHeight: screenHeight / 5,
-  },
-  styleLeft: {
-    width: size - Sizes.$ieRegularPadding,
-    paddingLeft: Sizes.$ieRegularPadding,
-    paddingBottom: Sizes.$ieRegularPadding,
-  },
-  styleRight: {
-    width: size - Sizes.$ieRegularPadding,
-    paddingRight: Sizes.$ieRegularPadding,
-    paddingBottom: Sizes.$ieRegularPadding,
-  },
-  groupItem: {
-    backgroundColor: Colors.$black,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    overflow: 'hidden',
-    height: Sizes.$ieRegularHeight,
-    borderRadius: Sizes.$ieRegularRadius,
-    paddingHorizontal: Sizes.$ieRegularPadding,
-  },
-  groupItemText: {
-    color: Colors.$white,
-  },
-  infoText: {
-    textAlign: 'center',
-    backgroundColor: Colors.$info,
-    padding: Sizes.$ieRegularPadding,
-    marginBottom: Sizes.$ieSmallMargin,
-    borderRadius: Sizes.$ieSmallRadius,
-    overflow: 'hidden',
-    color: Colors.$white,
-  },
-});

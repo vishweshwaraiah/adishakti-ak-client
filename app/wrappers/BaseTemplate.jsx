@@ -7,12 +7,14 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Colors from '@/utils/Colors';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const screenWidth = Dimensions.get('window').width;
 
 const BaseTemplate = (props) => {
   const { children, containerStyle = {} } = props;
+
+  const { theme } = useTheme();
 
   const styles = StyleSheet.create({
     defaultStyles: {
@@ -33,7 +35,7 @@ const BaseTemplate = (props) => {
 
   return (
     <View style={styles.defaultStyles}>
-      <LinearGradient colors={Colors.$gradientsArray}>
+      <LinearGradient colors={theme.gradientsArray}>
         <ImageBackground
           style={styles.loginImage}
           source={require('@/assets/images/bg.jpg')}

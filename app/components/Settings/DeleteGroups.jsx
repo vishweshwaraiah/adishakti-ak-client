@@ -9,13 +9,16 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchNumsGroups, deleteNumsGroup } from '@/redux/slice/numsGroups';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '@/utils/Colors';
-import Sizes from '@/utils/Sizes';
 import MasterError from '@/components/MasterError';
 import AlertModal from '@/components/Modals/AlertModal';
+import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const DeleteGroups = () => {
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
+
   const { groupsList, isDeleted, status, message } = useSelector(
     (state) => state.groupsSlice
   );
@@ -72,6 +75,32 @@ const DeleteGroups = () => {
     </View>
   );
 
+  const styles = StyleSheet.create({
+    utilsBox: {
+      flex: 1,
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    rowStyle: {
+      width: '100%',
+      alignSelf: 'center',
+      backgroundColor: theme.black,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      overflow: 'hidden',
+      borderRadius: Sizes.$ieRegularRadius,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.white,
+      height: Sizes.$ieRegularHeight,
+      paddingHorizontal: Sizes.$ieExtraPadding,
+      marginBottom: Sizes.$ieSmallMargin,
+    },
+    groupItemText: {
+      color: theme.white,
+    },
+  });
+
   return (
     <View style={styles.utilsBox}>
       {status === 'error' && (
@@ -108,29 +137,3 @@ const DeleteGroups = () => {
 };
 
 export default DeleteGroups;
-
-const styles = StyleSheet.create({
-  utilsBox: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  rowStyle: {
-    width: '100%',
-    alignSelf: 'center',
-    backgroundColor: Colors.$black,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    overflow: 'hidden',
-    borderRadius: Sizes.$ieRegularRadius,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.$white,
-    height: Sizes.$ieRegularHeight,
-    paddingHorizontal: Sizes.$ieExtraPadding,
-    marginBottom: Sizes.$ieSmallMargin,
-  },
-  groupItemText: {
-    color: Colors.$white,
-  },
-});

@@ -20,8 +20,8 @@ import BaseTemplate from '@/wrappers/BaseTemplate';
 import MasterButton from '@/components/MasterButton';
 import MasterInput from '@/components/MasterInput';
 import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
 import MonoText from '@/components/MonoText';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -29,6 +29,8 @@ const AppLogin = () => {
   const router = useRouter();
   const { status, token, message } = useSelector((state) => state.authSlice);
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -129,7 +131,7 @@ const AppLogin = () => {
       width: screenWidth,
     },
     title: {
-      color: Colors.$black,
+      color: theme.black,
       fontSize: Sizes.$ieTitleFont,
       textTransform: 'uppercase',
     },
@@ -139,7 +141,7 @@ const AppLogin = () => {
       justifyContent: 'space-between',
     },
     forgot_link: {
-      color: Colors.$primary,
+      color: theme.primary,
       fontWeight: '500',
     },
     switchScreen: {

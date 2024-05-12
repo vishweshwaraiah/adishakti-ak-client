@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const GenderSelector = (props) => {
   const {
@@ -13,6 +13,9 @@ const GenderSelector = (props) => {
     value = '',
     required = false,
   } = props;
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [genderValue, setGenderValue] = useState('');
   const [genderError, setGenderError] = useState('');
@@ -44,13 +47,13 @@ const GenderSelector = (props) => {
       gap: Sizes.$ieFlexGapLarge,
       alignSelf: 'center',
       justifyContent: 'space-between',
-      ...MasterStyles.commonShadow,
+      ...mStyles.commonShadow,
     },
     genderBtn: {
       flex: 1,
       marginBottom: spacing,
       marginTop: spacing ? spacing / 2 : 0,
-      backgroundColor: Colors.$light,
+      backgroundColor: theme.light,
       borderRadius: Sizes.$ieRegularRadius,
       overflow: 'hidden',
       height: Sizes.$ieLargeHeight,
@@ -64,21 +67,21 @@ const GenderSelector = (props) => {
       fontSize: Sizes.$ieSmallFont,
       lineHeight: Sizes.$ieSmallFont,
       marginTop: spacing,
-      color: Colors.$secondary,
+      color: theme.secondary,
     },
     genderText: {
       fontSize: Sizes.$ieSmallFont,
       lineHeight: Sizes.$ieSmallFont,
-      color: Colors.$secondary,
+      color: theme.secondary,
     },
     errorText: {
       fontSize: Sizes.$ieSmallFont,
-      color: Colors.$danger,
+      color: theme.danger,
       textAlign: 'left',
       alignSelf: 'flex-start',
     },
     inputSelected: {
-      borderColor: Colors.$secondary,
+      borderColor: theme.secondary,
       borderWidth: 2,
     },
   });

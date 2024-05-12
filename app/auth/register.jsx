@@ -13,17 +13,16 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { ValidEmail, ValidNumber, ValidPassword } from '@/utils/Globals';
+import { registerUser, resetState } from '@/redux/slice/authData';
+import { useRouter } from 'expo-router';
 import MasterButton from '@/components/MasterButton';
 import MasterInput from '@/components/MasterInput';
-import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
-import { useRouter } from 'expo-router';
 import BaseTemplate from '@/wrappers/BaseTemplate';
-import { registerUser, resetState } from '@/redux/slice/authData';
 import { clearUser } from '@/redux/slice/userData';
 import MonoText from '@/components/MonoText';
 import AlertModal from '@/components/Modals/AlertModal';
-import { ValidEmail, ValidNumber, ValidPassword } from '@/utils/Globals';
+import Sizes from '@/utils/Sizes';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -197,7 +196,7 @@ const AppRegister = () => {
       width: screenWidth,
     },
     title: {
-      color: Colors.$black,
+      color: theme.black,
       fontSize: Sizes.$ieTitleFont,
       textTransform: 'uppercase',
     },

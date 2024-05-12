@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const FlatListGrid = (props) => {
   const {
@@ -10,6 +10,8 @@ const FlatListGrid = (props) => {
     columns = 5,
     itemSpace = Sizes.$ieRegularPadding,
   } = props;
+
+  const { theme } = useTheme();
 
   const RenderItem = ({ item }) => {
     return (
@@ -31,7 +33,7 @@ const FlatListGrid = (props) => {
       minWidth: Math.floor(100 / columns) + '%',
       maxWidth: Math.floor(100 / columns) + '%',
       paddingVertical: itemSpace,
-      backgroundColor: Colors.$white,
+      backgroundColor: theme.white,
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',

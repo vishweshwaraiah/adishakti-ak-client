@@ -8,17 +8,21 @@ import {
   AntDesign,
   FontAwesome,
 } from '@expo/vector-icons';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const BottomMenu = (props) => {
   const {
     menuItems = [],
     headerShown = false,
-    floatingBtnBg = Colors.$activeBar,
-    themeColor = Colors.$theme,
+    floatingBtnBg,
+    themeColor,
+    iconsColor,
   } = props;
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const CustomTabBarButton = (props) => {
     const { children, onPress } = props;
@@ -32,12 +36,13 @@ const BottomMenu = (props) => {
 
   const CustomTabBarIcon = (event, options) => {
     const { focused } = event;
-    let { iconFamily, iconName, iconColor } = options;
+    let { iconFamily, iconName } = options;
     let iconSize = 24;
     let iconElement;
+    let iconColor = iconsColor || theme.white;
 
     if (focused) {
-      iconColor = Colors.$gray;
+      iconColor = theme.midblue;
       iconSize = 32;
     }
 
@@ -76,14 +81,14 @@ const BottomMenu = (props) => {
     tabBarStyle: {
       position: 'absolute',
       bottom: Sizes.$ieMenuBottomSpace,
-      backgroundColor: Colors.$white,
+      backgroundColor: themeColor || theme.navBackground,
       borderRadius: Sizes.$ieRegularRadius * 2,
       width: '90%',
       left: '5%',
       right: '5%',
       height: Sizes.$navDimension,
       maxHeight: Sizes.$ieMenuMaxHeight,
-      ...MasterStyles.navShadow,
+      ...mStyles.navShadow,
     },
     tabItemStyle: {
       top: Platform.OS === 'ios' ? 20 : 10,
@@ -97,13 +102,13 @@ const BottomMenu = (props) => {
       top: -15,
       alignItems: 'center',
       justifyContent: 'center',
-      ...MasterStyles.navShadow,
+      ...mStyles.navShadow,
     },
     buttonView: {
       width: Sizes.$btnDimension,
       height: Sizes.$btnDimension,
       borderRadius: 35,
-      backgroundColor: floatingBtnBg,
+      backgroundColor: floatingBtnBg || theme.activeBar,
       paddingTop: Sizes.$ieRegularPadding,
     },
   });

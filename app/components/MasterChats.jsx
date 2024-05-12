@@ -11,12 +11,12 @@ import {
   Pressable,
 } from 'react-native';
 import Sizes from '@/utils/Sizes';
-import Colors from '@/utils/Colors';
 import { FontAwesome } from '@expo/vector-icons';
 import MasterSelect from '@/components/MasterSelect';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
 import SendToFew from '@/components/Messages/SendToFew';
 import SendToGroup from '@/components/Messages/SendToGroup';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterChats = (props) => {
   const {
@@ -25,6 +25,9 @@ const MasterChats = (props) => {
     selectOptions = [],
     resetAction = {},
   } = props;
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const defaultSelect = {
     label: 'Select an option',
@@ -97,6 +100,54 @@ const MasterChats = (props) => {
     resetForm();
   }, [resetAction]);
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: Sizes.$ieRegularPadding,
+      height: '100%',
+    },
+    mainBox: {
+      position: 'relative',
+      backgroundColor: theme.white,
+      padding: Sizes.$ieExtraPadding,
+      borderRadius: Sizes.$ieRegularRadius,
+      ...mStyles.commonShadow,
+    },
+    inputBox: {
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      minHeight: 80,
+      maxHeight: 200,
+    },
+    sendIconBox: {
+      position: 'relative',
+      padding: Sizes.$ieRegularPadding,
+      borderTopColor: theme.secondary,
+      borderTopWidth: 1,
+      marginTop: Sizes.$ieRegularMargin,
+      marginBottom: Sizes.$ieRegularMargin * 2,
+    },
+    sendIcon: {
+      position: 'absolute',
+      right: Sizes.$ieRegularPadding,
+      top: Sizes.$ieRegularPadding,
+      marginTop: Sizes.$ieRegularMargin,
+      marginBottom: Sizes.$ieRegularMargin,
+    },
+    pressedBtn: {
+      opacity: 0.5,
+      transform: [{ scale: 1.5 }],
+    },
+    mbRegular: {
+      marginBottom: Sizes.$ieRegularMargin,
+    },
+    messageTitle: {
+      fontSize: Sizes.$ieTitleFont,
+      marginBottom: Sizes.$ieRegularMargin,
+      fontWeight: 'bold',
+    },
+  });
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
@@ -146,51 +197,3 @@ const MasterChats = (props) => {
 };
 
 export default MasterChats;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: Sizes.$ieRegularPadding,
-    height: '100%',
-  },
-  mainBox: {
-    position: 'relative',
-    backgroundColor: Colors.$white,
-    padding: Sizes.$ieExtraPadding,
-    borderRadius: Sizes.$ieRegularRadius,
-    ...MasterStyles.commonShadow,
-  },
-  inputBox: {
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    minHeight: 80,
-    maxHeight: 200,
-  },
-  sendIconBox: {
-    position: 'relative',
-    padding: Sizes.$ieRegularPadding,
-    borderTopColor: Colors.$secondary,
-    borderTopWidth: 1,
-    marginTop: Sizes.$ieRegularMargin,
-    marginBottom: Sizes.$ieRegularMargin * 2,
-  },
-  sendIcon: {
-    position: 'absolute',
-    right: Sizes.$ieRegularPadding,
-    top: Sizes.$ieRegularPadding,
-    marginTop: Sizes.$ieRegularMargin,
-    marginBottom: Sizes.$ieRegularMargin,
-  },
-  pressedBtn: {
-    opacity: 0.5,
-    transform: [{ scale: 1.5 }],
-  },
-  mbRegular: {
-    marginBottom: Sizes.$ieRegularMargin,
-  },
-  messageTitle: {
-    fontSize: Sizes.$ieTitleFont,
-    marginBottom: Sizes.$ieRegularMargin,
-    fontWeight: 'bold',
-  },
-});

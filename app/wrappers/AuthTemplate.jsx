@@ -10,12 +10,12 @@ import {
 import { useRouter, useNavigation, usePathname } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
+import { useTheme } from '@/themes/ThemeProvider';
 import { clearUser } from '@/redux/slice/userData';
 import { logoutUser } from '@/redux/slice/authData';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import AlertModal from '@/components/Modals/AlertModal';
-import MasterStyles from '@/utils/MasterStyles';
-import Colors from '@/utils/Colors';
+import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
 
 const screenWidth = Dimensions.get('window').width;
@@ -28,6 +28,9 @@ const AuthTemplate = (props) => {
   const router = useRouter();
   const navigation = useNavigation();
   const pathname = usePathname();
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [lastScreen, setLastScreen] = useState(false);
   const [modalStatus, setModalStatus] = useState('close');
@@ -72,7 +75,7 @@ const AuthTemplate = (props) => {
       {lastScreen ? (
         <Pressable
           style={({ pressed }) => [
-            MasterStyles.actionBtn,
+            mStyles.actionBtn,
             pressed && styles.pressedBtn,
           ]}
           onPress={goHome}
@@ -83,7 +86,7 @@ const AuthTemplate = (props) => {
       ) : (
         <Pressable
           style={({ pressed }) => [
-            MasterStyles.actionBtn,
+            mStyles.actionBtn,
             pressed && styles.pressedBtn,
           ]}
           onPress={goBack}
@@ -99,7 +102,7 @@ const AuthTemplate = (props) => {
     rightHeader || (
       <Pressable
         style={({ pressed }) => [
-          MasterStyles.actionBtn,
+          mStyles.actionBtn,
           pressed && styles.pressedBtn,
         ]}
         onPress={pressLogout}
@@ -161,7 +164,7 @@ const AuthTemplate = (props) => {
   });
 
   return (
-    <LinearGradient colors={Colors.$gradientsArray} style={styles.container}>
+    <LinearGradient colors={theme.gradientsArray} style={styles.container}>
       <ImageBackground
         style={styles.loginImage}
         source={require('@/assets/images/bg.jpg')}

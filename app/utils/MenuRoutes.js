@@ -5,7 +5,6 @@ const MenuRoutes = [
     label: '',
     iconName: 'plus',
     iconFamily: 'Feather',
-    iconColor: 'white',
   },
   {
     name: 'home',
@@ -13,7 +12,6 @@ const MenuRoutes = [
     floatingBtn: false,
     iconName: 'home',
     iconFamily: 'Ionicons',
-    iconColor: 'black',
   },
   {
     name: 'messages',
@@ -21,7 +19,6 @@ const MenuRoutes = [
     floatingBtn: true,
     iconName: 'message',
     iconFamily: 'Entypo',
-    iconColor: 'black',
   },
   {
     name: 'account',
@@ -29,7 +26,6 @@ const MenuRoutes = [
     floatingBtn: false,
     iconName: 'user',
     iconFamily: 'Feather',
-    iconColor: 'black',
   },
 ];
 

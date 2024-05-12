@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import Colors from '@/utils/Colors';
 import Sizes from '@/utils/Sizes';
-import MasterStyles from '@/utils/MasterStyles';
+import useMasterStyle from '@/utils/useMasterStyle';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterError = (props) => {
   const {
@@ -12,6 +12,9 @@ const MasterError = (props) => {
     marginBottom = 0,
     textAlign = 'left',
   } = props;
+
+  const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [showError, setShowError] = useState(true);
 
@@ -33,7 +36,7 @@ const MasterError = (props) => {
     errorContainer: {
       position: 'relative',
       borderWidth: 2,
-      borderColor: Colors.$danger,
+      borderColor: theme.danger,
       width: width,
       padding: Sizes.$ieRegularPadding,
       borderRadius: Sizes.$ieRegularRadius,
@@ -41,10 +44,10 @@ const MasterError = (props) => {
       alignItems: 'center',
       alignSelf: 'center',
       marginBottom: marginBottom,
-      ...MasterStyles.commonShadow,
+      ...mStyles.commonShadow,
     },
     errorText: {
-      color: Colors.$danger,
+      color: theme.danger,
       textAlign: textAlign,
     },
   });
