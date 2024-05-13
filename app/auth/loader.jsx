@@ -1,15 +1,16 @@
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import NetInfo from '@react-native-community/netinfo';
+import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchAppSettings } from '@/redux/slice/appSettings';
 import { fetchUser } from '@/redux/slice/userData';
 import BaseTemplate from '@/wrappers/BaseTemplate';
 import MasterButton from '@/components/MasterButton';
-import { useRouter } from 'expo-router';
-import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 import useMasterStyle from '@/utils/useMasterStyle';
+import Sizes from '@/utils/Sizes';
 
 const Loader = () => {
   const router = useRouter();
@@ -51,7 +52,9 @@ const Loader = () => {
 
     if (userStatus === 'fetcheduser') {
       const checkLoginStatus = () => {
-        if (user.userEmail && user.userMobile) {
+        const { userEmail, userMobile } = user;
+        if (userEmail && userMobile) {
+          dispatch(fetchAppSettings(userEmail));
           goToHome();
         } else {
           goToLogin();

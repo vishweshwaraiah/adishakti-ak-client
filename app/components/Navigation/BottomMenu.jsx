@@ -126,7 +126,7 @@ const BottomMenu = (props) => {
           tabBarIcon: (e) => CustomTabBarIcon(e, menu),
         };
 
-        if (menu.name === 'trigger') {
+        if (menu.isTrigger) {
           options.href = null;
         }
 

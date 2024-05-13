@@ -49,7 +49,6 @@ const MasterSelect = (props) => {
   }, [defaultSelect]);
 
   const renderItem = ({ item }) => {
-    console.log('item', item);
     return (
       <TouchableOpacity
         style={[

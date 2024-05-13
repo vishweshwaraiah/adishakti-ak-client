@@ -142,6 +142,8 @@ const FloatingMenu = (props) => {
       left: screenWidth - 50,
       right: 50,
       bottom: '5%',
+      width: 0,
+      height: 0,
       ...mStyles.commonShadow,
     },
     triggerBtn: {

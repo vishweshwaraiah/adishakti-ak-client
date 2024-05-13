@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthTemplate from '@/wrappers/AuthTemplate';
-import { toggleMenuStyle } from '@/redux/slice/appSettings';
+import { updateAppSettings } from '@/redux/slice/appSettings';
 import MasterSwitch from '@/components/MasterSwitch';
 import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
@@ -25,19 +25,35 @@ const AppSettings = () => {
     { label: 'Set to Dark', value: 'dark' },
   ];
 
-  const { menuType } = useSelector((state) => state.appSettings);
+  const { menuType, appTheme, userEmail } = useSelector(
+    (state) => state.appSettings
+  );
+
   const [switchValue, setSwitchValue] = useState(false);
 
-  const changeTheme = (item) => {
-    switchTheme(item.value);
+  const handleAppTheme = (item) => {
+    const menuStyle = menuType;
+    const appTheme = item.value;
+
+    const defPrefs = {
+      appTheme,
+      menuStyle,
+      userEmail,
+    };
+
+    dispatch(updateAppSettings(defPrefs));
   };
 
-  const onChange = (value) => {
-    let menuType = 'bottom';
-    if (value === true) {
-      menuType = 'floating';
-    }
-    dispatch(toggleMenuStyle(menuType));
+  const handleMenuStyle = (value) => {
+    let menuStyle = value === true ? 'floating' : 'default';
+
+    const defPrefs = {
+      appTheme,
+      menuStyle,
+      userEmail,
+    };
+
+    dispatch(updateAppSettings(defPrefs));
   };
 
   useEffect(() => {
@@ -47,6 +63,10 @@ const AppSettings = () => {
       setSwitchValue(false);
     }
   }, [menuType]);
+
+  useEffect(() => {
+    switchTheme(appTheme);
+  }, [appTheme]);
 
   const styles = StyleSheet.create({
     settingsBox: {
@@ -71,12 +91,12 @@ const AppSettings = () => {
       <View style={styles.settingsBox}>
         <View style={styles.settingsRow}>
           <Text>Enable Floating Menu Style</Text>
-          <MasterSwitch defValue={switchValue} onChange={onChange} />
+          <MasterSwitch defValue={switchValue} onChange={handleMenuStyle} />
         </View>
         <MasterSelect
           defaultSelect={defaultSelect}
           selectData={selectOptions}
-          onSelect={changeTheme}
+          onSelect={handleAppTheme}
         />
       </View>
     </AuthTemplate>
