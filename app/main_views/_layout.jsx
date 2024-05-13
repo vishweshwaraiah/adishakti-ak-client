@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import BottomMenu from '@/components/BottomMenu';
-import FloatingMenu from '@/components/FloatingMenu';
+import BottomMenu from '@/components/Navigation/BottomMenu';
+import FloatingMenu from '@/components/Navigation/FloatingMenu';
 import MenuRoutes from '@/utils/MenuRoutes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const Layout = () => {
-  const { menuType } = useSelector((state) => state.appSettings);
+  const { menuType, appTheme } = useSelector((state) => state.appSettings);
+  const { switchTheme } = useTheme();
+
+  useEffect(() => {
+    switchTheme(appTheme);
+  }, [appTheme]);
 
   return (
     <>
