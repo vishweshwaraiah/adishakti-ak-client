@@ -29,18 +29,12 @@ const MasterChats = (props) => {
   const { theme } = useTheme();
   const mStyles = useMasterStyle();
 
-  const defaultSelect = {
-    label: 'Select an option',
-    value: 'default',
-  };
-
   const [textMessage, setTextMessage] = useState('');
   const [phonesArray, setPhonesArray] = useState([]);
   const [enteredList, setEnteredList] = useState([]);
   const [groupList, setGroupList] = useState([]);
   const [selected, setSelected] = useState(undefined);
   const [sendType, setSendType] = useState(undefined);
-  const [defLabel, setDefLabel] = useState(defaultSelect);
 
   const resetForm = () => {
     setTextMessage('');
@@ -48,7 +42,6 @@ const MasterChats = (props) => {
     setEnteredList([]);
     setSelected(undefined);
     setSendType(undefined);
-    setDefLabel(defaultSelect);
   };
 
   const messageHandler = (value) => {
@@ -145,6 +138,7 @@ const MasterChats = (props) => {
       fontSize: Sizes.$ieTitleFont,
       marginBottom: Sizes.$ieRegularMargin,
       fontWeight: 'bold',
+      color: theme.titleColor,
     },
   });
 
@@ -157,11 +151,7 @@ const MasterChats = (props) => {
       >
         <Text style={styles.messageTitle}>Choose an option below</Text>
         <View style={styles.mbRegular}>
-          <MasterSelect
-            defaultSelect={defLabel}
-            selectData={selectOptions}
-            onSelect={setSelected}
-          />
+          <MasterSelect selectData={selectOptions} onSelect={setSelected} />
           {selected?.value === 'to_few' && (
             <SendToFew getList={getNumbersList} />
           )}

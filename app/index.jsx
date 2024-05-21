@@ -1,8 +1,12 @@
 import React, { Fragment } from 'react';
-import { Redirect } from 'expo-router';
+import { Redirect, useRootNavigationState } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 const MasterApp = () => {
+  const rootNavigationState = useRootNavigationState();
+
+  if (!rootNavigationState?.key) return null;
+
   return (
     <Fragment>
       <Redirect href='/auth/loader' />

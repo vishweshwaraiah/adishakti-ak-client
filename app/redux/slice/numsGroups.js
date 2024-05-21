@@ -40,6 +40,23 @@ export const deleteNumsGroup = createAsyncThunk(
   }
 );
 
+export const sendMessages = createAsyncThunk(
+  'sendMessages',
+  async (smsData, thunkAPI) => {
+    const createUrl = `${ProdServerUri}/message`;
+
+    try {
+      const response = await AxiosInstance.post(createUrl, smsData);
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err; // Rethrow non-response errors
+      }
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
 //State slice
 export const numsGroups = createSlice({
   name: 'numsGroups',
@@ -90,6 +107,19 @@ export const numsGroups = createSlice({
       state.isDeleted = false;
       state.status = 'error';
       state.message = action.error?.message;
+    });
+
+    // send message to number(s)
+    builder.addCase(sendMessages.fulfilled, (state, action) => {
+      state.status = 'sent';
+      state.message = action.payload.message;
+    });
+    builder.addCase(sendMessages.pending, (state) => {
+      state.status = 'sending';
+    });
+    builder.addCase(sendMessages.rejected, (state, action) => {
+      state.status = 'error';
+      state.message = action.payload?.message;
     });
   },
 });

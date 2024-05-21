@@ -5,9 +5,14 @@ import AuthTemplate from '@/wrappers/AuthTemplate';
 import MasterChats from '@/components/MasterChats';
 import AlertModal from '@/components/Modals/AlertModal';
 import useContacts from '@/utils/useContacts';
+import { sendMessages } from '@/redux/slice/numsGroups';
+import { useDispatch } from 'react-redux';
 
 const MessagesScreen = () => {
   const { allNumbers } = useContacts();
+
+  const dispatch = useDispatch();
+
   const [numbersList, setNumbersList] = useState([]);
   const [modalStatus, setModalStatus] = useState('close');
   const [statusMessage, setStatusMessage] = useState('');
@@ -21,9 +26,10 @@ const MessagesScreen = () => {
   const [clearForm, setClearForm] = useState('');
 
   const selectOptions = [
-    { label: 'Send to few numbers', value: 'to_few' },
-    { label: 'Send to contacts group', value: 'to_group' },
-    { label: 'Send to all contacts', value: 'to_all' },
+    { label: 'Select numbers or groups', value: 'default', selected: true },
+    { label: 'Send to few numbers', value: 'to_few', selected: false },
+    { label: 'Send to contacts group', value: 'to_group', selected: false },
+    { label: 'Send to all contacts', value: 'to_all', selected: false },
   ];
 
   const handleContent = (smsContent) => {
@@ -36,51 +42,48 @@ const MessagesScreen = () => {
       setAfterAction('initial');
       setAlertIcon('help-circle');
       setSelectedNumbers(phonesArray);
-      setMessageContent();
-      setSelectType();
+      setMessageContent(textMessage);
+      setSelectType(sendType);
     } else {
       setStatusMessage('Message and numbers are required!');
       setAfterAction('error');
       setAlertIcon('alert-circle');
       setSelectedNumbers([]);
-      setMessageContent(textMessage);
-      setSelectType(sendType);
+      setMessageContent('');
+      setSelectType('');
     }
   };
 
   const handleCancel = () => {
     setModalStatus('close');
+    setSelectedNumbers([]);
+    setMessageContent('');
+    setSelectType('');
   };
 
   const handleSubmit = () => {
-    let numbersList = [];
-
     setClearForm({});
-    // if (sendType === 'to_few') {
-    //   numbersList = phonesArray?.map((i) => i.value);
+
+    if (selectType === 'default' || selectType === '') return false;
+
+    const data = {
+      numbers: selectedNumbers,
+      message: messageContent,
+    };
+
+    dispatch(sendMessages(data));
+
+    // if (response.data) {
+    //   setModalStatus('open');
+    //   setStatusMessage('Successfully sent!');
+    //   setAfterAction('done');
+    //   setAlertIcon('alert-circle');
     // } else {
-    //   numbersList = phonesArray;
+    //   setModalStatus('open');
+    //   setStatusMessage(err.message);
+    //   setAfterAction('error');
+    //   setAlertIcon('alert-circle');
     // }
-    // const data = {
-    //   numbers: numbersList,
-    //   message: textMessage,
-    // };
-    // axios
-    //   .post(ProdServerUri + '/message', data)
-    //   .then((response) => {
-    //     if (response.data) {
-    //       setModalStatus('open');
-    //       setStatusMessage('Successfully sent!');
-    //       setAfterAction('done');
-    //       setAlertIcon('alert-circle');
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     setModalStatus('open');
-    //     setStatusMessage(err.message);
-    //     setAfterAction('error');
-    //     setAlertIcon('alert-circle');
-    //   });
   };
 
   useEffect(() => {

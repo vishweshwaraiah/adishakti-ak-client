@@ -20,6 +20,7 @@ import MasterButton from '@/components/MasterButton';
 import MasterInput from '@/components/MasterInput';
 import BaseTemplate from '@/wrappers/BaseTemplate';
 import { clearUser } from '@/redux/slice/userData';
+import { useTheme } from '@/themes/ThemeProvider';
 import MonoText from '@/components/MonoText';
 import AlertModal from '@/components/Modals/AlertModal';
 import Sizes from '@/utils/Sizes';
@@ -30,6 +31,8 @@ const AppRegister = () => {
   const router = useRouter();
   const { status, message } = useSelector((state) => state.authSlice);
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
 
   const [userEmail, setUserEmail] = useState('');
   const [userMobile, setUserMobile] = useState('');
@@ -84,6 +87,8 @@ const AppRegister = () => {
   };
 
   const handleSubmit = () => {
+    console.log('Registered successfully!');
+    setModalStatus('close');
     // after registration completed successfully
   };
 

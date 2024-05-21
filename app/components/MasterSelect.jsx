@@ -13,16 +13,18 @@ import useMasterStyle from '@/utils/useMasterStyle';
 import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterSelect = (props) => {
-  const { defaultSelect, selectData, onSelect } = props;
+  const { selectData, onSelect, currentValue } = props;
 
   const { theme } = useTheme();
   const mStyles = useMasterStyle();
 
   const DropdownButton = useRef();
+
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(undefined);
   const [dropdownTop, setDropdownTop] = useState(0);
   const [selectLabel, setSelectLabel] = useState('');
+  const [selectOpts, setSelectOpts] = useState(selectData);
 
   const toggleDropdown = () => {
     visible ? setVisible(false) : openDropdown();
@@ -35,31 +37,23 @@ const MasterSelect = (props) => {
     setVisible(true);
   };
 
+  const updateOptsList = (entry) => {
+    const updated = selectData.map((i) => {
+      if (i.value === entry.value) {
+        i.selected = true;
+      } else {
+        i.selected = false;
+      }
+      return i;
+    });
+    setSelectOpts(updated);
+  };
+
   const onItemPress = (item) => {
-    item.selected = true;
+    updateOptsList(item);
     setSelected(item);
     onSelect(item);
     setVisible(false);
-  };
-
-  useEffect(() => {
-    // This use-effect is to reset the selected label back to default
-    setSelectLabel(defaultSelect);
-    setSelected(undefined);
-  }, [defaultSelect]);
-
-  const renderItem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        style={[
-          styles.selectOption,
-          item.value === selected?.value && styles.isSelected,
-        ]}
-        onPress={() => onItemPress(item)}
-      >
-        <Text>{item.label}</Text>
-      </TouchableOpacity>
-    );
   };
 
   const getLabel = (item) => {
@@ -70,22 +64,16 @@ const MasterSelect = (props) => {
     }
   };
 
-  const renderDropdown = () => {
-    return (
-      <Modal visible={visible} transparent animationType='fade'>
-        <TouchableOpacity style={styles.selectOverlay} onPress={toggleDropdown}>
-          <View style={[styles.selectDropdown, { top: dropdownTop }]}>
-            <FlatList
-              data={selectData}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.value.toString()}
-              style={styles.dropdownList}
-            />
-          </View>
-        </TouchableOpacity>
-      </Modal>
-    );
-  };
+  useEffect(() => {
+    let foundItem = selectData.find((x) => x.selected);
+
+    if (currentValue) {
+      foundItem = selectData.find((x) => x.value === currentValue);
+      updateOptsList(foundItem);
+    }
+
+    setSelected(foundItem);
+  }, [currentValue]);
 
   const styles = StyleSheet.create({
     selectButton: {
@@ -138,9 +126,37 @@ const MasterSelect = (props) => {
       borderBottomWidth: 0.3,
     },
     isSelected: {
-      backgroundColor: 'red', //theme.selected,
+      backgroundColor: theme.selected,
     },
   });
+
+  const renderItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        style={[styles.selectOption, item.selected && styles.isSelected]}
+        onPress={() => onItemPress(item)}
+      >
+        <Text>{item.label}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderDropdown = () => {
+    return (
+      <Modal visible={visible} transparent animationType='fade'>
+        <TouchableOpacity style={styles.selectOverlay} onPress={toggleDropdown}>
+          <View style={[styles.selectDropdown, { top: dropdownTop }]}>
+            <FlatList
+              data={selectOpts}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.value.toString()}
+              style={styles.dropdownList}
+            />
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    );
+  };
 
   return (
     <TouchableOpacity
@@ -148,7 +164,6 @@ const MasterSelect = (props) => {
       style={styles.selectButton}
       onPress={toggleDropdown}
     >
-      {renderDropdown()}
       <Text style={styles.buttonText}>{getLabel(selected)}</Text>
       <FontAwesome
         style={styles.icon}
@@ -156,6 +171,7 @@ const MasterSelect = (props) => {
         size={24}
         color='black'
       />
+      {renderDropdown()}
     </TouchableOpacity>
   );
 };

@@ -3,8 +3,29 @@ import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import Sizes from '@/utils/Sizes';
 import OfferCard from '@/components/OfferCard';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const HomeScreen = () => {
+  const { theme } = useTheme();
+
+  const styles = StyleSheet.create({
+    titleContainer: {
+      borderBottomWidth: 1,
+    },
+    sectionTitle: {
+      fontSize: 32,
+      paddingHorizontal: 20,
+      paddingVertical: Sizes.$ieRegularPadding,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      color: theme.titleColor,
+    },
+    homeContent: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
+
   return (
     <AuthTemplate screenName='Home'>
       <View style={styles.titleContainer}>
@@ -19,22 +40,5 @@ const HomeScreen = () => {
     </AuthTemplate>
   );
 };
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    borderBottomWidth: 1,
-  },
-  sectionTitle: {
-    fontSize: 32,
-    paddingHorizontal: 20,
-    paddingVertical: Sizes.$ieRegularPadding,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  homeContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default HomeScreen;

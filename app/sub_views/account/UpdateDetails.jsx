@@ -16,6 +16,7 @@ import { router } from 'expo-router';
 import GenderSelector from '@/components/GenderSelector';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetUserStatus, updateUser } from '@/redux/slice/userData';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -24,6 +25,8 @@ const UpdateDetails = () => {
   const { user, userStatus, userMessage } = useSelector(
     (state) => state.userSlice
   );
+
+  const { theme } = useTheme();
 
   const [userName, setUserName] = useState('');
   const [nameError, setNameError] = useState('');
@@ -218,6 +221,7 @@ const UpdateDetails = () => {
       paddingVertical: Sizes.$ieRegularPadding,
       fontWeight: 'bold',
       textAlign: 'center',
+      color: theme.titleColor,
     },
     titleContainer: {
       borderBottomWidth: 1,

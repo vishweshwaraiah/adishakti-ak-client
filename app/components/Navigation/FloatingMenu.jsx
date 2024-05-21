@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Tabs } from 'expo-router';
 import {
   Entypo,
@@ -11,16 +11,23 @@ import {
 import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
-
-const screenWidth = Dimensions.get('window').width;
+import useClickOutside from '@/utils/useClickOutside';
 
 const FloatingMenu = (props) => {
   const { menuItems = [], headerShown = false, themeColor, iconsColor } = props;
+
+  const ref = useRef(null);
 
   const { theme } = useTheme();
   const mStyles = useMasterStyle();
 
   const [menuStatus, setMenuStatus] = useState(false);
+
+  const handleClickOutside = () => {
+    console.log('User tapped outside of the component');
+  };
+
+  useClickOutside(ref, handleClickOutside);
 
   const toggleMenu = () => {
     setMenuStatus(!menuStatus);
@@ -139,8 +146,8 @@ const FloatingMenu = (props) => {
       flex: 1,
       backgroundColor: 'transparent',
       position: 'absolute',
-      left: screenWidth - 50,
-      right: 50,
+      left: '80%',
+      right: '20%',
       bottom: '5%',
       width: 0,
       height: 0,
@@ -179,7 +186,12 @@ const FloatingMenu = (props) => {
         };
 
         return (
-          <Tabs.Screen key={menu.name} name={menu.name} options={options} />
+          <Tabs.Screen
+            ref={ref}
+            key={menu.name}
+            name={menu.name}
+            options={options}
+          />
         );
       })}
     </Tabs>

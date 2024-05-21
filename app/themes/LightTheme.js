@@ -20,7 +20,7 @@ export default {
   inactiveBar: '#dddddd',
   shadow: '#161616',
   green: '#00ff00',
-  gradientsArray: ['#FFA500', '#ffffff'],
+  gradientsArray: ['#ffffff', '#ffffff'],
   profileGradients: ['#4c669f', '#3b5998', '#192f6a'],
   selected: '#e5e5e5',
   modalBackground: 'rgba(0,0,0,0.5)',
@@ -34,4 +34,5 @@ export default {
   thumbTrue: '#f5dd4b',
   thumbFalse: '#f4f3f4',
   iOsBgColor: '#3e3e3e',
+  titleColor: '#000000',
 };

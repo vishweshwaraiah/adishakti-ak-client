@@ -3,8 +3,11 @@ import { Text, View, StyleSheet } from 'react-native';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import ContactsList from '@/components/Contacts/ContactsList';
 import Sizes from '@/utils/Sizes';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const ContactsScreen = () => {
+  const { theme } = useTheme();
+
   const [selected, setSelected] = useState(0);
   const [total, setTotal] = useState(0);
 
@@ -12,6 +15,29 @@ const ContactsScreen = () => {
     setSelected(details.selected);
     setTotal(details.total);
   };
+
+  const styles = StyleSheet.create({
+    titleContainer: {
+      borderBottomWidth: 1,
+    },
+    sectionTitle: {
+      fontSize: Sizes.$ieTitleFont,
+      paddingHorizontal: Sizes.$ieLargePadding,
+      paddingVertical: Sizes.$ieRegularPadding,
+      fontWeight: 'bold',
+      color: theme.titleColor,
+    },
+    contactsList: {
+      flex: 1,
+      paddingHorizontal: Sizes.$ieRegularPadding,
+    },
+    selectionText: {
+      paddingHorizontal: Sizes.$ieLargePadding,
+      paddingBottom: Sizes.$ieRegularPadding,
+      gap: Sizes.$ieFlexGap,
+      flexDirection: 'row',
+    },
+  });
 
   return (
     <AuthTemplate screenName='Contacts'>
@@ -28,27 +54,5 @@ const ContactsScreen = () => {
     </AuthTemplate>
   );
 };
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    borderBottomWidth: 1,
-  },
-  sectionTitle: {
-    fontSize: Sizes.$ieTitleFont,
-    paddingHorizontal: Sizes.$ieLargePadding,
-    paddingVertical: Sizes.$ieRegularPadding,
-    fontWeight: 'bold',
-  },
-  contactsList: {
-    flex: 1,
-    paddingHorizontal: Sizes.$ieRegularPadding,
-  },
-  selectionText: {
-    paddingHorizontal: Sizes.$ieLargePadding,
-    paddingBottom: Sizes.$ieRegularPadding,
-    gap: Sizes.$ieFlexGap,
-    flexDirection: 'row',
-  },
-});
 
 export default ContactsScreen;

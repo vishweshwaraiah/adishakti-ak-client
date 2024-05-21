@@ -15,14 +15,10 @@ const AppSettings = () => {
   const { theme, switchTheme } = useTheme();
   const mStyles = useMasterStyle();
 
-  const defaultSelect = {
-    label: 'Switch to different theme',
-    value: 'default',
-  };
-
   const selectOptions = [
-    { label: 'Set to Light', value: 'light' },
-    { label: 'Set to Dark', value: 'dark' },
+    { label: 'Set to Default', value: 'default', selected: true },
+    { label: 'Set to Light', value: 'light', selected: false },
+    { label: 'Set to Dark', value: 'dark', selected: false },
   ];
 
   const { menuType, appTheme, userEmail } = useSelector(
@@ -30,6 +26,7 @@ const AppSettings = () => {
   );
 
   const [switchValue, setSwitchValue] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
 
   const handleAppTheme = (item) => {
     const menuStyle = menuType;
@@ -65,6 +62,7 @@ const AppSettings = () => {
   }, [menuType]);
 
   useEffect(() => {
+    setSelectedValue(appTheme);
     switchTheme(appTheme);
   }, [appTheme]);
 
@@ -94,9 +92,9 @@ const AppSettings = () => {
           <MasterSwitch defValue={switchValue} onChange={handleMenuStyle} />
         </View>
         <MasterSelect
-          defaultSelect={defaultSelect}
           selectData={selectOptions}
           onSelect={handleAppTheme}
+          currentValue={selectedValue}
         />
       </View>
     </AuthTemplate>
