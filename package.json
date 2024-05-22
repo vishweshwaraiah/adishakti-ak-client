@@ -4,9 +4,7 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
-    "clean": "rm -rf node_modules package-lock.json",
-    "android": "expo run:android",
-    "ios": "expo run:ios"
+    "clean": "rm -rf node_modules package-lock.json"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",

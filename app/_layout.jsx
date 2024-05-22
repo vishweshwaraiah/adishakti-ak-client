@@ -6,14 +6,14 @@ import { store } from '@/redux/store';
 
 const AuthLayout = () => {
   return (
-    <ThemeProvider>
-      <Provider store={store}>
+    <Provider store={store}>
+      <ThemeProvider>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name='auth' />
           <Stack.Screen name='main_views' />
         </Stack>
-      </Provider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </Provider>
   );
 };
 
