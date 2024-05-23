@@ -64,9 +64,23 @@ const AppRegister = () => {
       userPassword: userPassword,
     };
 
-    if (!userEmail) setEmailError('Email is required!');
-    if (!userMobile) setMobileError('Mobile is required!');
-    if (!userPassword) setPwdError('Password is required!');
+    if (!userEmail) {
+      setEmailError('Email is required!');
+    } else {
+      setEmailError('');
+    }
+
+    if (!userMobile) {
+      setMobileError('Mobile is required!');
+    } else {
+      setMobileError('');
+    }
+
+    if (!userPassword) {
+      setPwdError('Password is required!');
+    } else {
+      setPwdError('');
+    }
 
     const noData = !userEmail || !userMobile || !userPassword;
     const hasErrs = emailError || mobileError || pwdError;

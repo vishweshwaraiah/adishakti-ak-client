@@ -97,6 +97,7 @@ const MasterAvatar = (props) => {
         await saveImage(result.assets[0].uri);
       }
     } catch (error) {
+      console.log(error);
       setAfterUpload('error');
       setUploadStatus('Unable to upload, try again!');
     }
@@ -116,6 +117,7 @@ const MasterAvatar = (props) => {
         await saveImage(result.assets[0].uri);
       }
     } catch (error) {
+      console.log(error);
       setAfterUpload('error');
       setUploadStatus('Unable to upload, try again!');
     }

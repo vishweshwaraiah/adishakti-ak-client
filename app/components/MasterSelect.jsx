@@ -23,11 +23,10 @@ const MasterSelect = (props) => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(undefined);
   const [dropdownTop, setDropdownTop] = useState(0);
-  const [selectLabel, setSelectLabel] = useState('');
   const [selectOpts, setSelectOpts] = useState(selectData);
 
   const toggleDropdown = () => {
-    visible ? setVisible(false) : openDropdown();
+    return visible ? setVisible(false) : openDropdown();
   };
 
   const openDropdown = () => {
@@ -56,14 +55,6 @@ const MasterSelect = (props) => {
     setVisible(false);
   };
 
-  const getLabel = (item) => {
-    if (item) {
-      return item?.label;
-    } else {
-      return selectLabel.label;
-    }
-  };
-
   useEffect(() => {
     let foundItem = selectData.find((x) => x.selected);
 
@@ -82,7 +73,6 @@ const MasterSelect = (props) => {
       justifyContent: 'space-between',
       backgroundColor: theme.white,
       height: Sizes.$ieLargeHeight,
-      zIndex: 1,
       borderRadius: Sizes.$ieRegularRadius,
       zIndex: 201,
       ...mStyles.commonShadow,
@@ -164,7 +154,7 @@ const MasterSelect = (props) => {
       style={styles.selectButton}
       onPress={toggleDropdown}
     >
-      <Text style={styles.buttonText}>{getLabel(selected)}</Text>
+      <Text style={styles.buttonText}>{selected?.label}</Text>
       <FontAwesome
         style={styles.icon}
         name='chevron-circle-down'

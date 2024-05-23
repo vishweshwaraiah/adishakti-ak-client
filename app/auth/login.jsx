@@ -62,8 +62,17 @@ const AppLogin = () => {
       userPassword: password,
     };
 
-    if (!username) setUserError('Username is required!');
-    if (!password) setPwdError('Password is required!');
+    if (!username) {
+      setUserError('Username is required!');
+    } else {
+      setUserError('');
+    }
+
+    if (!password) {
+      setPwdError('Password is required!');
+    } else {
+      setPwdError('');
+    }
 
     const noData = !username || !password;
     const hasErrs = userError || pwdError;

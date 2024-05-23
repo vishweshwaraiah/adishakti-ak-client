@@ -6,7 +6,7 @@ import MasterButton from '@/components/MasterButton';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 
-const logout = () => {
+const AppLogout = () => {
   const router = useRouter();
 
   const { theme } = useTheme();
@@ -40,4 +40,4 @@ const logout = () => {
   );
 };
 
-export default logout;
+export default AppLogout;
