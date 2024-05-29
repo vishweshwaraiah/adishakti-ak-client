@@ -3,9 +3,9 @@ import { Redirect, useRootNavigationState } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 const MasterApp = () => {
-  const rootNavigationState = useRootNavigationState();
+  const { key } = useRootNavigationState();
 
-  if (!rootNavigationState?.key) return null;
+  if (!key) return null;
 
   return (
     <Fragment>

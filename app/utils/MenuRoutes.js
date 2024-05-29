@@ -2,9 +2,9 @@ const MenuRoutes = [
   {
     isTrigger: true,
     name: 'trigger',
-    label: '',
     iconName: 'plus',
     iconFamily: 'Feather',
+    path: null,
   },
   {
     name: 'home',
@@ -12,6 +12,7 @@ const MenuRoutes = [
     floatingBtn: false,
     iconName: 'home',
     iconFamily: 'Ionicons',
+    path: '/main_views/home/HomeScreen',
   },
   {
     name: 'messages',
@@ -19,6 +20,7 @@ const MenuRoutes = [
     floatingBtn: true,
     iconName: 'message',
     iconFamily: 'Entypo',
+    path: '/main_views/messages/MessageScreen',
   },
   {
     name: 'account',
@@ -26,6 +28,7 @@ const MenuRoutes = [
     floatingBtn: false,
     iconName: 'user',
     iconFamily: 'Feather',
+    path: '/main_views/account/AccountScreen',
   },
 ];
 

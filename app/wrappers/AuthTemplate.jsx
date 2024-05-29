@@ -138,6 +138,7 @@ const AuthTemplate = (props) => {
     },
     loginImage: {
       borderRadius: 25,
+      flex: 1,
     },
     imageBackground: {
       opacity: 0.25,

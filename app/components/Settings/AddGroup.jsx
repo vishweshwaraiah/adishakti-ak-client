@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addNumsGroups } from '@/redux/slice/numsGroups';
 import MasterModal from '@/components/Modals/MasterModal';
 import ContactsList from '@/components/Contacts/ContactsList';

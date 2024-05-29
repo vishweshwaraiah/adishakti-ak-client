@@ -26,9 +26,11 @@ export default {
   modalBackground: 'rgba(0,0,0,0.5)',
   modalBodyBg: 'rgba(255,255,255,255)',
   light: '#f0f0f0',
+  backDropBg: '#00000091',
 
   // themeable tokens
-  itemBg: '#ffffff',
+  itemColor: '#fdfdfd',
+  itemBg: '#0d0d0d',
   trackTrue: '#81b0ff',
   trackFalse: '#767577',
   thumbTrue: '#f5dd4b',

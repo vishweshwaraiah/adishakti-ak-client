@@ -1,19 +1,16 @@
-import Constants from 'expo-constants';
 import {
   phoneRegex,
   clearRegex,
   emailRegex,
   passwordRegex,
+  LocalServerUri,
+  ProductionServerUri,
 } from '@/utils/AppConstants';
 
-// server url for production api endpoints
-export const ProdServerUri = 'http://13.126.248.37/api/';
+// enable(make true) here to use local api endpoints
+const localEnv = false;
 
-// server url for local api endpoints
-// export const ProdServerUri = Constants?.expoConfig?.hostUri
-//   ? 'http://' +
-//     Constants.expoConfig.hostUri.split(`:`).shift().concat(`:8000/api/`)
-//   : 'http://localhost:8000/api/';
+export const ProdServerUri = localEnv ? LocalServerUri : ProductionServerUri;
 
 export const ValidNumber = (num) => {
   const clearNum = num?.replace(clearRegex, '');

@@ -160,7 +160,7 @@ const AppLogin = () => {
 
   return (
     <BaseTemplate>
-      <KeyboardAvoidingView behavior='position' style={styles.container}>
+      <KeyboardAvoidingView behavior='position'>
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.loginBox}>
             <Animated.View style={styles.topView}>

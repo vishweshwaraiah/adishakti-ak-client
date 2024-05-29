@@ -1,200 +1,125 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Tabs } from 'expo-router';
-import {
-  Entypo,
-  Feather,
-  Ionicons,
-  AntDesign,
-  FontAwesome,
-} from '@expo/vector-icons';
-import useMasterStyle from '@/utils/useMasterStyle';
+import React from 'react';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
-import useClickOutside from '@/utils/useClickOutside';
+import MasterIcon from '@/components/MasterIcon';
 
 const FloatingMenu = (props) => {
-  const { menuItems = [], headerShown = false, themeColor, iconsColor } = props;
-
-  const ref = useRef(null);
+  const {
+    menuItem,
+    iconsColor,
+    idxKey = 0,
+    menuStatus = false,
+    toggleMenu = () => {},
+  } = props;
 
   const { theme } = useTheme();
-  const mStyles = useMasterStyle();
 
-  const [menuStatus, setMenuStatus] = useState(false);
-
-  const handleClickOutside = () => {
-    console.log('User tapped outside of the component');
+  const handlePress = () => {
+    toggleMenu(menuItem);
   };
 
-  useClickOutside(ref, handleClickOutside);
+  const { focused } = false;
+  let { iconFamily, iconName } = menuItem;
+  let iconSize = 16;
 
-  const toggleMenu = () => {
-    setMenuStatus(!menuStatus);
-  };
+  let iconColor = iconsColor;
 
-  const CustomTabBarButton = (props) => {
-    const { children, onPress, idx, menu } = props;
-    const handlePress = () => {
-      toggleMenu();
-      if (menu.isTrigger) {
-        return false;
-      } else {
-        onPress();
-      }
+  if (focused) {
+    iconSize = 24;
+    iconColor = theme.selected;
+  }
+
+  if (menuItem.isTrigger) iconSize = 32;
+
+  const flexButton = () => {
+    const xStyles = {
+      position: 'absolute',
+      justifyContent: 'center',
+      right: 0,
+      bottom: idxKey * 80,
     };
 
-    const extraStyles = () => {
-      const xStyles = {
-        alignSelf: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bottom: idx * 80,
-      };
-
-      if (!menu.isTrigger && !menuStatus) {
-        xStyles.display = 'none';
-      } else {
-        xStyles.display = 'flex';
-      }
-
-      return xStyles;
-    };
-
-    const btnStyles = () => {
-      const xStyles = {
-        borderRadius: Sizes.$ieMaxRadius,
-        backgroundColor: themeColor,
-        width: Sizes.$btnDimension,
-        height: Sizes.$btnDimension,
-      };
-
-      if (!menu.isTrigger) {
-        xStyles.width = Sizes.$btnDimension - 10;
-        xStyles.height = Sizes.$btnDimension - 10;
-      }
-
-      return xStyles;
-    };
-
-    return (
-      <TouchableOpacity style={extraStyles()} onPress={handlePress}>
-        <View style={btnStyles()}>{children}</View>
-      </TouchableOpacity>
-    );
-  };
-
-  const CustomTabBarIcon = (event, options) => {
-    const { focused } = event;
-    let { iconFamily, iconName } = options;
-    let iconSize = 16;
-    let iconElement;
-    let iconColor = iconsColor;
-
-    if (focused) {
-      iconSize = 24;
-      iconColor = theme.selected;
+    if (!menuItem.isTrigger && !menuStatus) {
+      xStyles.display = 'none';
+    } else {
+      xStyles.display = 'flex';
     }
 
-    if (options.isTrigger) iconSize = 32;
+    return xStyles;
+  };
 
-    const btnStyles = () => {
-      let xStyles = {
-        transform: [{ rotate: '0deg' }],
-      };
-
-      if (options.isTrigger && menuStatus) {
-        xStyles.transform = [{ rotate: '45deg' }];
-      }
-
-      return xStyles;
+  const btnStyles = () => {
+    const xStyles = {
+      gap: Sizes.$ieFlexGap,
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
     };
 
-    switch (iconFamily) {
-      case 'Ionicons':
-        iconElement = (
-          <Ionicons name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      case 'Entypo':
-        iconElement = (
-          <Entypo name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      case 'AntDesign':
-        iconElement = (
-          <AntDesign name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      case 'Feather':
-        iconElement = (
-          <Feather name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      default:
-        iconElement = (
-          <FontAwesome name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
+    if (!menuItem.isTrigger) {
+      xStyles.padding = 10;
+    } else {
+      xStyles.padding = 0;
     }
 
-    return <View style={btnStyles()}>{iconElement}</View>;
+    return xStyles;
+  };
+
+  const iconBoxStyles = () => {
+    let xStyles = {
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: Sizes.$ieMaxRadius,
+      backgroundColor: theme.navBackground,
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
+    };
+
+    if (!menuItem.isTrigger) {
+      xStyles.width = Sizes.$btnDimension - 20;
+      xStyles.height = Sizes.$btnDimension - 20;
+    }
+
+    return xStyles;
+  };
+
+  const iconAnimate = () => {
+    let xStyles = {
+      transform: [{ rotate: '0deg' }],
+    };
+
+    if (menuItem.isTrigger && menuStatus) {
+      xStyles.transform = [{ rotate: '45deg' }];
+    }
+
+    return xStyles;
   };
 
   const styles = StyleSheet.create({
-    tabBarStyle: {
-      flex: 1,
-      backgroundColor: 'transparent',
-      position: 'absolute',
-      left: '80%',
-      right: '20%',
-      bottom: '5%',
-      width: 0,
-      height: 0,
-      ...mStyles.commonShadow,
-    },
-    triggerBtn: {
-      position: 'absolute',
-    },
-    tabBarLabelStyle: {
-      position: 'absolute',
-      left: '-100%',
-      bottom: '25%',
-      color: 'white',
-      backgroundColor: themeColor,
-      padding: 5,
-      borderRadius: 5,
-      overflow: 'hidden',
+    floatingBarLabel: {
+      color: theme.itemColor,
     },
   });
 
   return (
-    <Tabs backBehavior='none'>
-      {menuItems?.map((menu, idx) => {
-        const options = {
-          tabBarLabel: menu.label,
-          title: menu.label,
-          headerShown: headerShown,
-          tabBarStyle: styles.tabBarStyle,
-          tabBarLabelStyle: menu.isTrigger
-            ? styles.triggerBtn
-            : styles.tabBarLabelStyle,
-          tabBarIcon: (e) => CustomTabBarIcon(e, menu),
-          tabBarButton: (props) => (
-            <CustomTabBarButton {...props} idx={idx} menu={menu} />
-          ),
-        };
-
-        return (
-          <Tabs.Screen
-            ref={ref}
-            key={menu.name}
-            name={menu.name}
-            options={options}
-          />
-        );
-      })}
-    </Tabs>
+    <View key={menuItem.name} style={flexButton()}>
+      <TouchableOpacity style={btnStyles()} onPress={handlePress}>
+        {menuItem.label && (
+          <Text style={styles.floatingBarLabel}>{menuItem.label}</Text>
+        )}
+        <View style={iconBoxStyles()}>
+          <View style={iconAnimate()}>
+            <MasterIcon
+              iconFamily={iconFamily}
+              iconName={iconName}
+              iconSize={iconSize}
+              iconColor={iconColor}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 };
 

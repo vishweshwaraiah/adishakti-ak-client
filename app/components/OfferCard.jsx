@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import React from 'react';
 import MasterCard from '@/components/MasterCard';
 
@@ -15,5 +15,3 @@ const OfferCard = (props) => {
 };
 
 export default OfferCard;
-
-const styles = StyleSheet.create({});
