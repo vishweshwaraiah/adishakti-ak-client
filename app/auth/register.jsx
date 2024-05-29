@@ -5,12 +5,12 @@ import {
   View,
   Dimensions,
   Text,
-  Pressable,
   Keyboard,
   Alert,
   Animated,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ValidEmail, ValidNumber, ValidPassword } from '@/utils/Globals';
@@ -196,7 +196,6 @@ const AppRegister = () => {
     },
     bottomView: {
       width: screenWidth,
-      maxHeight: '60%',
       justifyContent: 'center',
       alignItems: 'center',
       paddingTop: Sizes.$ieRegularPadding,
@@ -226,8 +225,11 @@ const AppRegister = () => {
 
   return (
     <BaseTemplate>
-      <KeyboardAvoidingView behavior='position'>
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <KeyboardAvoidingView behavior='padding'>
+        <TouchableWithoutFeedback
+          onPress={() => Keyboard.dismiss()}
+          accessible={false}
+        >
           <View style={styles.registerBox}>
             <Animated.View style={styles.topView}>
               <Image
@@ -295,12 +297,12 @@ const AppRegister = () => {
                 shape='round'
                 height='large'
               />
-              <Pressable
+              <TouchableOpacity
                 style={styles.switchScreen}
                 onPress={() => router.replace('/auth/login')}
               >
                 <Text>Already a member? Sign in!</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </TouchableWithoutFeedback>

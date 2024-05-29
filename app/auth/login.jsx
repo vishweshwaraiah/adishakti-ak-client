@@ -5,12 +5,12 @@ import {
   View,
   Dimensions,
   Text,
-  Pressable,
   Alert,
   Animated,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
+  TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
@@ -121,7 +121,6 @@ const AppLogin = () => {
     },
     bottomView: {
       width: screenWidth,
-      maxHeight: '50%',
       justifyContent: 'center',
       alignItems: 'center',
       paddingTop: Sizes.$ieRegularPadding,
@@ -148,6 +147,7 @@ const AppLogin = () => {
       width: '90%',
       flexDirection: 'row',
       justifyContent: 'space-between',
+      marginBottom: Sizes.$ieRegularMargin,
     },
     forgot_link: {
       color: theme.primary,
@@ -160,8 +160,11 @@ const AppLogin = () => {
 
   return (
     <BaseTemplate>
-      <KeyboardAvoidingView behavior='position'>
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <KeyboardAvoidingView behavior='padding'>
+        <TouchableWithoutFeedback
+          onPress={() => Keyboard.dismiss()}
+          accessible={false}
+        >
           <View style={styles.loginBox}>
             <Animated.View style={styles.topView}>
               <Image
@@ -206,7 +209,11 @@ const AppLogin = () => {
               />
               <View style={styles.others}>
                 <Text>Keep me logged in</Text>
-                <Text style={styles.forgot_link}>Forgot Password</Text>
+                <TouchableOpacity
+                  onPress={() => router.replace('/auth/forgot')}
+                >
+                  <Text style={styles.forgot_link}>Forgot Password</Text>
+                </TouchableOpacity>
               </View>
               <MasterButton
                 marginTop={Sizes.$ieRegularMargin}
@@ -217,12 +224,12 @@ const AppLogin = () => {
                 shape='round'
                 height='large'
               />
-              <Pressable
+              <TouchableOpacity
                 style={styles.switchScreen}
                 onPress={() => router.replace('/auth/register')}
               >
                 <Text>Don't have an account? Sign up!</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </TouchableWithoutFeedback>
