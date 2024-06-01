@@ -35,7 +35,7 @@ const AuthTemplate = (props) => {
   const [lastScreen, setLastScreen] = useState(false);
   const [modalStatus, setModalStatus] = useState('close');
 
-  const statusMessage = 'Are you sure to logout?';
+  const logoutMessage = 'Are you sure to logout?';
 
   const logoutCurrentUser = () => {
     setModalStatus('close');
@@ -179,7 +179,7 @@ const AuthTemplate = (props) => {
         onCancel={handleCancel}
         onSubmit={logoutCurrentUser}
         modalStatus={modalStatus}
-        statusMessage={statusMessage}
+        statusMessage={logoutMessage}
         onClose={handleCancel}
         alertIcon={'sign-out'}
       />

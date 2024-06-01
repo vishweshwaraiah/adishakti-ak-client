@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,15 +49,11 @@ const AppLogin = () => {
   };
 
   const blurHandler = (name, error) => {
-    if (name === 'username') setUserError(error);
-    if (name === 'password') setPwdError(error);
+    if (name === 'username' && error) setUserError(error);
+    if (name === 'password' && error) setPwdError(error);
   };
 
-  const handleLogin = async () => {
-    // make sure there's no previous user's data exists
-    await AsyncStorage.removeItem('auth');
-    await AsyncStorage.clear();
-
+  const handleLogin = () => {
     const user = {
       userEmail: username,
       userPassword: password,
@@ -84,26 +81,22 @@ const AppLogin = () => {
     dispatch(loginUser(user));
   };
 
+  const setAuthToken = async () => {
+    if (token !== null) {
+      await AsyncStorage.setItem('auth', token);
+      router.replace('/auth/loader');
+    }
+  };
+
   useEffect(() => {
     if (message && status === 'error') {
       Alert.alert('Login failed!', message);
       setTimeout(() => dispatch(resetState()), 500);
     }
     if (status === 'loggedin') {
-      console.log('Logged In!');
+      setAuthToken();
     }
-  }, [message, status]);
-
-  useEffect(() => {
-    const setAuthToken = async () => {
-      if (token !== null) {
-        await AsyncStorage.setItem('auth', token);
-        router.replace('/auth/loader');
-      }
-    };
-
-    setAuthToken();
-  }, [token]);
+  }, [status, message]);
 
   const styles = StyleSheet.create({
     loginBox: {
@@ -160,11 +153,11 @@ const AppLogin = () => {
 
   return (
     <BaseTemplate>
-      <KeyboardAvoidingView behavior='padding'>
-        <TouchableWithoutFeedback
-          onPress={() => Keyboard.dismiss()}
-          accessible={false}
-        >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
+      >
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.loginBox}>
             <Animated.View style={styles.topView}>
               <Image

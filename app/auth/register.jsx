@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ValidEmail, ValidNumber, ValidPassword } from '@/utils/Globals';
@@ -52,9 +53,9 @@ const AppRegister = () => {
   };
 
   const blurHandler = (name, error) => {
-    if (name === 'email') setEmailError(error);
-    if (name === 'mobile') setMobileError(error);
-    if (name === 'password') setPwdError(error);
+    if (name === 'email' && error) setEmailError(error);
+    if (name === 'mobile' && error) setMobileError(error);
+    if (name === 'password' && error) setPwdError(error);
   };
 
   const handleRegister = () => {
@@ -225,11 +226,11 @@ const AppRegister = () => {
 
   return (
     <BaseTemplate>
-      <KeyboardAvoidingView behavior='padding'>
-        <TouchableWithoutFeedback
-          onPress={() => Keyboard.dismiss()}
-          accessible={false}
-        >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
+      >
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.registerBox}>
             <Animated.View style={styles.topView}>
               <Image

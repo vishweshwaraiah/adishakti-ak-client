@@ -1,12 +1,5 @@
 const MenuRoutes = [
   {
-    isTrigger: true,
-    name: 'trigger',
-    iconName: 'plus',
-    iconFamily: 'Feather',
-    path: null,
-  },
-  {
     name: 'home',
     label: 'Home',
     floatingBtn: false,

@@ -5,7 +5,8 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAppSettings } from '@/redux/slice/appSettings';
-import { fetchUser } from '@/redux/slice/userData';
+import { fetchUser, clearUser } from '@/redux/slice/userData';
+import { logoutUser } from '@/redux/slice/authData';
 import BaseTemplate from '@/wrappers/BaseTemplate';
 import MasterButton from '@/components/MasterButton';
 import { useTheme } from '@/themes/ThemeProvider';
@@ -32,7 +33,9 @@ const Loader = () => {
     router.replace('/main_views/home');
   };
 
-  const handleBtnAction = () => {
+  const handleBtnAction = async () => {
+    dispatch(logoutUser());
+    dispatch(clearUser());
     if (appStatus === 'connected') {
       goToLogin();
     } else {

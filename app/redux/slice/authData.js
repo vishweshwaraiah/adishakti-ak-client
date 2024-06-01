@@ -35,6 +35,7 @@ export const loginUser = createAsyncThunk(
       const response = await AxiosInstance.post(loginUrl, userData);
       return response.data;
     } catch (err) {
+      console.log('error', err);
       if (!err.response) {
         throw err; // Rethrow non-response errors
       }
@@ -97,8 +98,9 @@ export const authData = createSlice({
 
     // logout a user
     builder.addCase(logoutUser.fulfilled, (state, action) => {
-      state.status = 'loggedout';
+      state.status = 'loading';
       state.token = null;
+      state.message = '';
     });
     builder.addCase(logoutUser.pending, (state, action) => {
       state.token = null;

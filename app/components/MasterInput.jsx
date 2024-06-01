@@ -158,8 +158,8 @@ const MasterInput = (props) => {
       animateText(0);
     }
 
-    let error;
-    if (required) {
+    let error = '';
+    if (required && !inputValue) {
       error = e.nativeEvent.text ? '' : 'This is a required field!';
       setHasError(error);
     }

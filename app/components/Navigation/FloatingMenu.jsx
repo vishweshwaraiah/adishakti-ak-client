@@ -1,123 +1,199 @@
-import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useRef, useState } from 'react';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Animated,
+  Pressable,
+} from 'react-native';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
+import useMasterStyle from '@/utils/useMasterStyle';
 import MasterIcon from '@/components/MasterIcon';
 
 const FloatingMenu = (props) => {
-  const {
-    menuItem,
-    iconsColor,
-    idxKey = 0,
-    menuStatus = false,
-    toggleMenu = () => {},
-  } = props;
+  const { menuItems, iconsColor, toggleMenu = () => {} } = props;
 
   const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
-  const handlePress = () => {
+  let actionIconSize = 16;
+  let triggerIconSize = 24;
+  let iconColor = iconsColor;
+
+  const animateRef = useRef(new Animated.Value(0)).current;
+  const [menuStatus, setMenuStatus] = useState(false);
+
+  // Rotating the trigger button
+  const rotateTrigger = [
+    {
+      rotate: animateRef.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '45deg'],
+      }),
+    },
+  ];
+
+  // Animating other action buttons
+  const animateActions = (translateY) => [
+    { scale: 1 },
+    {
+      translateY: animateRef.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, translateY],
+      }),
+    },
+  ];
+
+  // Lable positioning interpolation
+  const labelPosInterpolate = animateRef.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-30, -90],
+  });
+
+  const opacityInterpolate = animateRef.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0, 0, 1],
+  });
+
+  const labelStyles = {
+    opacity: opacityInterpolate,
+    transform: [
+      {
+        translateX: labelPosInterpolate,
+      },
+    ],
+  };
+
+  const backDropStyle = {
+    transform: [
+      {
+        scale: animateRef.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 50],
+        }),
+      },
+    ],
+  };
+
+  const handlePress = (menuItem) => {
+    const toValue = menuStatus ? 0 : 1;
+
+    Animated.spring(animateRef, {
+      toValue,
+      useNativeDriver: true,
+    }).start();
+
+    setMenuStatus(!menuStatus);
     toggleMenu(menuItem);
   };
 
-  const { focused } = false;
-  let { iconFamily, iconName } = menuItem;
-  let iconSize = 16;
+  const btnStyles = (idxKey) => ({
+    padding: 10,
+    transform: animateActions(-idxKey * 80),
+  });
 
-  let iconColor = iconsColor;
-
-  if (focused) {
-    iconSize = 24;
-    iconColor = theme.selected;
-  }
-
-  if (menuItem.isTrigger) iconSize = 32;
-
-  const flexButton = () => {
-    const xStyles = {
+  const styles = StyleSheet.create({
+    menuContainer: {
       position: 'absolute',
-      justifyContent: 'center',
-      right: 0,
-      bottom: idxKey * 80,
-    };
-
-    if (!menuItem.isTrigger && !menuStatus) {
-      xStyles.display = 'none';
-    } else {
-      xStyles.display = 'flex';
-    }
-
-    return xStyles;
-  };
-
-  const btnStyles = () => {
-    const xStyles = {
+      right: 50,
+      bottom: 50,
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
+      borderRadius: Sizes.$ieMaxRadius,
+      zIndex: 201,
+    },
+    backDrop: {
+      position: 'absolute',
+      backgroundColor: theme.backDropBg,
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
+      borderRadius: Sizes.$ieMaxRadius,
+    },
+    triggerBtn: {
+      position: 'absolute',
       gap: Sizes.$ieFlexGap,
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
       alignItems: 'center',
-    };
-
-    if (!menuItem.isTrigger) {
-      xStyles.padding = 10;
-    } else {
-      xStyles.padding = 0;
-    }
-
-    return xStyles;
-  };
-
-  const iconBoxStyles = () => {
-    let xStyles = {
+      transform: rotateTrigger,
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
+      zIndex: 201,
+      ...mStyles.navShadow,
+    },
+    floatingBarLabel: {
+      position: 'absolute',
+      color: theme.itemColor,
+      backgroundColor: 'transparent',
+    },
+    iconBox: {
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: Sizes.$ieMaxRadius,
       backgroundColor: theme.navBackground,
+    },
+    actionIconBox: {
+      width: Sizes.$btnDimension - 20,
+      height: Sizes.$btnDimension - 20,
+    },
+    triggerIconBox: {
       width: Sizes.$btnDimension,
       height: Sizes.$btnDimension,
-    };
-
-    if (!menuItem.isTrigger) {
-      xStyles.width = Sizes.$btnDimension - 20;
-      xStyles.height = Sizes.$btnDimension - 20;
-    }
-
-    return xStyles;
-  };
-
-  const iconAnimate = () => {
-    let xStyles = {
-      transform: [{ rotate: '0deg' }],
-    };
-
-    if (menuItem.isTrigger && menuStatus) {
-      xStyles.transform = [{ rotate: '45deg' }];
-    }
-
-    return xStyles;
-  };
-
-  const styles = StyleSheet.create({
-    floatingBarLabel: {
-      color: theme.itemColor,
+    },
+    animateBtn: {
+      position: 'absolute',
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
+      zIndex: 201,
+    },
+    menuBtn: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: Sizes.$ieFlexGap,
+      ...mStyles.navShadow,
     },
   });
 
   return (
-    <View key={menuItem.name} style={flexButton()}>
-      <TouchableOpacity style={btnStyles()} onPress={handlePress}>
-        {menuItem.label && (
-          <Text style={styles.floatingBarLabel}>{menuItem.label}</Text>
-        )}
-        <View style={iconBoxStyles()}>
-          <View style={iconAnimate()}>
+    <View style={styles.menuContainer}>
+      <Pressable onPress={() => handlePress()}>
+        <Animated.View style={[styles.backDrop, backDropStyle]} />
+      </Pressable>
+
+      {menuItems.map((menuItem, idx) => (
+        <TouchableOpacity
+          key={menuItem.name}
+          style={styles.animateBtn}
+          onPress={() => handlePress(menuItem)}
+        >
+          <Animated.View style={[styles.menuBtn, btnStyles(idx + 1)]}>
+            {menuItem.label && (
+              <Animated.Text style={[styles.floatingBarLabel, labelStyles]}>
+                {menuItem.label}
+              </Animated.Text>
+            )}
+            <View style={[styles.iconBox, styles.actionIconBox]}>
+              <MasterIcon
+                iconFamily={menuItem.iconFamily}
+                iconName={menuItem.iconName}
+                iconSize={actionIconSize}
+                iconColor={iconColor}
+              />
+            </View>
+          </Animated.View>
+        </TouchableOpacity>
+      ))}
+      <TouchableOpacity style={styles.triggerBtn} onPress={() => handlePress()}>
+        <Animated.View style={styles.menuBtn}>
+          <View style={[styles.iconBox, styles.triggerIconBox]}>
             <MasterIcon
-              iconFamily={iconFamily}
-              iconName={iconName}
-              iconSize={iconSize}
+              iconName='plus'
+              iconSize={triggerIconSize}
               iconColor={iconColor}
             />
           </View>
-        </View>
+        </Animated.View>
       </TouchableOpacity>
     </View>
   );

@@ -15,7 +15,7 @@ export default {
   yellow: '#FFFF00',
   activeBar: '#FFA500',
   appBackground: '#181613',
-  navBackground: '#d0d0d0',
+  navBackground: '#ff00dd',
   orange: '#FFA500',
   inactiveBar: '#dddddd',
   shadow: '#161616',

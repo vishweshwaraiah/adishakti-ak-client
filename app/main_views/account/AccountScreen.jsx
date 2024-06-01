@@ -5,11 +5,8 @@ import SettingsRow from '@/components/Settings/SettingsRow';
 import { router } from 'expo-router';
 import MasterAvatar from '@/components/Settings/MasterAvatar';
 import Sizes from '@/utils/Sizes';
-import { useTheme } from '@/themes/ThemeProvider';
 
 const AccountScreen = () => {
-  const { theme } = useTheme();
-
   const editProfile = () => {
     router.navigate('sub_views/account/ProfileScreen');
   };
@@ -17,15 +14,6 @@ const AccountScreen = () => {
   const styles = StyleSheet.create({
     profileBox: {
       padding: Sizes.$ieRegularPadding,
-    },
-    editBtn: {
-      position: 'absolute',
-      right: 0,
-      opacity: 0.8,
-      backgroundColor: theme.primary,
-      paddingHorizontal: Sizes.$ieExtraPadding,
-      paddingVertical: Sizes.$ieRegularPadding,
-      borderRadius: Sizes.$ieLargeRadius,
     },
     settingsRows: {
       justifyContent: 'center',

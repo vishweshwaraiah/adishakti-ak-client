@@ -5,18 +5,17 @@ import MasterIcon from '@/components/MasterIcon';
 import Sizes from '@/utils/Sizes';
 
 const BottomMenu = (props) => {
-  const { menuItem, iconsColor, idxKey = 0, toggleMenu = () => {} } = props;
+  const { menuItems, iconsColor, toggleMenu = () => {} } = props;
 
   const { theme } = useTheme();
 
-  let { iconFamily, iconName } = menuItem;
   let iconSize = 24;
 
-  const handlePress = () => {
+  const handlePress = (menuItem) => {
     toggleMenu(menuItem);
   };
 
-  const btnStyles = () => {
+  const btnStyles = (menuItem) => {
     const xStyles = {
       flexDirection: 'column',
       gap: Sizes.$ieFlexGap,
@@ -45,15 +44,15 @@ const BottomMenu = (props) => {
     },
   });
 
-  return (
+  return menuItems.map((menuItem, idxKey) => (
     <TouchableOpacity
       key={menuItem.name || idxKey}
-      style={[btnStyles(), styles.bottomBarButton]}
-      onPress={handlePress}
+      style={[btnStyles(menuItem), styles.bottomBarButton]}
+      onPress={() => handlePress(menuItem)}
     >
       <MasterIcon
-        iconFamily={iconFamily}
-        iconName={iconName}
+        iconFamily={menuItem.iconFamily}
+        iconName={menuItem.iconName}
         iconSize={iconSize}
         iconColor={iconsColor}
       />
@@ -61,7 +60,7 @@ const BottomMenu = (props) => {
         <Text style={styles.floatingBarLabel}>{menuItem.label}</Text>
       )}
     </TouchableOpacity>
-  );
+  ));
 };
 
 export default BottomMenu;
