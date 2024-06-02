@@ -80,7 +80,11 @@ const AppSettings = () => {
       alignItems: 'center',
       borderRadius: Sizes.$ieRegularRadius,
       marginBottom: Sizes.$ieRegularMargin,
+      height: Sizes.$ieLargeHeight,
       ...mStyles.commonShadow,
+    },
+    labelStyles: {
+      color: theme.itemColor,
     },
   });
 
@@ -88,7 +92,7 @@ const AppSettings = () => {
     <AuthTemplate screenName='Edit Settings'>
       <View style={styles.settingsBox}>
         <View style={styles.settingsRow}>
-          <Text>Enable Floating Menu Style</Text>
+          <Text style={styles.labelStyles}>Enable Floating Menu Style</Text>
           <MasterSwitch defValue={switchValue} onChange={handleMenuStyle} />
         </View>
         <MasterSelect

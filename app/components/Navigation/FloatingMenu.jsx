@@ -13,7 +13,12 @@ import useMasterStyle from '@/utils/useMasterStyle';
 import MasterIcon from '@/components/MasterIcon';
 
 const FloatingMenu = (props) => {
-  const { menuItems, iconsColor, toggleMenu = () => {} } = props;
+  const {
+    menuItems,
+    iconsColor,
+    toggleMenu = () => {},
+    currentRoute = '',
+  } = props;
 
   const { theme } = useTheme();
   const mStyles = useMasterStyle();
@@ -89,10 +94,18 @@ const FloatingMenu = (props) => {
     toggleMenu(menuItem);
   };
 
-  const btnStyles = (idxKey) => ({
-    padding: 10,
-    transform: animateActions(-idxKey * 80),
-  });
+  const btnStyles = (menuItem, idxKey) => {
+    const xStyles = {
+      padding: 10,
+      transform: animateActions(-idxKey * 80),
+    };
+
+    if (menuItem.name === currentRoute) {
+      xStyles.color = theme.itemSelected;
+    }
+
+    return xStyles;
+  };
 
   const styles = StyleSheet.create({
     menuContainer: {
@@ -111,16 +124,6 @@ const FloatingMenu = (props) => {
       height: Sizes.$btnDimension,
       borderRadius: Sizes.$ieMaxRadius,
     },
-    triggerBtn: {
-      position: 'absolute',
-      gap: Sizes.$ieFlexGap,
-      alignItems: 'center',
-      transform: rotateTrigger,
-      width: Sizes.$btnDimension,
-      height: Sizes.$btnDimension,
-      zIndex: 201,
-      ...mStyles.navShadow,
-    },
     floatingBarLabel: {
       position: 'absolute',
       color: theme.itemColor,
@@ -130,15 +133,11 @@ const FloatingMenu = (props) => {
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: Sizes.$ieMaxRadius,
-      backgroundColor: theme.navBackground,
+      backgroundColor: theme.menuBg,
     },
     actionIconBox: {
       width: Sizes.$btnDimension - 20,
       height: Sizes.$btnDimension - 20,
-    },
-    triggerIconBox: {
-      width: Sizes.$btnDimension,
-      height: Sizes.$btnDimension,
     },
     animateBtn: {
       position: 'absolute',
@@ -146,12 +145,25 @@ const FloatingMenu = (props) => {
       height: Sizes.$btnDimension,
       zIndex: 201,
     },
+    triggerBtn: {
+      position: 'absolute',
+      gap: Sizes.$ieFlexGap,
+      alignItems: 'center',
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
+      zIndex: 201,
+      ...mStyles.navShadow,
+    },
     menuBtn: {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       gap: Sizes.$ieFlexGap,
       ...mStyles.navShadow,
+    },
+    triggerIconBox: {
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
     },
   });
 
@@ -167,7 +179,7 @@ const FloatingMenu = (props) => {
           style={styles.animateBtn}
           onPress={() => handlePress(menuItem)}
         >
-          <Animated.View style={[styles.menuBtn, btnStyles(idx + 1)]}>
+          <Animated.View style={[styles.menuBtn, btnStyles(menuItem, idx + 1)]}>
             {menuItem.label && (
               <Animated.Text style={[styles.floatingBarLabel, labelStyles]}>
                 {menuItem.label}
@@ -185,15 +197,15 @@ const FloatingMenu = (props) => {
         </TouchableOpacity>
       ))}
       <TouchableOpacity style={styles.triggerBtn} onPress={() => handlePress()}>
-        <Animated.View style={styles.menuBtn}>
-          <View style={[styles.iconBox, styles.triggerIconBox]}>
+        <View style={[styles.iconBox, styles.triggerIconBox, styles.menuBtn]}>
+          <Animated.View style={{ transform: rotateTrigger }}>
             <MasterIcon
               iconName='plus'
               iconSize={triggerIconSize}
               iconColor={iconColor}
             />
-          </View>
-        </Animated.View>
+          </Animated.View>
+        </View>
       </TouchableOpacity>
     </View>
   );

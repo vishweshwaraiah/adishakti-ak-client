@@ -18,11 +18,14 @@ const MasterMenu = (props) => {
   const navigation = useNavigation();
   const { theme } = useTheme();
 
+  const [currentRoute, setCurrentRoute] = useState('home');
+
   const mStyles = useMasterStyle();
 
   const toggleMenu = (menu) => {
     if (menu?.name && !menu.isTrigger) {
       navigation.navigate(menu.name);
+      setCurrentRoute(menu.name);
       onPress();
     }
   };
@@ -31,7 +34,7 @@ const MasterMenu = (props) => {
     bottomContainer: {
       position: 'absolute',
       bottom: Sizes.$ieMenuBottomSpace,
-      backgroundColor: theme.navBackground,
+      backgroundColor: theme.menuBg,
       borderRadius: Sizes.$ieRegularRadius * 2,
       width: '90%',
       left: '5%',
@@ -52,6 +55,7 @@ const MasterMenu = (props) => {
           menuItems={menuItems}
           toggleMenu={toggleMenu}
           iconsColor={iconsColor}
+          currentRoute={currentRoute}
         />
       ) : (
         <View style={styles.bottomContainer}>
@@ -59,6 +63,7 @@ const MasterMenu = (props) => {
             menuItems={menuItems}
             toggleMenu={toggleMenu}
             iconsColor={iconsColor}
+            currentRoute={currentRoute}
           />
         </View>
       )}

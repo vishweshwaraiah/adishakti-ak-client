@@ -5,7 +5,12 @@ import MasterIcon from '@/components/MasterIcon';
 import Sizes from '@/utils/Sizes';
 
 const BottomMenu = (props) => {
-  const { menuItems, iconsColor, toggleMenu = () => {} } = props;
+  const {
+    menuItems,
+    iconsColor,
+    toggleMenu = () => {},
+    currentRoute = '',
+  } = props;
 
   const { theme } = useTheme();
 
@@ -16,18 +21,17 @@ const BottomMenu = (props) => {
   };
 
   const btnStyles = (menuItem) => {
-    const xStyles = {
-      flexDirection: 'column',
-      gap: Sizes.$ieFlexGap,
-      justifyContent: 'center',
-      alignItems: 'center',
-    };
+    const xStyles = {};
 
     if (menuItem.floatingBtn) {
       xStyles.borderRadius = 35;
       xStyles.backgroundColor = theme.activeBar;
       xStyles.bottom = 30;
       iconSize = 32;
+    }
+
+    if (menuItem.name === currentRoute) {
+      xStyles.color = theme.itemSelected;
     }
 
     return xStyles;
@@ -38,6 +42,10 @@ const BottomMenu = (props) => {
       color: theme.itemColor,
     },
     bottomBarButton: {
+      flexDirection: 'column',
+      gap: Sizes.$ieFlexGap,
+      justifyContent: 'center',
+      alignItems: 'center',
       width: Sizes.$btnDimension,
       height: Sizes.$btnDimension,
       paddingTop: Sizes.$ieRegularPadding,

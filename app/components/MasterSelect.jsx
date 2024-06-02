@@ -71,7 +71,7 @@ const MasterSelect = (props) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      backgroundColor: theme.white,
+      backgroundColor: theme.itemBg,
       height: Sizes.$ieLargeHeight,
       borderRadius: Sizes.$ieRegularRadius,
       zIndex: 201,
@@ -81,6 +81,7 @@ const MasterSelect = (props) => {
       flex: 1,
       textAlign: 'left',
       marginLeft: Sizes.$ieRegularMargin,
+      color: theme.itemColor,
     },
     icon: {
       marginRight: Sizes.$ieRegularMargin,
@@ -159,7 +160,7 @@ const MasterSelect = (props) => {
         style={styles.icon}
         name='chevron-circle-down'
         size={24}
-        color='black'
+        color={theme.itemColor}
       />
       {renderDropdown()}
     </TouchableOpacity>
