@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
-import {
-  Ionicons,
-  Entypo,
-  FontAwesome,
-  AntDesign,
-  Feather,
-} from '@expo/vector-icons';
 import useMasterStyle from '@/utils/useMasterStyle';
 import { useRouter } from 'expo-router';
 import { trimmedText } from '@/utils/Globals';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
+import MasterIcon from '@/components/MasterIcon';
 
 const SettingsRow = (props) => {
   const {
@@ -80,26 +74,11 @@ const SettingsRow = (props) => {
     }
   };
 
-  const getIcon = () => {
-    switch (iconFamily) {
-      case 'Ionicons':
-        return <Ionicons name={startIcon} size={24} color='black' />;
-      case 'Entypo':
-        return <Entypo name={startIcon} size={24} color='black' />;
-      case 'AntDesign':
-        return <AntDesign name={startIcon} size={24} color='black' />;
-      case 'Feather':
-        return <Feather name={startIcon} size={24} color='black' />;
-      default:
-        return <FontAwesome name={startIcon} size={24} color='black' />;
-    }
-  };
-
   const styles = StyleSheet.create({
     settingsRow: {
       width: '100%',
       flexDirection: 'row',
-      backgroundColor: theme.white,
+      backgroundColor: theme.itemBg,
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: Sizes.$ieExtraPadding,
@@ -120,7 +99,7 @@ const SettingsRow = (props) => {
     },
     rowTitle: {
       fontSize: Sizes.$ieRegularFont,
-      color: theme.black,
+      color: theme.itemColor,
       flexWrap: 'nowrap',
     },
     subTitle: {
@@ -136,7 +115,14 @@ const SettingsRow = (props) => {
   return (
     <TouchableOpacity onPress={handlePress} style={styles.settingsRow}>
       <View style={styles.titleView}>
-        {startIcon && getIcon()}
+        {startIcon && (
+          <MasterIcon
+            iconFamily={iconFamily}
+            iconName={startIcon}
+            iconSize={Sizes.$startIconSize}
+            iconColor={theme.itemColor}
+          />
+        )}
         <View style={styles.titleTextBox}>
           {subTitle && !titleFirst && (
             <Text style={styles.subTitle}>{subTitle}</Text>
@@ -150,7 +136,12 @@ const SettingsRow = (props) => {
         </View>
       </View>
       <View style={styles.rightIcon}>
-        <Entypo name={endIcon} size={24} color='black' />
+        <MasterIcon
+          iconFamily={'Entypo'}
+          iconName={endIcon}
+          iconSize={Sizes.$startIconSize}
+          iconColor={theme.itemColor}
+        />
       </View>
     </TouchableOpacity>
   );

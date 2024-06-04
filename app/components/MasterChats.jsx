@@ -101,7 +101,7 @@ const MasterChats = (props) => {
     },
     mainBox: {
       position: 'relative',
-      backgroundColor: theme.white,
+      backgroundColor: theme.itemBg,
       padding: Sizes.$ieExtraPadding,
       borderRadius: Sizes.$ieRegularRadius,
       ...mStyles.commonShadow,
@@ -111,6 +111,7 @@ const MasterChats = (props) => {
       flexWrap: 'wrap',
       minHeight: 80,
       maxHeight: 200,
+      color: theme.itemColor,
     },
     sendIconBox: {
       position: 'relative',
@@ -162,6 +163,7 @@ const MasterChats = (props) => {
         <View style={styles.mainBox}>
           <TextInput
             placeholder='Type your message'
+            placeholderTextColor={theme.itemColor}
             clearButtonMode='always'
             style={styles.inputBox}
             multiline={true}
@@ -177,7 +179,7 @@ const MasterChats = (props) => {
                 pressed && styles.pressedBtn,
               ]}
             >
-              <FontAwesome name='send-o' size={24} color='black' />
+              <FontAwesome name='send-o' size={24} color={theme.itemColor} />
             </Pressable>
           </View>
         </View>

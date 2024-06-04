@@ -248,6 +248,7 @@ const AppRegister = () => {
                 onInput={getValue}
                 onBlur={blurHandler}
                 startIcon='email'
+                iconFamily='MaterialIcons'
                 name='email'
                 type='email'
                 value={userEmail}
@@ -280,6 +281,7 @@ const AppRegister = () => {
                 onInput={getValue}
                 onBlur={blurHandler}
                 startIcon='password'
+                iconFamily='MaterialIcons'
                 name='password'
                 value={userPassword}
                 error={pwdError}

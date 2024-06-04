@@ -11,12 +11,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, Ionicons } from '@expo/vector-icons';
-import UploadModal from '@/components/Modals/UploadModal';
 import { trimmedText } from '@/utils/Globals';
 import { updateImage, deleteImage, fetchImage } from '@/redux/slice/userData';
+import { useTheme } from '@/themes/ThemeProvider';
+import UploadModal from '@/components/Modals/UploadModal';
 import placeHolder from '@/assets/images/profile.jpg';
 import Sizes from '@/utils/Sizes';
-import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterAvatar = (props) => {
   const {
@@ -34,11 +34,11 @@ const MasterAvatar = (props) => {
     (state) => state.userSlice
   );
 
-  const [imageSize, setImageSize] = useState(0);
-  const [nameSize, setNameSize] = useState(0);
-  const [emailSize, setEmailSize] = useState(0);
-  const [padx, setPadx] = useState(0);
-  const [pady, setPady] = useState(0);
+  const [imageSize, setImageSize] = useState(Sizes.$ieRowAvatar);
+  const [nameSize, setNameSize] = useState(Sizes.$ieRegularFont);
+  const [emailSize, setEmailSize] = useState(Sizes.$ieMediumFont);
+  const [padx, setPadx] = useState(Sizes.$ieLargePadding);
+  const [pady, setPady] = useState(Sizes.$ieRegularPadding);
 
   // Image upload states
   const [uploadModal, setUploadModal] = useState('close');
@@ -141,13 +141,7 @@ const MasterAvatar = (props) => {
   };
 
   useEffect(() => {
-    if (direction === 'row') {
-      setImageSize(Sizes.$ieRowAvatar);
-      setNameSize(Sizes.$ieRegularFont);
-      setEmailSize(Sizes.$ieMediumFont);
-      setPadx(Sizes.$ieLargePadding);
-      setPady(Sizes.$ieRegularPadding);
-    } else {
+    if (direction === 'column') {
       setImageSize(Sizes.$ieColumnAvatar);
       setNameSize(Sizes.$ieTitleFont);
       setEmailSize(Sizes.$ieLargeFont);
@@ -176,18 +170,13 @@ const MasterAvatar = (props) => {
       gap: Sizes.$ieFlexGapLarge,
     },
     imageBox: {
-      width: imageSize,
-      height: imageSize,
-      position: 'relative',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
+      maxWidth: imageSize,
+      maxHeight: imageSize,
     },
     profileImage: {
-      width: '100%',
-      height: '100%',
-      alignSelf: 'center',
-      borderWidth: 5,
+      width: imageSize,
+      height: imageSize,
+      borderWidth: 2,
       borderColor: theme.white,
       borderRadius: 100,
       overflow: 'hidden',

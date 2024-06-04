@@ -2,15 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import MasterModal from '@/components/Modals/MasterModal';
 import MasterButton from '@/components/MasterButton';
-import {
-  Ionicons,
-  Entypo,
-  FontAwesome,
-  AntDesign,
-  Feather,
-} from '@expo/vector-icons';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
+import MasterIcon from '@/components/MasterIcon';
 
 const AlertModal = (props) => {
   const {
@@ -38,25 +32,15 @@ const AlertModal = (props) => {
     }
   }, [modalStatus]);
 
-  const getIcon = () => {
-    switch (iconFamily) {
-      case 'Ionicons':
-        return <Ionicons name={alertIcon} size={72} color='black' />;
-      case 'Entypo':
-        return <Entypo name={alertIcon} size={72} color='black' />;
-      case 'AntDesign':
-        return <AntDesign name={alertIcon} size={72} color='black' />;
-      case 'Feather':
-        return <Feather name={alertIcon} size={72} color='black' />;
-      default:
-        return <FontAwesome name={alertIcon} size={72} color='black' />;
-    }
-  };
-
   const initialView = () => {
     return (
       <View style={styles.subView}>
-        {getIcon()}
+        <MasterIcon
+          iconFamily={iconFamily}
+          iconName={alertIcon}
+          iconSize={Sizes.$alertIconSize}
+          iconColor={theme.itemColor}
+        />
         <Text style={styles.actionText}>{statusMessage}</Text>
         <View style={styles.groupActions}>
           <MasterButton
@@ -78,7 +62,12 @@ const AlertModal = (props) => {
   const doneView = () => {
     return (
       <View style={styles.subView}>
-        {getIcon()}
+        <MasterIcon
+          iconFamily={iconFamily}
+          iconName={alertIcon}
+          iconSize={Sizes.$alertIconSize}
+          iconColor={theme.itemColor}
+        />
         <Text style={styles.actionText}>{statusMessage}</Text>
         <MasterButton
           onPress={onClose}

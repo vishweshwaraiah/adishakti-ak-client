@@ -123,6 +123,7 @@ const FloatingMenu = (props) => {
       width: Sizes.$btnDimension,
       height: Sizes.$btnDimension,
       borderRadius: Sizes.$ieMaxRadius,
+      zIndex: 200,
     },
     floatingBarLabel: {
       position: 'absolute',
@@ -134,36 +135,22 @@ const FloatingMenu = (props) => {
       justifyContent: 'center',
       borderRadius: Sizes.$ieMaxRadius,
       backgroundColor: theme.menuBg,
+      zIndex: 201,
+    },
+    triggerIconBox: {
+      width: Sizes.$btnDimension,
+      height: Sizes.$btnDimension,
     },
     actionIconBox: {
       width: Sizes.$btnDimension - 20,
       height: Sizes.$btnDimension - 20,
     },
-    animateBtn: {
-      position: 'absolute',
-      width: Sizes.$btnDimension,
-      height: Sizes.$btnDimension,
-      zIndex: 201,
-    },
-    triggerBtn: {
-      position: 'absolute',
-      gap: Sizes.$ieFlexGap,
-      alignItems: 'center',
-      width: Sizes.$btnDimension,
-      height: Sizes.$btnDimension,
-      zIndex: 201,
-      ...mStyles.navShadow,
-    },
     menuBtn: {
+      position: 'absolute',
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      gap: Sizes.$ieFlexGap,
       ...mStyles.navShadow,
-    },
-    triggerIconBox: {
-      width: Sizes.$btnDimension,
-      height: Sizes.$btnDimension,
     },
   });
 
@@ -174,39 +161,38 @@ const FloatingMenu = (props) => {
       </Pressable>
 
       {menuItems.map((menuItem, idx) => (
-        <TouchableOpacity
+        <Animated.View
           key={menuItem.name}
-          style={styles.animateBtn}
-          onPress={() => handlePress(menuItem)}
+          style={[styles.menuBtn, btnStyles(menuItem, idx + 1)]}
         >
-          <Animated.View style={[styles.menuBtn, btnStyles(menuItem, idx + 1)]}>
-            {menuItem.label && (
-              <Animated.Text style={[styles.floatingBarLabel, labelStyles]}>
-                {menuItem.label}
-              </Animated.Text>
-            )}
-            <View style={[styles.iconBox, styles.actionIconBox]}>
-              <MasterIcon
-                iconFamily={menuItem.iconFamily}
-                iconName={menuItem.iconName}
-                iconSize={actionIconSize}
-                iconColor={iconColor}
-              />
-            </View>
-          </Animated.View>
-        </TouchableOpacity>
-      ))}
-      <TouchableOpacity style={styles.triggerBtn} onPress={() => handlePress()}>
-        <View style={[styles.iconBox, styles.triggerIconBox, styles.menuBtn]}>
-          <Animated.View style={{ transform: rotateTrigger }}>
+          {menuItem.label && (
+            <Animated.Text style={[styles.floatingBarLabel, labelStyles]}>
+              {menuItem.label}
+            </Animated.Text>
+          )}
+          <View style={[styles.iconBox, styles.actionIconBox]}>
             <MasterIcon
-              iconName='plus'
-              iconSize={triggerIconSize}
+              onPress={() => handlePress(menuItem)}
+              iconFamily={menuItem.iconFamily}
+              iconName={menuItem.iconName}
+              iconSize={actionIconSize}
               iconColor={iconColor}
+              isInteractive={true}
             />
-          </Animated.View>
-        </View>
-      </TouchableOpacity>
+          </View>
+        </Animated.View>
+      ))}
+      <View style={[styles.menuBtn, styles.iconBox, styles.triggerIconBox]}>
+        <Animated.View style={{ transform: rotateTrigger }}>
+          <MasterIcon
+            onPress={() => handlePress()}
+            iconName='plus'
+            iconSize={triggerIconSize}
+            iconColor={iconColor}
+            isInteractive={true}
+          />
+        </Animated.View>
+      </View>
     </View>
   );
 };

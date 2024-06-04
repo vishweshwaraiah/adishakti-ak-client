@@ -192,6 +192,7 @@ const AppLogin = () => {
                 onInput={getValue}
                 onBlur={blurHandler}
                 startIcon='password'
+                iconFamily='MaterialIcons'
                 name='password'
                 value={password}
                 error={pwdError}

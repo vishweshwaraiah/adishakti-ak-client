@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MasterModal from '@/components/Modals/MasterModal';
 import MasterButton from '@/components/MasterButton';
-import { Ionicons, Entypo, FontAwesome, AntDesign } from '@expo/vector-icons';
+import MasterIcon from '@/components/MasterIcon';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 
@@ -28,19 +28,6 @@ const UploadModal = (props) => {
       setModalOpen('close');
     }
   }, [modalStatus]);
-
-  const getIcon = (iconFamily, iconName) => {
-    switch (iconFamily) {
-      case 'Ionicons':
-        return <Ionicons name={iconName} size={24} color='orange' />;
-      case 'Entypo':
-        return <Entypo name={iconName} size={24} color='orange' />;
-      case 'AntDesign':
-        return <AntDesign name={iconName} size={24} color='orange' />;
-      default:
-        return <FontAwesome name={iconName} size={24} color='orange' />;
-    }
-  };
 
   return (
     <MasterModal
@@ -72,7 +59,12 @@ const UploadModal = (props) => {
                 textColor='black'
                 height='xlarge'
               >
-                {getIcon('Ionicons', 'camera')}
+                <MasterIcon
+                  iconFamily={'Ionicons'}
+                  iconName={'camera'}
+                  iconSize={Sizes.$startIconSize}
+                  iconColor={theme.itemColor}
+                />
                 <Text>Camera</Text>
               </MasterButton>
               <MasterButton
@@ -81,7 +73,12 @@ const UploadModal = (props) => {
                 textColor='black'
                 height='xlarge'
               >
-                {getIcon('Ionicons', 'images')}
+                <MasterIcon
+                  iconFamily={'Ionicons'}
+                  iconName={'images'}
+                  iconSize={Sizes.$startIconSize}
+                  iconColor={theme.itemColor}
+                />
                 <Text>Gallery</Text>
               </MasterButton>
               <MasterButton
@@ -90,7 +87,12 @@ const UploadModal = (props) => {
                 textColor='black'
                 height='xlarge'
               >
-                {getIcon('Ionicons', 'trash')}
+                <MasterIcon
+                  iconFamily={'Ionicons'}
+                  iconName={'trash'}
+                  iconSize={Sizes.$startIconSize}
+                  iconColor={theme.itemColor}
+                />
                 <Text>Remove</Text>
               </MasterButton>
             </View>

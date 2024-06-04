@@ -32,6 +32,7 @@ export default {
 
   // Input elements specific
   $startIconSize: 20,
+  $alertIconSize: 72,
   $ieRegularHeight: 48,
   $ieLargeHeight: 56,
   $ieXLargeHeight: 64,

@@ -28,6 +28,11 @@ const BottomMenu = (props) => {
       xStyles.backgroundColor = theme.activeBar;
       xStyles.bottom = 30;
       iconSize = 32;
+    } else {
+      xStyles.borderRadius = 0;
+      xStyles.backgroundColor = 'transparent';
+      xStyles.bottom = 0;
+      iconSize = 24;
     }
 
     if (menuItem.name === currentRoute) {

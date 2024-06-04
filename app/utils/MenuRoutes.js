@@ -19,8 +19,8 @@ const MenuRoutes = [
     name: 'account',
     label: 'Account',
     floatingBtn: false,
-    iconName: 'user',
-    iconFamily: 'Feather',
+    iconName: 'person',
+    iconFamily: 'Ionicons',
     path: '/main_views/account/AccountScreen',
   },
 ];

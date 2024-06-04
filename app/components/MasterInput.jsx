@@ -9,18 +9,11 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import {
-  AntDesign,
-  MaterialIcons,
-  FontAwesome,
-  Feather,
-  Entypo,
-  Ionicons,
-} from '@expo/vector-icons';
 import MasterPicker from '@/components/MasterPicker';
 import Sizes from '@/utils/Sizes';
 import useMasterStyle from '@/utils/useMasterStyle';
 import { useTheme } from '@/themes/ThemeProvider';
+import MasterIcon from '@/components/MasterIcon';
 
 const MasterInput = (props) => {
   const {
@@ -222,55 +215,6 @@ const MasterInput = (props) => {
     transform: [{ translateY: yVal }, { translateX: xVal }],
   };
 
-  const getIcon = () => {
-    if (iconFamily === 'AntDesign') {
-      return (
-        <AntDesign name={startIcon} size={Sizes.$startIconSize} color='#000' />
-      );
-    } else if (iconFamily === 'FontAwesome') {
-      return (
-        <FontAwesome
-          name={startIcon}
-          size={Sizes.$startIconSize}
-          color='#000'
-        />
-      );
-    } else if (iconFamily === 'Entypo') {
-      return (
-        <Entypo name={startIcon} size={Sizes.$startIconSize} color='#000' />
-      );
-    } else if (iconFamily === 'Ionicons') {
-      return (
-        <Ionicons name={startIcon} size={Sizes.$startIconSize} color='#000' />
-      );
-    } else {
-      return (
-        <MaterialIcons
-          name={startIcon}
-          size={Sizes.$startIconSize}
-          color='#000'
-        />
-      );
-    }
-  };
-
-  const showPwd = () => {
-    setEyeIcon(!eyeIcon);
-  };
-
-  const showPwdIcon = () => {
-    return eyeIcon ? (
-      <Feather onPress={() => showPwd()} name='eye' size={24} color='black' />
-    ) : (
-      <Feather
-        onPress={() => showPwd()}
-        name='eye-off'
-        size={24}
-        color='black'
-      />
-    );
-  };
-
   const styles = StyleSheet.create({
     mainContainer: {
       width: inputWidth,
@@ -374,7 +318,12 @@ const MasterInput = (props) => {
             </Animated.View>
           )}
           <View style={styles.inputBox}>
-            {getIcon()}
+            <MasterIcon
+              iconFamily={iconFamily}
+              iconName={startIcon}
+              iconSize={Sizes.$startIconSize}
+              iconColor={'#000000'}
+            />
             {textBefore && <Text>{textBefore}</Text>}
             {inputType === 'date' ? (
               <TouchableOpacity
@@ -412,7 +361,15 @@ const MasterInput = (props) => {
               />
             )}
 
-            {type === 'password' && showPwdIcon()}
+            {type === 'password' && (
+              <MasterIcon
+                onPress={() => setEyeIcon(!eyeIcon)}
+                iconFamily='Feather'
+                iconName={eyeIcon ? 'eye' : 'eye-off'}
+                iconSize={Sizes.$startIconSize}
+                iconColor={'#000000'}
+              />
+            )}
           </View>
         </View>
         {hasError && showError && (
