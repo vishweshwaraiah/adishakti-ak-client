@@ -10,9 +10,9 @@ import ContactItem from '@/components/Contacts/ContactItem';
 import MasterInput from '@/components/MasterInput';
 import useContacts from '@/utils/useContacts';
 import MasterCheckbox from '@/components/MasterCheckbox';
-import { FontAwesome5 } from '@expo/vector-icons';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
+import MasterIcon from '@/components/MasterIcon';
 
 const ContactsList = (props) => {
   const {
@@ -29,6 +29,7 @@ const ContactsList = (props) => {
   const [keyError, setKeyError] = useState(false);
   const [selectedArray, setSelectedArray] = useState([]);
   const [allSelected, setAllSelected] = useState(false);
+  const [isIntermediate, setIsIntermediate] = useState(false);
 
   const { allContacts } = useContacts();
 
@@ -89,6 +90,11 @@ const ContactsList = (props) => {
   }, [selectedArray]);
 
   useEffect(() => {
+    if (selectedArray.length && selectedArray.length < allContacts.length) {
+      setIsIntermediate(true);
+    } else {
+      setIsIntermediate(false);
+    }
     onSelectText({
       selected: selectedArray.length,
       total: contactsSorted.length,
@@ -130,14 +136,15 @@ const ContactsList = (props) => {
               isChecked={allSelected}
               size='large'
               color='dark'
-              isIntermediate={false}
+              isIntermediate={isIntermediate}
             />
             <TouchableOpacity onPress={toggleOrder}>
-              {order === 'Asc' ? (
-                <FontAwesome5 name='sort-alpha-down' size={24} color='black' />
-              ) : (
-                <FontAwesome5 name='sort-alpha-up' size={24} color='black' />
-              )}
+              <MasterIcon
+                iconName={order === 'Asc' ? 'sort-alpha-down' : 'sort-alpha-up'}
+                iconSize={24}
+                iconColor={theme.itemBg}
+                iconFamily='FontAwesome5'
+              />
             </TouchableOpacity>
           </View>
         )}

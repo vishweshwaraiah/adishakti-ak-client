@@ -11,12 +11,12 @@ import {
   Pressable,
 } from 'react-native';
 import Sizes from '@/utils/Sizes';
-import { FontAwesome } from '@expo/vector-icons';
 import MasterSelect from '@/components/MasterSelect';
 import useMasterStyle from '@/utils/useMasterStyle';
 import SendToFew from '@/components/Messages/SendToFew';
 import SendToGroup from '@/components/Messages/SendToGroup';
 import { useTheme } from '@/themes/ThemeProvider';
+import MasterIcon from '@/components/MasterIcon';
 
 const MasterChats = (props) => {
   const {
@@ -179,7 +179,12 @@ const MasterChats = (props) => {
                 pressed && styles.pressedBtn,
               ]}
             >
-              <FontAwesome name='send-o' size={24} color={theme.itemColor} />
+              <MasterIcon
+                iconFamily='FontAwesome'
+                iconName='send-o'
+                iconSize={24}
+                iconColor={theme.itemColor}
+              />
             </Pressable>
           </View>
         </View>

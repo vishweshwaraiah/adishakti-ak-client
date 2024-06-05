@@ -9,8 +9,8 @@ import {
   Text,
   SafeAreaView,
 } from 'react-native';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import MasterInput from '@/components/MasterInput';
+import MasterIcon from '@/components/MasterIcon';
 import Sizes from '@/utils/Sizes';
 import useMasterStyle from '@/utils/useMasterStyle';
 import { useTheme } from '@/themes/ThemeProvider';
@@ -67,11 +67,12 @@ const SendToFew = (props) => {
         onPress={() => removePhoneNumber(item)}
       >
         <Text style={styles.contactNum}>{item.value}</Text>
-        <Ionicons
-          style={styles.removeIcon}
-          name='remove-circle'
-          size={16}
-          color='white'
+        <MasterIcon
+          iconName='remove-circle'
+          iconSize={16}
+          iconFamily='Ionicons'
+          iconColor={theme.itemColor}
+          iconStyles={styles.removeIcon}
         />
       </TouchableOpacity>
     </View>
@@ -105,7 +106,7 @@ const SendToFew = (props) => {
       ...mStyles.commonShadow,
     },
     addIcon: {
-      backgroundColor: theme.white,
+      backgroundColor: theme.itemBg,
       borderRadius: Sizes.$ieRegularRadius,
       paddingVertical: 12,
       overflow: 'hidden',
@@ -171,7 +172,12 @@ const SendToFew = (props) => {
         />
         <View style={styles.shadowProp}>
           <TouchableOpacity onPress={addPhoneNumber} style={styles.addIcon}>
-            <MaterialIcons name='add-circle' size={24} color='black' />
+            <MasterIcon
+              iconName='add-circle'
+              iconSize={24}
+              iconFamily='MaterialIcons'
+              iconColor={theme.itemColor}
+            />
           </TouchableOpacity>
         </View>
       </View>

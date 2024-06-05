@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Entypo, Feather } from '@expo/vector-icons';
 import { daysObjects, fetchMonth, toUTCDate } from '@/utils/DateTime';
 import CalendarGrid from '@/components/CalendarGrid';
 import MasterModal from '@/components/Modals/MasterModal';
 import MasterButton from '@/components/MasterButton';
+import MasterIcon from '@/components/MasterIcon';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 
@@ -215,17 +215,37 @@ const MasterPicker = (props) => {
         <View style={styles.pickerView}>
           <View style={styles.actionsBox}>
             <TouchableOpacity onPress={prevYear}>
-              <Feather name='chevrons-left' size={30} color='black' />
+              <MasterIcon
+                iconName='chevrons-left'
+                iconSize={30}
+                iconColor={theme.itemBg}
+                iconFamily='Feather'
+              />
             </TouchableOpacity>
             <TouchableOpacity onPress={prevMonth}>
-              <Entypo name='chevron-left' size={24} color='black' />
+              <MasterIcon
+                iconName='chevron-left'
+                iconSize={24}
+                iconColor={theme.itemBg}
+                iconFamily='Entypo'
+              />
             </TouchableOpacity>
             <Text>{stringDate}</Text>
             <TouchableOpacity onPress={nextMonth}>
-              <Entypo name='chevron-right' size={24} color='black' />
+              <MasterIcon
+                iconName='chevron-right'
+                iconSize={24}
+                iconColor={theme.itemBg}
+                iconFamily='Entypo'
+              />
             </TouchableOpacity>
             <TouchableOpacity onPress={nextYear}>
-              <Feather name='chevrons-right' size={30} color='black' />
+              <MasterIcon
+                iconName='chevrons-right'
+                iconSize={30}
+                iconColor={theme.itemBg}
+                iconFamily='Feather'
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.datesView}>

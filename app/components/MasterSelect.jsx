@@ -7,10 +7,10 @@ import {
   Modal,
   View,
 } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import Sizes from '@/utils/Sizes';
 import useMasterStyle from '@/utils/useMasterStyle';
 import { useTheme } from '@/themes/ThemeProvider';
+import MasterIcon from '@/components/MasterIcon';
 
 const MasterSelect = (props) => {
   const { selectData, onSelect, currentValue } = props;
@@ -83,7 +83,7 @@ const MasterSelect = (props) => {
       marginLeft: Sizes.$ieRegularMargin,
       color: theme.itemColor,
     },
-    icon: {
+    iconSpace: {
       marginRight: Sizes.$ieRegularMargin,
     },
     selectDropdown: {
@@ -156,11 +156,12 @@ const MasterSelect = (props) => {
       onPress={toggleDropdown}
     >
       <Text style={styles.buttonText}>{selected?.label}</Text>
-      <FontAwesome
-        style={styles.icon}
-        name='chevron-circle-down'
-        size={24}
-        color={theme.itemColor}
+      <MasterIcon
+        iconName='chevron-circle-down'
+        iconSize={24}
+        iconColor={theme.itemColor}
+        iconFamily='FontAwesome'
+        iconStyles={styles.iconSpace}
       />
       {renderDropdown()}
     </TouchableOpacity>

@@ -10,7 +10,7 @@ import {
 } from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo, Ionicons } from '@expo/vector-icons';
+import MasterIcon from '@/components/MasterIcon';
 import { trimmedText } from '@/utils/Globals';
 import { updateImage, deleteImage, fetchImage } from '@/redux/slice/userData';
 import { useTheme } from '@/themes/ThemeProvider';
@@ -185,7 +185,7 @@ const MasterAvatar = (props) => {
       position: 'absolute',
       right: 0,
       bottom: 0,
-      backgroundColor: theme.transwhite,
+      backgroundColor: theme.itemBg,
       padding: Sizes.$ieSmallPadding,
       borderRadius: Sizes.$ieRegularRadius,
       overflow: 'hidden',
@@ -219,9 +219,19 @@ const MasterAvatar = (props) => {
         />
         <TouchableOpacity onPress={editHandler} style={styles.updateImage}>
           {direction === 'row' ? (
-            <Entypo name='edit' size={20} color='black' />
+            <MasterIcon
+              iconName='edit'
+              iconSize={20}
+              iconFamily='Entypo'
+              iconColor={theme.itemColor}
+            />
           ) : (
-            <Ionicons name='camera' size={20} color='black' />
+            <MasterIcon
+              iconName='camera'
+              iconSize={20}
+              iconFamily='Ionicons'
+              iconColor={theme.itemColor}
+            />
           )}
         </TouchableOpacity>
       </View>

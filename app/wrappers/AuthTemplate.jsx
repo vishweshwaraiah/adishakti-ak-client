@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import { useTheme } from '@/themes/ThemeProvider';
 import { clearUser } from '@/redux/slice/userData';
 import { logoutUser } from '@/redux/slice/authData';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import MasterIcon from '@/components/MasterIcon';
 import AlertModal from '@/components/Modals/AlertModal';
 import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
@@ -81,7 +81,12 @@ const AuthTemplate = (props) => {
           onPress={goHome}
           variant='trans'
         >
-          <Ionicons name='home' size={20} color='black' />
+          <MasterIcon
+            iconFamily='Ionicons'
+            iconName='home'
+            iconSize={20}
+            iconColor={theme.itemColor}
+          />
         </Pressable>
       ) : (
         <Pressable
@@ -92,7 +97,12 @@ const AuthTemplate = (props) => {
           onPress={goBack}
           variant='trans'
         >
-          <FontAwesome name='chevron-left' size={20} color='black' />
+          <MasterIcon
+            iconFamily='FontAwesome'
+            iconName='chevron-left'
+            iconSize={20}
+            iconColor={theme.itemColor}
+          />
         </Pressable>
       )}
     </View>
@@ -108,7 +118,12 @@ const AuthTemplate = (props) => {
         onPress={pressLogout}
         variant='trans'
       >
-        <FontAwesome name='sign-out' size={20} color='black' />
+        <MasterIcon
+          iconFamily='FontAwesome'
+          iconName='sign-out'
+          iconSize={20}
+          iconColor={theme.itemColor}
+        />
       </Pressable>
     );
 

@@ -6,7 +6,7 @@ import MasterModal from '@/components/Modals/MasterModal';
 import ContactsList from '@/components/Contacts/ContactsList';
 import MasterInput from '@/components/MasterInput';
 import MasterButton from '@/components/MasterButton';
-import { FontAwesome } from '@expo/vector-icons';
+import MasterIcon from '@/components/MasterIcon';
 import MasterError from '@/components/MasterError';
 import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
@@ -110,7 +110,12 @@ const AddGroup = () => {
   return (
     <View>
       <TouchableOpacity onPress={openModal} style={mStyles.actionBtn}>
-        <FontAwesome name='plus' size={20} color={theme.black} />
+        <MasterIcon
+          iconName='plus'
+          iconSize={20}
+          iconFamily='FontAwesome'
+          iconColor={theme.itemColor}
+        />
       </TouchableOpacity>
       <MasterModal
         bodyHeight={500}

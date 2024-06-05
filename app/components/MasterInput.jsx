@@ -226,7 +226,7 @@ const MasterInput = (props) => {
       marginTop: spacing,
     },
     labelText: {
-      color: theme.secondary,
+      color: theme.itemColor,
       fontSize: Sizes.$ieSmallFont,
       lineHeight: Sizes.$ieSmallFont,
       zIndex: 201,
@@ -243,7 +243,7 @@ const MasterInput = (props) => {
     subContainer: {
       flexDirection: 'row',
       marginBottom: spacing ? spacing / 2 : 0,
-      backgroundColor: theme.light,
+      backgroundColor: theme.itemBg,
       paddingHorizontal: Sizes.$ieRegularPadding,
       maxHeight: Sizes.$ieMaxHeight,
     },
@@ -255,7 +255,7 @@ const MasterInput = (props) => {
     },
     animatedLabel: {
       position: 'absolute',
-      backgroundColor: theme.light,
+      backgroundColor: theme.itemBg,
       borderRadius: 5,
       overflow: 'hidden',
       paddingVertical: Sizes.$ieRegularPadding,
@@ -271,8 +271,12 @@ const MasterInput = (props) => {
       flex: 1,
       fontSize: inputValue ? Sizes.$ieRegularFont : Sizes.$ieSmallFont,
       maxHeight: Sizes.$ieMaxHeight,
-      color: theme.black,
+      color: theme.itemColor,
+      backgroundColor: theme.itemBg,
       justifyContent: 'center',
+    },
+    textBefore: {
+      color: theme.itemColor,
     },
     placeHolder: {
       fontSize: Sizes.$ieSmallFont,
@@ -322,16 +326,16 @@ const MasterInput = (props) => {
               iconFamily={iconFamily}
               iconName={startIcon}
               iconSize={Sizes.$startIconSize}
-              iconColor={'#000000'}
+              iconColor={theme.itemColor}
             />
-            {textBefore && <Text>{textBefore}</Text>}
+            {textBefore && <Text style={styles.textBefore}>{textBefore}</Text>}
             {inputType === 'date' ? (
               <TouchableOpacity
                 onPress={handleDate}
                 style={[styles.textInput, inputHeight]}
               >
                 {inputValue ? (
-                  <Text>{inputValue}</Text>
+                  <Text style={styles.textBefore}>{inputValue}</Text>
                 ) : (
                   <Text style={styles.placeHolder}>Select a date!</Text>
                 )}
@@ -367,7 +371,7 @@ const MasterInput = (props) => {
                 iconFamily='Feather'
                 iconName={eyeIcon ? 'eye' : 'eye-off'}
                 iconSize={Sizes.$startIconSize}
-                iconColor={'#000000'}
+                iconColor={theme.itemColor}
               />
             )}
           </View>

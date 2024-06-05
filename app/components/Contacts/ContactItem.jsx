@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import MasterIcon from '@/components/MasterIcon';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 
@@ -39,9 +39,10 @@ const ContactItem = (props) => {
       height: 55,
       borderRadius: 30,
       overflow: 'hidden',
-      backgroundColor: theme.light,
+      backgroundColor: theme.itemBg,
       alignItems: 'center',
       justifyContent: 'center',
+      alignSelf: 'center',
     },
     contactDat: {
       flex: 1,
@@ -50,6 +51,7 @@ const ContactItem = (props) => {
     },
     txt: {
       fontSize: 20,
+      color: theme.itemColor,
     },
     name: {
       fontSize: 16,
@@ -70,7 +72,12 @@ const ContactItem = (props) => {
           <View style={styles.placeholder}>
             {contact.selected ? (
               <Text style={styles.isSelected}>
-                <FontAwesome name='check-circle' size={32} color='black' />
+                <MasterIcon
+                  iconName='check-circle'
+                  iconSize={32}
+                  iconColor={theme.itemColor}
+                  iconFamily='FontAwesome'
+                />
               </Text>
             ) : (
               <Text style={styles.txt}>{contact?.name[0]}</Text>

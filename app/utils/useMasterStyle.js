@@ -43,7 +43,7 @@ const useMasterStyle = () => {
       width: Sizes.$ieActionBtn,
       height: Sizes.$ieActionBtn,
       position: 'relative',
-      backgroundColor: theme.white,
+      backgroundColor: theme.itemBg,
       borderWidth: 1,
       borderColor: theme.gray,
       padding: Sizes.$ieSmallPadding,

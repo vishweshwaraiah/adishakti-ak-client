@@ -7,7 +7,7 @@ import {
   Animated,
   TouchableOpacity,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import MasterIcon from '@/components/MasterIcon';
 import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
@@ -142,7 +142,12 @@ const MasterModal = (props) => {
                 style={styles.modalClose}
                 onPress={() => handleClose()}
               >
-                <Ionicons name='close-circle' size={24} color='black' />
+                <MasterIcon
+                  iconName='close-circle'
+                  iconSize={24}
+                  iconFamily='Ionicons'
+                  iconColor={theme.itemBg}
+                />
               </TouchableOpacity>
             )}
           </View>

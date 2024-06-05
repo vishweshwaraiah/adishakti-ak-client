@@ -8,12 +8,12 @@ import {
   View,
 } from 'react-native';
 import MasterButton from '@/components/MasterButton';
-import { Ionicons } from '@expo/vector-icons';
 import Sizes from '@/utils/Sizes';
 import MasterInput from '../../components/MasterInput';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import { router } from 'expo-router';
-import GenderSelector from '@/components/GenderSelector';
+import MasterGender from '@/components/MasterGender';
+import MasterIcon from '@/components/MasterIcon';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetUserStatus, updateUser } from '@/redux/slice/userData';
 import { useTheme } from '@/themes/ThemeProvider';
@@ -252,7 +252,12 @@ const UpdateDetails = () => {
       >
         {afterAction === 'error' || afterAction === 'done' ? (
           <View style={styles.doneView}>
-            <Ionicons name={statusIcon} size={72} color='black' />
+            <MasterIcon
+              iconFamily='Ionicons'
+              iconName={statusIcon}
+              iconSize={Sizes.$alertIconSize}
+              iconColor={theme.itemBg}
+            />
             <Text style={styles.actionText}>{userMessage}</Text>
             <MasterButton
               onPress={onCancel}
@@ -314,7 +319,7 @@ const UpdateDetails = () => {
               placeholder='Enter your mobile number'
               spacing={10}
             />
-            <GenderSelector
+            <MasterGender
               error={genderError}
               onSelect={handleGender}
               spacing={10}

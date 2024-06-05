@@ -2,10 +2,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Sizes from '@/utils/Sizes';
 import useMasterStyle from '@/utils/useMasterStyle';
-import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/themes/ThemeProvider';
+import MasterIcon from '@/components/MasterIcon';
 
-const GenderSelector = (props) => {
+const MasterGender = (props) => {
   const {
     error = '',
     onSelect = () => {},
@@ -53,7 +53,7 @@ const GenderSelector = (props) => {
       flex: 1,
       marginBottom: spacing,
       marginTop: spacing ? spacing / 2 : 0,
-      backgroundColor: theme.light,
+      backgroundColor: theme.itemBg,
       borderRadius: Sizes.$ieRegularRadius,
       overflow: 'hidden',
       height: Sizes.$ieLargeHeight,
@@ -67,12 +67,12 @@ const GenderSelector = (props) => {
       fontSize: Sizes.$ieSmallFont,
       lineHeight: Sizes.$ieSmallFont,
       marginTop: spacing,
-      color: theme.secondary,
+      color: theme.itemColor,
     },
     genderText: {
       fontSize: Sizes.$ieSmallFont,
       lineHeight: Sizes.$ieSmallFont,
-      color: theme.secondary,
+      color: theme.itemColor,
     },
     errorText: {
       fontSize: Sizes.$ieSmallFont,
@@ -96,7 +96,12 @@ const GenderSelector = (props) => {
           ]}
           onPress={() => handleGender('Male')}
         >
-          <Ionicons name='male' size={20} color='black' />
+          <MasterIcon
+            iconFamily='Ionicons'
+            iconName='male'
+            iconSize={20}
+            iconColor={theme.itemColor}
+          />
           <Text style={styles.genderText}>Male</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -106,7 +111,12 @@ const GenderSelector = (props) => {
           ]}
           onPress={() => handleGender('Female')}
         >
-          <Ionicons name='female' size={20} color='black' />
+          <MasterIcon
+            iconFamily='Ionicons'
+            iconName='female'
+            iconSize={20}
+            iconColor={theme.itemColor}
+          />
           <Text style={styles.genderText}>Female</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -116,7 +126,12 @@ const GenderSelector = (props) => {
           ]}
           onPress={() => handleGender('Others')}
         >
-          <Ionicons name='male-female' size={20} color='black' />
+          <MasterIcon
+            iconFamily='Ionicons'
+            iconName='male-female'
+            iconSize={20}
+            iconColor={theme.itemColor}
+          />
           <Text style={styles.genderText}>Others</Text>
         </TouchableOpacity>
       </View>
@@ -125,4 +140,4 @@ const GenderSelector = (props) => {
   );
 };
 
-export default GenderSelector;
+export default MasterGender;

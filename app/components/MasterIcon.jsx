@@ -6,6 +6,7 @@ import {
   Ionicons,
   AntDesign,
   FontAwesome,
+  FontAwesome5,
   MaterialIcons,
 } from '@expo/vector-icons';
 import Sizes from '@/utils/Sizes';
@@ -20,6 +21,7 @@ const MasterIcon = (props) => {
     isInteractive = false,
     iconBgColor = 'transparent',
     iconBgSize = Sizes.$btnDimension,
+    iconStyles = {},
   } = props;
 
   const getIcon = () => {
@@ -51,6 +53,11 @@ const MasterIcon = (props) => {
           <MaterialIcons name={iconName} size={iconSize} color={iconColor} />
         );
         break;
+      case 'FontAwesome5':
+        iconElement = (
+          <FontAwesome5 name={iconName} size={iconSize} color={iconColor} />
+        );
+        break;
       default:
         iconElement = (
           <FontAwesome name={iconName} size={iconSize} color={iconColor} />
@@ -77,11 +84,14 @@ const MasterIcon = (props) => {
   });
 
   return isInteractive ? (
-    <TouchableOpacity style={styles.isInteractive} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.isInteractive, iconStyles]}
+      onPress={onPress}
+    >
       {getIcon()}
     </TouchableOpacity>
   ) : (
-    <View style={styles.nonInteractive}>{getIcon()}</View>
+    <View style={[styles.nonInteractive, iconStyles]}>{getIcon()}</View>
   );
 };
 

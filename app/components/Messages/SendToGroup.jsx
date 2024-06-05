@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchNumsGroups } from '@/redux/slice/numsGroups';
-import { Ionicons } from '@expo/vector-icons';
+import MasterIcon from '@/components/MasterIcon';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 
@@ -48,7 +48,12 @@ const SendToGroup = (props) => {
         <View style={styles.groupItem}>
           <Text style={styles.groupItemText}>{item.group_name}</Text>
           {selectedGroup.group_name === item.group_name && (
-            <Ionicons name='checkmark-circle' size={24} color='white' />
+            <MasterIcon
+              iconName='checkmark-circle'
+              iconSize={24}
+              iconFamily='Ionicons'
+              iconColor={theme.itemColor}
+            />
           )}
         </View>
       </TouchableOpacity>

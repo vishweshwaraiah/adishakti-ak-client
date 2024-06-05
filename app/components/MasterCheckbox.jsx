@@ -1,20 +1,25 @@
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import MasterIcon from '@/components/MasterIcon';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 
 const MasterCheckbox = (props) => {
-  const { isChecked, isIntermediate, size = 'regular', color } = props;
+  const {
+    isChecked = false,
+    isIntermediate = false,
+    size = 'regular',
+    color,
+  } = props;
 
   const { theme } = useTheme();
 
   const [inputSize, setInputSize] = useState(0);
   const [inputColor, setInputColor] = useState(theme.black);
 
-  const iconName = isChecked ? 'checkbox-marked' : 'checkbox-blank-outline';
+  const iconName = isChecked ? 'check-square' : 'square';
 
-  const isInter = 'checkbox-intermediate';
+  const isInter = 'minus-square';
 
   useEffect(() => {
     if (size === 'large') {
@@ -47,10 +52,12 @@ const MasterCheckbox = (props) => {
   return (
     <TouchableOpacity style={styles.container} onPress={props.onPress}>
       <Text style={styles.title}>{props.title}</Text>
-      <MaterialCommunityIcons
-        name={isIntermediate ? isInter : iconName}
-        size={inputSize}
-        color={inputColor}
+
+      <MasterIcon
+        iconName={isIntermediate ? isInter : iconName}
+        iconSize={inputSize}
+        iconColor={inputColor}
+        iconFamily='Feather'
       />
     </TouchableOpacity>
   );

@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchNumsGroups, deleteNumsGroup } from '@/redux/slice/numsGroups';
-import { Ionicons } from '@expo/vector-icons';
 import MasterError from '@/components/MasterError';
+import MasterIcon from '@/components/MasterIcon';
 import AlertModal from '@/components/Modals/AlertModal';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
@@ -70,7 +70,12 @@ const DeleteGroups = () => {
     <View style={styles.rowStyle}>
       <Text style={styles.groupItemText}>{item.group_name}</Text>
       <TouchableOpacity onPress={() => deleteHandler(item)}>
-        <Ionicons name='trash' size={24} color='white' />
+        <MasterIcon
+          iconName='trash'
+          iconSize={24}
+          iconFamily='Ionicons'
+          iconColor={theme.itemColor}
+        />
       </TouchableOpacity>
     </View>
   );
