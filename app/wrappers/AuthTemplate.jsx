@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ImageBackground,
   View,
-  Pressable,
 } from 'react-native';
 import { useRouter, useNavigation, usePathname } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -70,63 +69,6 @@ const AuthTemplate = (props) => {
     }
   };
 
-  const leftHeaderNode = () => (
-    <View style={styles.headerView}>
-      {lastScreen ? (
-        <Pressable
-          style={({ pressed }) => [
-            mStyles.actionBtn,
-            pressed && styles.pressedBtn,
-          ]}
-          onPress={goHome}
-          variant='trans'
-        >
-          <MasterIcon
-            iconFamily='Ionicons'
-            iconName='home'
-            iconSize={20}
-            iconColor={theme.itemColor}
-          />
-        </Pressable>
-      ) : (
-        <Pressable
-          style={({ pressed }) => [
-            mStyles.actionBtn,
-            pressed && styles.pressedBtn,
-          ]}
-          onPress={goBack}
-          variant='trans'
-        >
-          <MasterIcon
-            iconFamily='FontAwesome'
-            iconName='chevron-left'
-            iconSize={20}
-            iconColor={theme.itemColor}
-          />
-        </Pressable>
-      )}
-    </View>
-  );
-
-  const rightHeaderNode = () =>
-    rightHeader || (
-      <Pressable
-        style={({ pressed }) => [
-          mStyles.actionBtn,
-          pressed && styles.pressedBtn,
-        ]}
-        onPress={pressLogout}
-        variant='trans'
-      >
-        <MasterIcon
-          iconFamily='FontAwesome'
-          iconName='sign-out'
-          iconSize={20}
-          iconColor={theme.itemColor}
-        />
-      </Pressable>
-    );
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: screenName,
@@ -134,7 +76,7 @@ const AuthTemplate = (props) => {
       headerLeft: leftHeaderNode,
       headerRight: rightHeaderNode,
     });
-  }, [lastScreen]);
+  }, [lastScreen, screenName]);
 
   useEffect(() => {
     const x = router.canGoBack();
@@ -163,9 +105,6 @@ const AuthTemplate = (props) => {
       width: screenWidth,
       height: availableScreenHeight,
     },
-    pressedBtn: {
-      opacity: 0.5,
-    },
     headerView: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -178,6 +117,45 @@ const AuthTemplate = (props) => {
       resizeMode: 'cover',
     },
   });
+
+  const leftHeaderNode = () => (
+    <View style={styles.headerView}>
+      {lastScreen ? (
+        <MasterIcon
+          iconFamily='Ionicons'
+          iconName='home'
+          iconSize={20}
+          iconColor={theme.itemColor}
+          iconStyles={mStyles.actionBtn}
+          isInteractive={true}
+          onPress={goHome}
+        />
+      ) : (
+        <MasterIcon
+          iconFamily='FontAwesome'
+          iconName='chevron-left'
+          iconSize={20}
+          iconColor={theme.itemColor}
+          iconStyles={mStyles.actionBtn}
+          isInteractive={true}
+          onPress={goBack}
+        />
+      )}
+    </View>
+  );
+
+  const rightHeaderNode = () =>
+    rightHeader || (
+      <MasterIcon
+        iconFamily='FontAwesome'
+        iconName='sign-out'
+        iconSize={20}
+        iconColor={theme.itemColor}
+        iconStyles={mStyles.actionBtn}
+        isInteractive={true}
+        onPress={pressLogout}
+      />
+    );
 
   return (
     <LinearGradient colors={theme.gradientsArray} style={styles.container}>
@@ -197,6 +175,7 @@ const AuthTemplate = (props) => {
         statusMessage={logoutMessage}
         onClose={handleCancel}
         alertIcon={'sign-out'}
+        afterAction='initial'
       />
     </LinearGradient>
   );

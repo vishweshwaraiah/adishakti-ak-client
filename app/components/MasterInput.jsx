@@ -9,11 +9,11 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import MasterPicker from '@/components/MasterPicker';
-import Sizes from '@/utils/Sizes';
-import useMasterStyle from '@/utils/useMasterStyle';
 import { useTheme } from '@/themes/ThemeProvider';
+import MasterPicker from '@/components/MasterPicker';
+import useMasterStyle from '@/utils/useMasterStyle';
 import MasterIcon from '@/components/MasterIcon';
+import Sizes from '@/utils/Sizes';
 
 const MasterInput = (props) => {
   const {
@@ -26,7 +26,7 @@ const MasterInput = (props) => {
     inputLabel = '',
     value = '',
     showError = false,
-    error = false,
+    error = '',
     required = false,
     rounded = false,
     inputWidth = '90%',
@@ -38,6 +38,7 @@ const MasterInput = (props) => {
     placeholder = '',
     editable = true,
     onFocus = () => {},
+    autofocus = false,
   } = props;
 
   const duration = 200;
@@ -54,6 +55,82 @@ const MasterInput = (props) => {
 
   const inputRef = useRef(null);
   const moveText = useRef(new Animated.Value(0)).current;
+
+  const onFocusHandler = () => {
+    if (!inputValue) {
+      animateText(1);
+    }
+    onFocus();
+  };
+
+  const onBlurHandler = (e) => {
+    if (!inputValue) {
+      animateText(0);
+    }
+
+    let error = '';
+    if (required && !inputValue) {
+      error = e.nativeEvent.text ? '' : 'This is a required field!';
+      setHasError(error);
+    }
+
+    onBlur(name, error);
+  };
+
+  const focusInput = () => {
+    // Focus the input programmatically
+    inputRef.current.focus();
+  };
+
+  const onChangeText = (enteredValue) => {
+    setInputValue(enteredValue);
+    if (enteredValue !== '') {
+      animateText(1);
+    } else if (inputValue === '') {
+      animateText(0);
+    }
+  };
+
+  const handleDate = () => {
+    setModalStatus('open');
+  };
+
+  const handleSelect = (date) => {
+    const val = date.toDateString();
+    setInputValue(val);
+    setModalStatus('close');
+  };
+
+  const handleCancel = () => {
+    setModalStatus('close');
+  };
+
+  const animateText = (to) => {
+    let toValue = to;
+    if (to !== 0) {
+      toValue = 2;
+    }
+    Animated.timing(moveText, {
+      toValue,
+      duration,
+      useNativeDriver: true,
+      easing: Easing.ease,
+    }).start();
+  };
+
+  const yVal = moveText.interpolate({
+    inputRange: [0, 1],
+    outputRange: [labelPos?.active || 0, labelPos?.inactive || 0],
+  });
+
+  const xVal = moveText.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -16],
+  });
+
+  const animationStyle = {
+    transform: [{ translateY: yVal }, { translateX: xVal }],
+  };
 
   useEffect(() => {
     if (value === '' || value === undefined) {
@@ -139,81 +216,11 @@ const MasterInput = (props) => {
     }
   }, [size]);
 
-  const onFocusHandler = () => {
-    if (!inputValue) {
-      animateText(1);
+  useEffect(() => {
+    if (autofocus) {
+      focusInput();
     }
-    onFocus();
-  };
-
-  const onBlurHandler = (e) => {
-    if (!inputValue) {
-      animateText(0);
-    }
-
-    let error = '';
-    if (required && !inputValue) {
-      error = e.nativeEvent.text ? '' : 'This is a required field!';
-      setHasError(error);
-    }
-
-    onBlur(name, error);
-  };
-
-  const handleLabelClick = () => {
-    // Focus the input programmatically
-    inputRef.current.focus();
-  };
-
-  const onChangeText = (enteredValue) => {
-    setInputValue(enteredValue);
-    if (enteredValue !== '') {
-      animateText(1);
-    } else if (inputValue === '') {
-      animateText(0);
-    }
-  };
-
-  const handleDate = () => {
-    setModalStatus('open');
-  };
-
-  const handleSelect = (date) => {
-    const val = date.toDateString();
-    setInputValue(val);
-    setModalStatus('close');
-  };
-
-  const handleCancel = () => {
-    setModalStatus('close');
-  };
-
-  const animateText = (to) => {
-    let toValue = to;
-    if (to !== 0) {
-      toValue = 2;
-    }
-    Animated.timing(moveText, {
-      toValue,
-      duration,
-      useNativeDriver: true,
-      easing: Easing.ease,
-    }).start();
-  };
-
-  const yVal = moveText.interpolate({
-    inputRange: [0, 1],
-    outputRange: [labelPos?.active || 0, labelPos?.inactive || 0],
-  });
-
-  const xVal = moveText.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -16],
-  });
-
-  const animationStyle = {
-    transform: [{ translateY: yVal }, { translateX: xVal }],
-  };
+  }, []);
 
   const styles = StyleSheet.create({
     mainContainer: {
@@ -234,7 +241,6 @@ const MasterInput = (props) => {
       maxHeight: Sizes.$ieMaxHeight,
     },
     inputHolder: {
-      height: inputHeight,
       width: '100%',
       marginBottom: spacing,
       marginTop: spacing,
@@ -314,7 +320,7 @@ const MasterInput = (props) => {
         >
           {animated && (
             <Animated.View style={[styles.labelPos, animationStyle]}>
-              <Pressable onPress={handleLabelClick}>
+              <Pressable onPress={focusInput}>
                 <Animated.Text style={[styles.labelText, styles.animatedLabel]}>
                   {inputLabel}
                 </Animated.Text>
@@ -372,6 +378,8 @@ const MasterInput = (props) => {
                 iconName={eyeIcon ? 'eye' : 'eye-off'}
                 iconSize={Sizes.$startIconSize}
                 iconColor={theme.itemColor}
+                isInteractive={true}
+                iconBgSize={Sizes.$startIconSize}
               />
             )}
           </View>

@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useNavigation } from 'expo-router';
-import { useTheme } from '@/themes/ThemeProvider';
+import React, { useEffect, useState } from 'react';
+import { useNavigation, useSegments, usePathname } from 'expo-router';
 import FloatingMenu from '@/components/Navigation/FloatingMenu';
-import useMasterStyle from '@/utils/useMasterStyle';
-import Sizes from '@/utils/Sizes';
-import BottomMenu from './BottomMenu';
+import BottomMenu from '@/components/Navigation/BottomMenu';
 
 const MasterMenu = (props) => {
   const {
@@ -16,58 +12,46 @@ const MasterMenu = (props) => {
   } = props;
 
   const navigation = useNavigation();
-  const { theme } = useTheme();
+  const segments = useSegments();
+  const pathname = usePathname();
 
-  const [currentRoute, setCurrentRoute] = useState('home');
+  const [routeItems, setRouteItems] = useState(menuItems);
 
-  const mStyles = useMasterStyle();
+  const updateRoutes = (rName) => {
+    const updatedRoutes = menuItems.map((i) => {
+      i.isSelected = i.name === rName ? true : false;
+      return i;
+    });
+
+    setRouteItems(updatedRoutes);
+  };
 
   const toggleMenu = (menu) => {
-    if (menu?.name && !menu.isTrigger) {
+    if (menu?.isSelected) return;
+    if (menu?.name) {
       navigation.navigate(menu.name);
-      setCurrentRoute(menu.name);
+      updateRoutes(menu.name);
       onPress();
     }
   };
 
-  const styles = StyleSheet.create({
-    bottomContainer: {
-      position: 'absolute',
-      bottom: Sizes.$ieMenuBottomSpace,
-      backgroundColor: theme.menuBg,
-      borderRadius: Sizes.$ieRegularRadius * 2,
-      width: '90%',
-      left: '5%',
-      right: '5%',
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      height: Sizes.$navDimension,
-      maxHeight: Sizes.$ieMenuMaxHeight,
-      zIndex: 201,
-      ...mStyles.navShadow,
-    },
-  });
+  useEffect(() => {
+    // may need to fix if trows any error
+    updateRoutes(segments.reverse()[1]);
+  }, [pathname]);
 
-  return (
-    <>
-      {menuType === 'floating' ? (
-        <FloatingMenu
-          menuItems={menuItems}
-          toggleMenu={toggleMenu}
-          iconsColor={iconsColor}
-          currentRoute={currentRoute}
-        />
-      ) : (
-        <View style={styles.bottomContainer}>
-          <BottomMenu
-            menuItems={menuItems}
-            toggleMenu={toggleMenu}
-            iconsColor={iconsColor}
-            currentRoute={currentRoute}
-          />
-        </View>
-      )}
-    </>
+  return menuType === 'floating' ? (
+    <FloatingMenu
+      menuItems={routeItems}
+      toggleMenu={toggleMenu}
+      iconsColor={iconsColor}
+    />
+  ) : (
+    <BottomMenu
+      menuItems={routeItems}
+      toggleMenu={toggleMenu}
+      iconsColor={iconsColor}
+    />
   );
 };
 

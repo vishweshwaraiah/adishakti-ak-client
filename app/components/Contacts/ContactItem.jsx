@@ -1,38 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import MasterIcon from '@/components/MasterIcon';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 
 const ContactItem = (props) => {
-  const { contact, onPress } = props;
+  const {
+    contact,
+    checked = false,
+    onPress = () => {},
+    noActions = false,
+  } = props;
 
   const { theme } = useTheme();
 
   const [number, setNumber] = useState('');
+  const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
-    const num = contact?.phoneNumbers?.length;
-    if (num > 0) setNumber(contact?.phoneNumbers[0]?.number);
-  }, [contact]);
+    if (contact?.phoneNumber) {
+      const number = contact.phoneNumber;
+      setNumber(number);
+    }
+    setIsSelected(contact?.selected);
+  }, [contact, checked]);
 
   const handlePress = () => {
-    contact.selected = !contact.selected;
-    onPress(contact);
+    if (!noActions) {
+      contact.selected = !contact?.selected;
+      setIsSelected(contact?.selected);
+      onPress(contact);
+    }
   };
 
   const styles = StyleSheet.create({
-    contactCon: {
+    contactContainer: {
       flex: 1,
       flexDirection: 'row',
       paddingVertical: Sizes.$ieRegularPadding,
-      paddingHorizontal: Sizes.$ieExtraPadding,
-      borderBottomWidth: 0.5,
-      borderBottomColor: theme.black,
+      paddingHorizontal: Sizes.$ieRegularPadding,
       marginBottom: 5,
-    },
-    imgCon: {
-      overflow: 'hidden',
     },
     placeholder: {
       width: 55,
@@ -44,48 +51,55 @@ const ContactItem = (props) => {
       justifyContent: 'center',
       alignSelf: 'center',
     },
-    contactDat: {
+    contactData: {
       flex: 1,
       justifyContent: 'center',
       paddingLeft: 5,
     },
-    txt: {
+    thumbTxt: {
       fontSize: 20,
       color: theme.itemColor,
     },
-    name: {
+    contactName: {
       fontSize: 16,
+      color: theme.itemColor,
     },
     phoneNumber: {
-      color: theme.primary,
+      color: theme.green,
     },
     isSelected: {
-      opacity: 0.9,
+      opacity: 0.6,
       borderRadius: Sizes.$ieRegularRadius,
+      borderBottomWidth: 0.5,
+      borderBottomColor: theme.black,
+    },
+    isUnSelected: {
+      backgroundColor: 'transparent',
+      borderBottomWidth: 0.5,
+      borderBottomColor: theme.black,
     },
   });
 
   return (
-    <Pressable onPress={handlePress}>
-      <View style={styles.contactCon}>
-        <View style={styles.imgCon}>
-          <View style={styles.placeholder}>
-            {contact.selected ? (
-              <Text style={styles.isSelected}>
-                <MasterIcon
-                  iconName='check-circle'
-                  iconSize={32}
-                  iconColor={theme.itemColor}
-                  iconFamily='FontAwesome'
-                />
-              </Text>
-            ) : (
-              <Text style={styles.txt}>{contact?.name[0]}</Text>
-            )}
-          </View>
+    <Pressable
+      style={isSelected && !noActions ? styles.isSelected : styles.isUnSelected}
+      onPress={handlePress}
+    >
+      <View style={styles.contactContainer}>
+        <View style={styles.placeholder}>
+          {isSelected && !noActions ? (
+            <MasterIcon
+              iconName='check-square'
+              iconSize={32}
+              iconColor={theme.itemColor}
+              iconFamily='Feather'
+            />
+          ) : (
+            <Text style={styles.thumbTxt}>{contact?.name?.[0]}</Text>
+          )}
         </View>
-        <View style={styles.contactDat}>
-          <Text style={styles.name}>{contact?.name}</Text>
+        <View style={styles.contactData}>
+          <Text style={styles.contactName}>{contact?.name || 'No Name'}</Text>
           <Text style={styles.phoneNumber}>{number || 'No number!'}</Text>
         </View>
       </View>
@@ -93,4 +107,4 @@ const ContactItem = (props) => {
   );
 };
 
-export default ContactItem;
+export default memo(ContactItem);

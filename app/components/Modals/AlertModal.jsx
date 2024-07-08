@@ -11,7 +11,7 @@ const AlertModal = (props) => {
     onCancel = () => {},
     onSubmit = () => {},
     modalStatus = 'close',
-    afterAction = 'initial',
+    afterAction = 'loading',
     onClose = () => {},
     closeTitle = 'Close',
     statusMessage = 'Success!',
@@ -31,6 +31,30 @@ const AlertModal = (props) => {
       setModalOpen('close');
     }
   }, [modalStatus]);
+
+  const styles = StyleSheet.create({
+    bodyContent: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 5,
+    },
+    subView: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    groupActions: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 10,
+    },
+    actionText: {
+      justifyContent: 'center',
+      textAlign: 'center',
+      padding: Sizes.$ieExtraPadding,
+      marginBottom: Sizes.$ieRegularMargin,
+    },
+  });
 
   const initialView = () => {
     return (
@@ -87,30 +111,6 @@ const AlertModal = (props) => {
       </View>
     );
   };
-
-  const styles = StyleSheet.create({
-    bodyContent: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: 5,
-    },
-    subView: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    groupActions: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      gap: 10,
-    },
-    actionText: {
-      justifyContent: 'center',
-      textAlign: 'center',
-      padding: Sizes.$ieExtraPadding,
-      marginBottom: Sizes.$ieRegularMargin,
-    },
-  });
 
   return (
     <MasterModal

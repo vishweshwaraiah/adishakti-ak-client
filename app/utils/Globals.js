@@ -8,7 +8,7 @@ import {
 } from '@/utils/AppConstants';
 
 // enable(make true) here to use local api endpoints
-const localEnv = false;
+const localEnv = true;
 
 export const ProdServerUri = localEnv ? LocalServerUri : ProductionServerUri;
 
@@ -33,4 +33,24 @@ export const trimmedText = (text, size = 15) => {
     text.length <= size ? `${text}` : `${text.substring(0, size)}...`;
 
   return displayText;
+};
+
+export const OptimizeContacts = (rawContacts = []) => {
+  if (!rawContacts.length) return false;
+
+  const Optimized = rawContacts.map((x) => {
+    const phoneNumber = x.phoneNumbers?.[0].number;
+    const numFormat = phoneNumber?.replace(/\D/g, '');
+    const contact = {
+      id: x.id,
+      firstName: x.firstName || '',
+      lastName: x.lastName || '',
+      name: x.name,
+      phoneNumber: numFormat,
+      selected: x.selected ? x.selected : false,
+    };
+    return contact;
+  });
+
+  return Optimized;
 };

@@ -6,6 +6,7 @@ const MenuRoutes = [
     iconName: 'home',
     iconFamily: 'Ionicons',
     path: '/main_views/home/HomeScreen',
+    isSelected: true,
   },
   {
     name: 'messages',
@@ -14,6 +15,7 @@ const MenuRoutes = [
     iconName: 'message',
     iconFamily: 'Entypo',
     path: '/main_views/messages/MessageScreen',
+    isSelected: false,
   },
   {
     name: 'account',
@@ -22,6 +24,7 @@ const MenuRoutes = [
     iconName: 'person',
     iconFamily: 'Ionicons',
     path: '/main_views/account/AccountScreen',
+    isSelected: false,
   },
 ];
 

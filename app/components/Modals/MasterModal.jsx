@@ -6,6 +6,7 @@ import {
   View,
   Animated,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import MasterIcon from '@/components/MasterIcon';
 import useMasterStyle from '@/utils/useMasterStyle';
@@ -133,7 +134,7 @@ const MasterModal = (props) => {
 
   return (
     <Modal transparent={true} visible={isOpen}>
-      <View style={styles.centeredBackground}>
+      <SafeAreaView style={styles.centeredBackground}>
         <Animated.View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
             {modalTitle && <Text style={styles.modalTitle}>{modalTitle}</Text>}
@@ -153,7 +154,7 @@ const MasterModal = (props) => {
           </View>
           <View style={styles.modalBody}>{children}</View>
         </Animated.View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 };

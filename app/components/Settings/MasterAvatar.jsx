@@ -24,6 +24,7 @@ const MasterAvatar = (props) => {
     onEditPress = () => {},
     uploadAble = false,
     textPosition = 'center',
+    avatarStyles = {},
   } = props;
 
   const dispatch = useDispatch();
@@ -208,54 +209,56 @@ const MasterAvatar = (props) => {
   });
 
   return (
-    <LinearGradient
-      colors={theme.profileGradients}
-      style={styles.avatarContainer}
-    >
-      <View style={styles.imageBox}>
-        <Image
-          style={styles.profileImage}
-          source={imageUri ? { uri: imageUri } : placeHolder}
-        />
-        <TouchableOpacity onPress={editHandler} style={styles.updateImage}>
-          {direction === 'row' ? (
-            <MasterIcon
-              iconName='edit'
-              iconSize={20}
-              iconFamily='Entypo'
-              iconColor={theme.itemColor}
-            />
-          ) : (
-            <MasterIcon
-              iconName='camera'
-              iconSize={20}
-              iconFamily='Ionicons'
-              iconColor={theme.itemColor}
-            />
+    <View style={avatarStyles}>
+      <LinearGradient
+        colors={theme.profileGradients}
+        style={styles.avatarContainer}
+      >
+        <View style={styles.imageBox}>
+          <Image
+            style={styles.profileImage}
+            source={imageUri ? { uri: imageUri } : placeHolder}
+          />
+          <TouchableOpacity onPress={editHandler} style={styles.updateImage}>
+            {direction === 'row' ? (
+              <MasterIcon
+                iconName='edit'
+                iconSize={20}
+                iconFamily='Entypo'
+                iconColor={theme.itemColor}
+              />
+            ) : (
+              <MasterIcon
+                iconName='camera'
+                iconSize={20}
+                iconFamily='Ionicons'
+                iconColor={theme.itemColor}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+        <View style={styles.userDetails}>
+          {userContent?.userName && (
+            <Text style={styles.nameText}>
+              {trimmedText(userContent?.userName, 15)}
+            </Text>
           )}
-        </TouchableOpacity>
-      </View>
-      <View style={styles.userDetails}>
-        {userContent?.userName && (
-          <Text style={styles.nameText}>
-            {trimmedText(userContent?.userName, 15)}
+          <Text style={styles.emailText}>
+            {trimmedText(userContent?.userEmail, 20)}
           </Text>
-        )}
-        <Text style={styles.emailText}>
-          {trimmedText(userContent?.userEmail, 20)}
-        </Text>
-      </View>
-      {imageMessage && <Text>{imageMessage}</Text>}
-      <UploadModal
-        handleCamera={onCameraOpen}
-        handleGallery={onGalleryOpen}
-        handleRemove={deleteUserImage}
-        modalStatus={uploadModal}
-        afterAction={afterUpload}
-        onClose={handleCancel}
-        statusMessage={uploadStatus}
-      />
-    </LinearGradient>
+        </View>
+        {imageMessage && <Text>{imageMessage}</Text>}
+        <UploadModal
+          handleCamera={onCameraOpen}
+          handleGallery={onGalleryOpen}
+          handleRemove={deleteUserImage}
+          modalStatus={uploadModal}
+          afterAction={afterUpload}
+          onClose={handleCancel}
+          statusMessage={uploadStatus}
+        />
+      </LinearGradient>
+    </View>
   );
 };
 

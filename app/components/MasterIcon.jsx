@@ -21,59 +21,33 @@ const MasterIcon = (props) => {
     isInteractive = false,
     iconBgColor = 'transparent',
     iconBgSize = Sizes.$btnDimension,
+    iconBgShape = 'rounded',
     iconStyles = {},
   } = props;
 
   const getIcon = () => {
-    let iconElement;
+    const IconFamilies = {
+      Entypo,
+      Feather,
+      Ionicons,
+      AntDesign,
+      FontAwesome,
+      FontAwesome5,
+      MaterialIcons,
+    };
 
-    switch (iconFamily) {
-      case 'Ionicons':
-        iconElement = (
-          <Ionicons name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      case 'Entypo':
-        iconElement = (
-          <Entypo name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      case 'AntDesign':
-        iconElement = (
-          <AntDesign name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      case 'Feather':
-        iconElement = (
-          <Feather name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      case 'MaterialIcons':
-        iconElement = (
-          <MaterialIcons name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      case 'FontAwesome5':
-        iconElement = (
-          <FontAwesome5 name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-      default:
-        iconElement = (
-          <FontAwesome name={iconName} size={iconSize} color={iconColor} />
-        );
-        break;
-    }
+    const Icon = IconFamilies[iconFamily];
 
-    return iconElement;
+    return <Icon name={iconName} size={iconSize} color={iconColor} />;
   };
 
   const styles = StyleSheet.create({
     isInteractive: {
       height: iconBgSize,
       width: iconBgSize,
+      maxHeight: '100%',
       backgroundColor: iconBgColor,
-      borderRadius: 35,
+      borderRadius: iconBgShape === 'circle' ? iconBgSize : 10,
       justifyContent: 'center',
       alignItems: 'center',
     },

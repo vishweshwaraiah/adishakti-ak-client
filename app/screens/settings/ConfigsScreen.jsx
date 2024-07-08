@@ -9,7 +9,7 @@ import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 import MasterSelect from '@/components/MasterSelect';
 
-const AppSettings = () => {
+const ConfigsScreen = () => {
   const dispatch = useDispatch();
 
   const { theme, switchTheme } = useTheme();
@@ -105,4 +105,4 @@ const AppSettings = () => {
   );
 };
 
-export default AppSettings;
+export default ConfigsScreen;

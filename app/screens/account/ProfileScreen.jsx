@@ -21,7 +21,7 @@ const ProfileScreen = () => {
 
   const updateDetails = () => {
     setEditMode(!editMode);
-    router.push('sub_views/account/UpdateDetails');
+    router.push('screens/account/UpdateScreen');
   };
 
   const getBrType = (idx) => {
@@ -78,17 +78,47 @@ const ProfileScreen = () => {
     setUserArray(userData);
   }, [user]);
 
+  const styles = StyleSheet.create({
+    avatarBox: {
+      padding: Sizes.$ieRegularPadding,
+    },
+    profileContainer: {
+      flexFlow: 'row wrap',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: Sizes.$ieFlexGap,
+      padding: Sizes.$ieRegularPadding,
+    },
+    bottomContainer: {
+      borderRadius: Sizes.$ieLargeRadius,
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '95%',
+    },
+    settingsRows: {
+      gap: Sizes.$ieFlexGap,
+    },
+    titleAction: {
+      width: '100%',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginVertical: Sizes.$ieLargeMargin,
+    },
+  });
+
   return (
     <AuthTemplate screenName='Edit Profile'>
+      <MasterAvatar
+        direction='column'
+        uploadAble={true}
+        textPosition='center'
+        avatarStyles={styles.avatarBox}
+      />
       <ScrollView
         automaticallyAdjustKeyboardInsets={true}
         contentContainerStyle={styles.profileContainer}
       >
-        <MasterAvatar
-          direction='column'
-          uploadAble={true}
-          textPosition='center'
-        />
         <View style={styles.bottomContainer}>
           <View style={styles.titleAction}>
             <Text>Personal Info</Text>
@@ -117,30 +147,3 @@ const ProfileScreen = () => {
 };
 
 export default ProfileScreen;
-
-const styles = StyleSheet.create({
-  profileContainer: {
-    flexFlow: 'row wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: Sizes.$ieFlexGap,
-    padding: Sizes.$ieRegularPadding,
-    paddingBottom: 100,
-  },
-  bottomContainer: {
-    borderRadius: Sizes.$ieLargeRadius,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '95%',
-  },
-  settingsRows: {
-    gap: Sizes.$ieFlexGap,
-  },
-  titleAction: {
-    width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginVertical: Sizes.$ieLargeMargin,
-  },
-});

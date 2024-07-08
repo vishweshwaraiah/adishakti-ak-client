@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as Contacts from 'expo-contacts';
+import { OptimizeContacts } from '@/utils/Globals';
 
 const useContacts = () => {
   const [allContacts, setAllContacts] = useState([]);
@@ -9,11 +10,22 @@ const useContacts = () => {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
       const { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.Fields.PhoneNumbers],
+        fields: [
+          Contacts.Fields.PhoneNumbers,
+          Contacts.Fields.Image,
+          Contacts.Fields.Name,
+          Contacts.Fields.FirstName,
+        ],
       });
       if (data && data.length > 0) {
-        setAllContacts(data);
+        const filteredList = data.filter(
+          (x) => x.name && x.phoneNumbers?.length
+        );
+        const Optimized = OptimizeContacts(filteredList);
+        setAllContacts(Optimized);
       }
+    } else {
+      console.log('Access to contacts is denied!');
     }
   };
 
@@ -23,7 +35,10 @@ const useContacts = () => {
 
   useEffect(() => {
     if (allContacts.length) {
-      setAllNumbers(allContacts.map((i) => i?.phoneNumbers).filter((i) => i));
+      const getNumbers = allContacts
+        .map((i) => i?.phoneNumber)
+        .filter((i) => i);
+      setAllNumbers(getNumbers);
     }
   }, [allContacts]);
 

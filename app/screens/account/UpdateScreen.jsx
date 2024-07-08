@@ -7,20 +7,20 @@ import {
   Text,
   View,
 } from 'react-native';
-import MasterButton from '@/components/MasterButton';
-import Sizes from '@/utils/Sizes';
-import MasterInput from '../../components/MasterInput';
-import AuthTemplate from '@/wrappers/AuthTemplate';
 import { router } from 'expo-router';
-import MasterGender from '@/components/MasterGender';
-import MasterIcon from '@/components/MasterIcon';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetUserStatus, updateUser } from '@/redux/slice/userData';
 import { useTheme } from '@/themes/ThemeProvider';
+import MasterInput from '@/components/MasterInput';
+import MasterButton from '@/components/MasterButton';
+import AuthTemplate from '@/wrappers/AuthTemplate';
+import MasterGender from '@/components/MasterGender';
+import MasterIcon from '@/components/MasterIcon';
+import Sizes from '@/utils/Sizes';
 
 const screenWidth = Dimensions.get('window').width;
 
-const UpdateDetails = () => {
+const UpdateScreen = () => {
   const dispatch = useDispatch();
   const { user, userStatus, userMessage } = useSelector(
     (state) => state.userSlice
@@ -93,7 +93,7 @@ const UpdateDetails = () => {
     if (router.canGoBack()) {
       router.back();
     } else {
-      router.push('sub_views/account/ProfileScreen');
+      router.push('screens/account/ProfileScreen');
     }
   };
 
@@ -368,4 +368,4 @@ const UpdateDetails = () => {
   );
 };
 
-export default UpdateDetails;
+export default UpdateScreen;

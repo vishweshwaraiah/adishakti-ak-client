@@ -87,7 +87,7 @@ const MessagesScreen = () => {
 
   useEffect(() => {
     allNumbers.forEach((i) => {
-      let num = i[0].number;
+      const num = i[0].number;
       if (ValidNumber(num)) {
         setNumbersList((prevs) => {
           return [...prevs, num];

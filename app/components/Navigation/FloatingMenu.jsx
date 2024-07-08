@@ -1,24 +1,12 @@
 import React, { useRef, useState } from 'react';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Animated,
-  Pressable,
-} from 'react-native';
+import { View, StyleSheet, Animated, Pressable } from 'react-native';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
 import useMasterStyle from '@/utils/useMasterStyle';
 import MasterIcon from '@/components/MasterIcon';
 
 const FloatingMenu = (props) => {
-  const {
-    menuItems,
-    iconsColor,
-    toggleMenu = () => {},
-    currentRoute = '',
-  } = props;
+  const { menuItems, iconsColor, toggleMenu = () => {} } = props;
 
   const { theme } = useTheme();
   const mStyles = useMasterStyle();
@@ -94,14 +82,20 @@ const FloatingMenu = (props) => {
     toggleMenu(menuItem);
   };
 
-  const btnStyles = (menuItem, idxKey) => {
+  const btnStyles = (idxKey) => {
     const xStyles = {
       padding: 10,
       transform: animateActions(-idxKey * 80),
     };
 
-    if (menuItem.name === currentRoute) {
-      xStyles.color = theme.itemSelected;
+    return xStyles;
+  };
+
+  const iconStyles = (menuItem) => {
+    const xStyles = {};
+
+    if (menuItem.isSelected) {
+      xStyles.backgroundColor = theme.secondary;
     }
 
     return xStyles;
@@ -110,8 +104,8 @@ const FloatingMenu = (props) => {
   const styles = StyleSheet.create({
     menuContainer: {
       position: 'absolute',
-      right: 50,
-      bottom: 50,
+      right: 20,
+      bottom: 80,
       width: Sizes.$btnDimension,
       height: Sizes.$btnDimension,
       borderRadius: Sizes.$ieMaxRadius,
@@ -163,14 +157,16 @@ const FloatingMenu = (props) => {
       {menuItems.map((menuItem, idx) => (
         <Animated.View
           key={menuItem.name}
-          style={[styles.menuBtn, btnStyles(menuItem, idx + 1)]}
+          style={[styles.menuBtn, btnStyles(idx + 1)]}
         >
           {menuItem.label && (
             <Animated.Text style={[styles.floatingBarLabel, labelStyles]}>
               {menuItem.label}
             </Animated.Text>
           )}
-          <View style={[styles.iconBox, styles.actionIconBox]}>
+          <View
+            style={[styles.iconBox, styles.actionIconBox, iconStyles(menuItem)]}
+          >
             <MasterIcon
               onPress={() => handlePress(menuItem)}
               iconFamily={menuItem.iconFamily}

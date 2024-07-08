@@ -55,7 +55,7 @@ const AppLogin = () => {
 
   const handleLogin = () => {
     const user = {
-      userEmail: username,
+      userName: username,
       userPassword: password,
     };
 
@@ -72,11 +72,8 @@ const AppLogin = () => {
     }
 
     const noData = !username || !password;
-    const hasErrs = userError || pwdError;
 
-    if (noData || hasErrs) {
-      return false;
-    }
+    if (noData) return false;
 
     dispatch(loginUser(user));
   };
