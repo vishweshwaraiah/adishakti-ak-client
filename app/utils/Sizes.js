@@ -29,6 +29,9 @@ export default {
   $ieMenuMaxHeight: 75,
   $ieMenuBottomSpace: 25,
   $ieMenuSpace: 100,
+  $ieSmallBorder: 1,
+  $ieRegularBorder: 2,
+  $ieLargeBorder: 4,
 
   // Input elements specific
   $startIconSize: 20,

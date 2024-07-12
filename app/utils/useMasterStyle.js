@@ -32,10 +32,18 @@ const useMasterStyle = () => {
     elevation: 5,
   };
 
+  const TopShadow = {
+    shadowColor: theme.shadow,
+    shadowOffset: { width: 0, height: -5 },
+    shadowRadius: 5,
+    elevation: 5,
+  };
+
   const MasterStyles = StyleSheet.create({
     navShadow: NavShadow,
     commonShadow: CommonShadow,
     darkShadow: DarkShadow,
+    topShadow: TopShadow,
     actionBtn: {
       alignSelf: 'center',
       justifyContent: 'center',

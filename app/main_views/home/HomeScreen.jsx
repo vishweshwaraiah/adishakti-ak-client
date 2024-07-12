@@ -4,6 +4,7 @@ import AuthTemplate from '@/wrappers/AuthTemplate';
 import Sizes from '@/utils/Sizes';
 import OfferCard from '@/components/OfferCard';
 import { useTheme } from '@/themes/ThemeProvider';
+import BottomSheet from '@/components/Modals/BottomSheet';
 
 const HomeScreen = () => {
   const { theme } = useTheme();
@@ -37,6 +38,7 @@ const HomeScreen = () => {
       >
         <OfferCard content='Some text goes here.' />
       </ScrollView>
+      <BottomSheet sheetHeight={1} />
     </AuthTemplate>
   );
 };

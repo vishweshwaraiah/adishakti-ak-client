@@ -44,6 +44,16 @@ const Loader = () => {
     }
   };
 
+  const checkLoginStatus = () => {
+    const { userEmail, userMobile } = user;
+    if (userEmail && userMobile) {
+      dispatch(fetchAppSettings(userEmail));
+      goToHome();
+    } else {
+      goToLogin();
+    }
+  };
+
   useEffect(() => {
     if (userStatus === 'error') {
       setLoaderMessage(message);
@@ -54,16 +64,6 @@ const Loader = () => {
     }
 
     if (userStatus === 'fetcheduser') {
-      const checkLoginStatus = () => {
-        const { userEmail, userMobile } = user;
-        if (userEmail && userMobile) {
-          dispatch(fetchAppSettings(userEmail));
-          goToHome();
-        } else {
-          goToLogin();
-        }
-      };
-
       checkLoginStatus();
     }
   }, [user, userStatus]);

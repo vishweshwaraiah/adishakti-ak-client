@@ -33,11 +33,16 @@ const ActionScreen = () => {
   const handleClose = () => {
     setAfterAction('');
     dispatch(resetStatus());
-    if (router.canGoBack()) {
-      router.back();
-    } else {
-      router.push('screens/groups/ListScreen');
-    }
+    setModalStatus('close');
+    // if (router.canGoBack()) {
+    //   router.back();
+    // } else {
+    //   router.push('screens/groups/ListScreen');
+    // }
+    router.push({
+      pathname: 'screens/groups/ViewScreen',
+      params: { groupId: groupId },
+    });
   };
 
   const handleSubmit = (groupName, contactNums) => {
