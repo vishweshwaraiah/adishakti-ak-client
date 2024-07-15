@@ -104,8 +104,8 @@ const FloatingMenu = (props) => {
   const styles = StyleSheet.create({
     menuContainer: {
       position: 'absolute',
-      right: 20,
-      bottom: 80,
+      right: Sizes.$ieActionBtn,
+      bottom: Sizes.$ieActionBtn,
       width: Sizes.$btnDimension,
       height: Sizes.$btnDimension,
       borderRadius: Sizes.$ieMaxRadius,

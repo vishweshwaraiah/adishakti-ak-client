@@ -65,13 +65,12 @@ const GroupUpdater = (props) => {
 
   const styles = StyleSheet.create({
     contactsList: {
-      flex: 1,
+      height: '95%',
     },
     inputBox: {
-      borderBottomWidth: 1,
-      borderBottomColor: theme.secondary,
       alignItems: 'center',
-      marginVertical: Sizes.$ieRegularMargin,
+      paddingTop: Sizes.$ieExtraPadding,
+      paddingBottom: Sizes.$ieSmallPadding,
     },
     errorBox: {
       marginTop: Sizes.$ieLargeMargin,
@@ -80,13 +79,13 @@ const GroupUpdater = (props) => {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'flex-end',
-      gap: 20,
+      gap: Sizes.$ieFlexGapLarge,
       marginTop: Sizes.$ieLargeMargin,
     },
     floatingBtn: {
       position: 'absolute',
-      bottom: 50,
-      right: 20,
+      bottom: Sizes.$floatingBtn,
+      right: Sizes.$ieActionBtn,
     },
   });
 
@@ -106,7 +105,6 @@ const GroupUpdater = (props) => {
           onInput={handleInput}
           onBlur={blurHandler}
           error={nameError}
-          spacing={10}
           value={groupName}
         />
       </View>
@@ -135,7 +133,6 @@ const GroupUpdater = (props) => {
         </Text>
         <MasterButton
           onPress={handleSubmit}
-          textColor={theme.itemColor}
           userStyle={styles.floatingBtn}
           variant={theme.transblack}
           shape='circle'
@@ -144,7 +141,6 @@ const GroupUpdater = (props) => {
             iconFamily='Feather'
             iconName='save'
             iconColor={theme.itemColor}
-            iconSize={24}
           />
         </MasterButton>
       </View>

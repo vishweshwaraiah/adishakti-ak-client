@@ -4,7 +4,6 @@ import { Stack } from 'expo-router';
 const Layout = () => {
   return (
     <Stack screenOptions={{ headerShown: true }}>
-      <Stack.Screen name='ActionScreen' />
       <Stack.Screen name='ListScreen' />
       <Stack.Screen name='ViewScreen' />
     </Stack>

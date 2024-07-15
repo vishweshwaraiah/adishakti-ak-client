@@ -3,20 +3,18 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchNumsGroups, deleteNumsGroup } from '@/redux/slice/numsGroups';
 import { router } from 'expo-router';
-import { useTheme } from '@/themes/ThemeProvider';
 import useMasterStyle from '@/utils/useMasterStyle';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import MasterError from '@/components/MasterError';
-import MasterIcon from '@/components/MasterIcon';
 import GroupsList from '@/components/ContactGroups/GroupsList';
 import AlertModal from '@/components/Modals/AlertModal';
+import AddNewGroup from '@/components/ContactGroups/AddNewGroup';
 import Sizes from '@/utils/Sizes';
 
 const ListScreen = () => {
   const dispatch = useDispatch();
 
   const mStyles = useMasterStyle();
-  const { theme } = useTheme();
 
   const { groupsList, isDeleted, status, message } = useSelector(
     (state) => state.groupsSlice
@@ -30,10 +28,6 @@ const ListScreen = () => {
   const handleCancel = () => {
     setModalStatus('close');
     setAfterAction('initial');
-  };
-
-  const createNewGroup = () => {
-    router.navigate('screens/groups/ActionScreen');
   };
 
   const handleOnDelete = (item) => {
@@ -84,22 +78,15 @@ const ListScreen = () => {
       alignSelf: 'center',
       ...mStyles.commonShadow,
     },
+    closeBtn: {
+      position: 'absolute',
+      top: Sizes.$ieSmallMargin,
+      right: Sizes.$ieSmallMargin,
+    },
   });
 
-  const rightHeaderNode = () => (
-    <MasterIcon
-      iconName='plus'
-      iconSize={20}
-      iconFamily='FontAwesome'
-      iconColor={theme.itemColor}
-      isInteractive={true}
-      iconStyles={mStyles.actionBtn}
-      onPress={createNewGroup}
-    />
-  );
-
   return (
-    <AuthTemplate screenName='Manage Groups' rightHeader={rightHeaderNode()}>
+    <AuthTemplate screenName='Manage Groups'>
       <View style={styles.optionBox}>
         {status === 'error' && (
           <MasterError
@@ -124,6 +111,7 @@ const ListScreen = () => {
         alertIcon='trash'
         afterAction={afterAction}
       />
+      <AddNewGroup action='add' />
     </AuthTemplate>
   );
 };

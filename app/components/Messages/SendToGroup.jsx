@@ -42,24 +42,6 @@ const SendToGroup = (props) => {
     setSelectedGroup(item);
   };
 
-  const renderItem = ({ item, index }) => (
-    <View style={index % 2 ? styles.styleLeft : styles.styleRight}>
-      <TouchableOpacity onPress={() => selectGroup(item)}>
-        <View style={styles.groupItem}>
-          <Text style={styles.groupItemText}>{item.group_name}</Text>
-          {selectedGroup.group_name === item.group_name && (
-            <MasterIcon
-              iconName='checkmark-circle'
-              iconSize={24}
-              iconFamily='Ionicons'
-              iconColor={theme.itemColor}
-            />
-          )}
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-
   const styles = StyleSheet.create({
     groupBox: {
       height: 'auto',
@@ -102,6 +84,24 @@ const SendToGroup = (props) => {
       color: theme.white,
     },
   });
+
+  const renderItem = ({ item, index }) => (
+    <View style={index % 2 ? styles.styleLeft : styles.styleRight}>
+      <TouchableOpacity onPress={() => selectGroup(item)}>
+        <View style={styles.groupItem}>
+          <Text style={styles.groupItemText}>{item.group_name}</Text>
+          {selectedGroup.group_name === item.group_name && (
+            <MasterIcon
+              iconName='checkmark-circle'
+              iconSize={24}
+              iconFamily='Ionicons'
+              iconColor={theme.itemColor}
+            />
+          )}
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <View style={styles.groupBox}>

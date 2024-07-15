@@ -33,10 +33,13 @@ const useMasterStyle = () => {
   };
 
   const TopShadow = {
-    shadowColor: theme.shadow,
-    shadowOffset: { width: 0, height: -5 },
-    shadowRadius: 5,
+    flex: 1,
     elevation: 5,
+    shadowColor: theme.shadow,
+    shadowOffset: { width: 2, height: -4 },
+    shadowRadius: 5,
+    overflow: 'hidden',
+    zIndex: 999,
   };
 
   const MasterStyles = StyleSheet.create({

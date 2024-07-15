@@ -32,6 +32,7 @@ export default {
   $ieSmallBorder: 1,
   $ieRegularBorder: 2,
   $ieLargeBorder: 4,
+  $ieXLargeBorder: 6,
 
   // Input elements specific
   $startIconSize: 20,

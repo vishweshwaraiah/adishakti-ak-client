@@ -152,6 +152,15 @@ const ContactsList = (props) => {
   };
 
   const styles = StyleSheet.create({
+    contactsView: {
+      flex: 1,
+      width: '100%',
+      borderBottomWidth: 1,
+      paddingBottom: Sizes.$ieRegularPadding,
+      paddingHorizontal: Sizes.$ieRegularPadding,
+      alignItems: 'center',
+      maxHeight: '100%',
+    },
     sectionHeader: {
       fontSize: 24,
       backgroundColor: theme.itemBg,
@@ -187,15 +196,6 @@ const ContactsList = (props) => {
     mbRegular: {
       marginBottom: Sizes.$ieRegularMargin,
     },
-    contactsView: {
-      flex: 1,
-      width: '100%',
-      borderBottomWidth: 1,
-      paddingBottom: Sizes.$ieRegularPadding,
-      paddingHorizontal: Sizes.$ieRegularPadding,
-      marginTop: Sizes.$ieRegularMargin,
-      alignItems: 'center',
-    },
     noContactsText: {
       paddingHorizontal: Sizes.$ieRegularPadding,
       paddingVertical: Sizes.$ieLargePadding,
@@ -207,7 +207,8 @@ const ContactsList = (props) => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: '95%',
+      width: '94%',
+      marginVertical: Sizes.$ieSmallMargin,
     },
     sectionTitle: {
       fontSize: Sizes.$ieTitleFont,
@@ -271,7 +272,6 @@ const ContactsList = (props) => {
           value={keyword}
           autofocus={false}
           placeholder='Search contacts!'
-          spacing={Sizes.$ieRegularMargin}
         />
       </View>
       {toolsBar && !keyword && <ContactsHeader />}
