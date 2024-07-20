@@ -8,7 +8,7 @@ const ThemeContext = createContext();
 const ThemeProvider = (props) => {
   const { children } = props;
 
-  const [colors, setColors] = useState(DefaultTheme);
+  const [colors, setColors] = useState([]);
 
   const switchTheme = (themeName) => {
     switch (themeName) {

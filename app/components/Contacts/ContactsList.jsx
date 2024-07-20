@@ -13,6 +13,7 @@ import MasterSearch from '@/components/MasterSearch';
 import useContacts from '@/utils/useContacts';
 import { useTheme } from '@/themes/ThemeProvider';
 import Sizes from '@/utils/Sizes';
+import useMasterStyle from '@/utils/useMasterStyle';
 
 const ContactsList = (props) => {
   const {
@@ -25,6 +26,7 @@ const ContactsList = (props) => {
 
   const { allContacts } = useContacts();
   const { theme } = useTheme();
+  const mStyles = useMasterStyle();
 
   const [sortBy, setSortBy] = useState('asc');
   const [keyword, setKeyword] = useState('');
@@ -162,9 +164,9 @@ const ContactsList = (props) => {
       maxHeight: '100%',
     },
     sectionHeader: {
-      fontSize: 24,
-      backgroundColor: theme.itemBg,
-      color: theme.itemColor,
+      fontSize: Sizes.$ieTitleFont,
+      backgroundColor: theme.itemColor,
+      color: theme.itemBg,
       width: '10%',
       paddingVertical: Sizes.$ieRegularPadding,
       marginTop: Sizes.$ieSmallMargin,
@@ -173,6 +175,7 @@ const ContactsList = (props) => {
       position: 'absolute',
       right: 10,
       textAlign: 'center',
+      ...mStyles.topShadow,
     },
     contactsList: {
       flex: 1,
@@ -180,21 +183,20 @@ const ContactsList = (props) => {
       width: '100%',
     },
     sortButton: {
-      backgroundColor: theme.itemColor,
+      backgroundColor: theme.itemBg,
       padding: Sizes.$ieRegularPadding,
       borderRadius: Sizes.$ieRegularRadius,
       overflow: 'hidden',
       borderBottomColor: theme.activeBar,
-      borderBottomWidth: 2,
-      marginHorizontal: Sizes.$ieRegularMargin,
+      borderBottomWidth: 5,
       justifyContent: 'space-between',
       alignItems: 'center',
       flexDirection: 'row',
       width: '95%',
-      marginTop: Sizes.$ieRegularMargin,
+      margin: Sizes.$ieRegularMargin,
     },
-    mbRegular: {
-      marginBottom: Sizes.$ieRegularMargin,
+    sortText: {
+      color: theme.itemColor,
     },
     noContactsText: {
       paddingHorizontal: Sizes.$ieRegularPadding,
@@ -232,22 +234,22 @@ const ContactsList = (props) => {
 
   const ContactsHeader = () => {
     return (
-      <View style={[styles.sortButton, styles.mbRegular]}>
+      <View style={styles.sortButton}>
         <MasterCheckbox
           onPress={toggleAllSelect}
           isChecked={allSelected}
           size='large'
-          color='dark'
+          iconColor={theme.itemColor}
           isIntermediate={isIntermediate}
         />
-        <Text>
+        <Text style={styles.sortText}>
           Total: {ogContacts?.length} | {selectedArray.length} Selected
         </Text>
         <TouchableOpacity onPress={toggleOrder}>
           <MasterIcon
             iconName={sortBy === 'asc' ? 'sort-alpha-down' : 'sort-alpha-up'}
             iconSize={24}
-            iconColor={theme.itemBg}
+            iconColor={theme.itemColor}
             iconFamily='FontAwesome5'
           />
         </TouchableOpacity>

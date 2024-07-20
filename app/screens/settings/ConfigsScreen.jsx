@@ -92,7 +92,7 @@ const ConfigsScreen = () => {
     <AuthTemplate screenName='Edit Settings'>
       <View style={styles.settingsBox}>
         <View style={styles.settingsRow}>
-          <Text style={styles.labelStyles}>Enable Floating Menu Style</Text>
+          <Text style={styles.labelStyles}>Floating Menu Style</Text>
           <MasterSwitch defValue={switchValue} onChange={handleMenuStyle} />
         </View>
         <MasterSelect

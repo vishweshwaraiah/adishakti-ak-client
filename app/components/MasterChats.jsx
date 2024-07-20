@@ -99,12 +99,19 @@ const MasterChats = (props) => {
       padding: Sizes.$ieRegularPadding,
       height: '100%',
     },
+    subContainer: {
+      flex: 1,
+      gap: Sizes.$ieFlexGap,
+    },
     mainBox: {
       position: 'relative',
       backgroundColor: theme.itemBg,
       padding: Sizes.$ieExtraPadding,
       borderRadius: Sizes.$ieRegularRadius,
       ...mStyles.commonShadow,
+    },
+    inputsContainer: {
+      gap: Sizes.$ieFlexGap,
     },
     inputBox: {
       justifyContent: 'center',
@@ -132,9 +139,6 @@ const MasterChats = (props) => {
       opacity: 0.5,
       transform: [{ scale: 1.5 }],
     },
-    mbRegular: {
-      marginBottom: Sizes.$ieRegularMargin,
-    },
     messageTitle: {
       fontSize: Sizes.$ieTitleFont,
       marginBottom: Sizes.$ieRegularMargin,
@@ -144,52 +148,54 @@ const MasterChats = (props) => {
   });
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        enabled
-        style={styles.container}
-      >
-        <Text style={styles.messageTitle}>Choose an option below</Text>
-        <View style={styles.mbRegular}>
-          <MasterSelect selectData={selectOptions} onSelect={setSelected} />
-          {selected?.value === 'to_few' && (
-            <SendToFew getList={getNumbersList} />
-          )}
-          {selected?.value === 'to_group' && (
-            <SendToGroup getList={getGroupList} />
-          )}
-        </View>
-        <View style={styles.mainBox}>
-          <TextInput
-            placeholder='Type your message'
-            placeholderTextColor={theme.itemColor}
-            clearButtonMode='always'
-            style={styles.inputBox}
-            multiline={true}
-            onChangeText={messageHandler}
-            name='text_message'
-            value={textMessage}
-          />
-          <View style={styles.sendIconBox}>
-            <Pressable
-              onPress={sendMessage}
-              style={({ pressed }) => [
-                styles.sendIcon,
-                pressed && styles.pressedBtn,
-              ]}
-            >
-              <MasterIcon
-                iconFamily='FontAwesome'
-                iconName='send-o'
-                iconSize={24}
-                iconColor={theme.itemColor}
-              />
-            </Pressable>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      enabled
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.subContainer}>
+          <Text style={styles.messageTitle}>Choose an option below</Text>
+          <View style={styles.inputsContainer}>
+            <MasterSelect selectData={selectOptions} onSelect={setSelected} />
+            {selected?.value === 'to_few' && (
+              <SendToFew getList={getNumbersList} />
+            )}
+            {selected?.value === 'to_group' && (
+              <SendToGroup getList={getGroupList} />
+            )}
+          </View>
+          <View style={styles.mainBox}>
+            <TextInput
+              placeholder='Type your message'
+              placeholderTextColor={theme.itemColor}
+              clearButtonMode='always'
+              style={styles.inputBox}
+              multiline={true}
+              onChangeText={messageHandler}
+              name='text_message'
+              value={textMessage}
+            />
+            <View style={styles.sendIconBox}>
+              <Pressable
+                onPress={sendMessage}
+                style={({ pressed }) => [
+                  styles.sendIcon,
+                  pressed && styles.pressedBtn,
+                ]}
+              >
+                <MasterIcon
+                  iconFamily='FontAwesome'
+                  iconName='send-o'
+                  iconSize={24}
+                  iconColor={theme.itemColor}
+                />
+              </Pressable>
+            </View>
           </View>
         </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 

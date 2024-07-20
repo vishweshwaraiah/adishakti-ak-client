@@ -40,6 +40,7 @@ const ContactItem = (props) => {
       paddingVertical: Sizes.$ieRegularPadding,
       paddingHorizontal: Sizes.$ieRegularPadding,
       marginBottom: 5,
+      gap: Sizes.$ieFlexGap,
     },
     placeholder: {
       width: 55,
@@ -54,7 +55,9 @@ const ContactItem = (props) => {
     contactData: {
       flex: 1,
       justifyContent: 'center',
-      paddingLeft: 5,
+      paddingLeft: 15,
+      backgroundColor: theme.itemBg,
+      borderRadius: Sizes.$ieRegularRadius,
     },
     thumbTxt: {
       fontSize: 20,
@@ -65,7 +68,7 @@ const ContactItem = (props) => {
       color: theme.itemColor,
     },
     phoneNumber: {
-      color: theme.green,
+      color: theme.itemSelected,
     },
     isSelected: {
       opacity: 0.6,

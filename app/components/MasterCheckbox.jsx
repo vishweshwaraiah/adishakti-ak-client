@@ -9,13 +9,12 @@ const MasterCheckbox = (props) => {
     isChecked = false,
     isIntermediate = false,
     size = 'regular',
-    color,
+    iconColor,
   } = props;
 
   const { theme } = useTheme();
 
   const [inputSize, setInputSize] = useState(0);
-  const [inputColor, setInputColor] = useState(theme.black);
 
   const iconName = isChecked ? 'check-square' : 'square';
 
@@ -28,14 +27,6 @@ const MasterCheckbox = (props) => {
       setInputSize(24);
     }
   }, [size]);
-
-  useEffect(() => {
-    if (color === 'light') {
-      setInputColor(theme.white);
-    } else {
-      setInputColor(theme.black);
-    }
-  }, [color]);
 
   const styles = StyleSheet.create({
     container: {
@@ -56,7 +47,7 @@ const MasterCheckbox = (props) => {
       <MasterIcon
         iconName={isIntermediate ? isInter : iconName}
         iconSize={inputSize}
-        iconColor={inputColor}
+        iconColor={iconColor}
         iconFamily='Feather'
       />
     </TouchableOpacity>

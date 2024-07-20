@@ -35,7 +35,6 @@ export const loginUser = createAsyncThunk(
       const response = await AxiosInstance.post(loginUrl, userData);
       return response.data;
     } catch (err) {
-      console.log('error', err);
       if (!err.response) {
         throw err; // Rethrow non-response errors
       }

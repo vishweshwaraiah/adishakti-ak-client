@@ -75,8 +75,12 @@ const AuthTemplate = (props) => {
       headerTitleAlign: 'center',
       headerLeft: leftHeaderNode,
       headerRight: rightHeaderNode,
+      headerStyle: { backgroundColor: theme.itemBg },
+      headerTitleStyle: {
+        color: theme.itemColor,
+      },
     });
-  }, [lastScreen, screenName]);
+  }, [lastScreen, screenName, theme]);
 
   useEffect(() => {
     const x = router.canGoBack();
@@ -161,7 +165,7 @@ const AuthTemplate = (props) => {
     <LinearGradient colors={theme.gradientsArray} style={styles.container}>
       <ImageBackground
         style={styles.loginImage}
-        source={require('@/assets/images/bg.jpg')}
+        source={require('@/assets/images/app_bg.jpg')}
         resizeMode='cover'
         imageStyle={styles.imageBackground}
       >

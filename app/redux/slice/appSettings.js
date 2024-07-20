@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProdServerUri } from '@/utils/Globals';
 import AxiosInstance from '@/utils/AxiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   status: 'loading',
@@ -22,6 +23,7 @@ export const updateAppSettings = createAsyncThunk(
     }
 
     try {
+      await AsyncStorage.setItem('settings', JSON.stringify(appSettings));
       const response = await AxiosInstance.put(updatePrefsUrl, appSettings);
       return response.data;
     } catch (err) {
@@ -45,8 +47,14 @@ export const fetchAppSettings = createAsyncThunk(
     const fetchSettingsUrl = ProdServerUri + 'fetch_settings/' + userEmail;
 
     try {
-      const response = await AxiosInstance.get(fetchSettingsUrl);
-      return response.data;
+      const getSettings = await AsyncStorage.getItem('settings');
+      if (getSettings !== null) {
+        const appSettings = JSON.parse(getSettings);
+        return appSettings;
+      } else {
+        const response = await AxiosInstance.get(fetchSettingsUrl);
+        return response.data;
+      }
     } catch (err) {
       if (!err.response) {
         throw err; // Rethrow non-response errors

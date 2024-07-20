@@ -88,7 +88,6 @@ const SendToFew = (props) => {
   const styles = StyleSheet.create({
     contactsBox: {
       flexDirection: 'row',
-      gap: 'auto',
       justifyContent: 'space-between',
       alignItems: 'center',
       borderRadius: Sizes.$ieRegularRadius,
@@ -108,7 +107,6 @@ const SendToFew = (props) => {
     addIcon: {
       backgroundColor: theme.itemBg,
       borderRadius: Sizes.$ieRegularRadius,
-      paddingVertical: 12,
       overflow: 'hidden',
       alignItems: 'center',
       justifyContent: 'center',
@@ -129,16 +127,16 @@ const SendToFew = (props) => {
       paddingBottom: Sizes.$ieRegularPadding,
     },
     numBox: {
-      backgroundColor: theme.black,
+      backgroundColor: theme.itemBg,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       overflow: 'hidden',
-      borderRadius: Sizes.$ieLargeRadius,
+      borderRadius: Sizes.$ieRegularRadius,
       height: Sizes.$ieRegularHeight,
     },
     contactNum: {
-      color: theme.white,
+      color: theme.itemColor,
       paddingVertical: Sizes.$ieExtraPadding,
       paddingHorizontal: Sizes.$ieRegularPadding,
     },

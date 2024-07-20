@@ -50,19 +50,20 @@ const SendToGroup = (props) => {
     },
     groupsList: {
       maxHeight: screenHeight / 5,
+      marginBottom: Sizes.$ieRegularMargin,
     },
     styleLeft: {
       width: size - Sizes.$ieRegularPadding,
       paddingLeft: Sizes.$ieRegularPadding,
-      paddingBottom: Sizes.$ieRegularPadding,
+      paddingVertical: Sizes.$ieSmallPadding,
     },
     styleRight: {
       width: size - Sizes.$ieRegularPadding,
       paddingRight: Sizes.$ieRegularPadding,
-      paddingBottom: Sizes.$ieRegularPadding,
+      paddingVertical: Sizes.$ieSmallPadding,
     },
     groupItem: {
-      backgroundColor: theme.black,
+      backgroundColor: theme.itemBg,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -72,7 +73,7 @@ const SendToGroup = (props) => {
       paddingHorizontal: Sizes.$ieRegularPadding,
     },
     groupItemText: {
-      color: theme.white,
+      color: theme.itemColor,
     },
     infoText: {
       textAlign: 'center',

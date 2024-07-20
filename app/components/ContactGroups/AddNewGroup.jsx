@@ -77,7 +77,7 @@ const AddNewGroup = () => {
       <MasterButton
         onPress={toggleBtmSheet}
         userStyle={styles.floatingBtn}
-        variant={theme.transblack}
+        variant={theme.itemBg}
         shape='circle'
       >
         <MasterIcon

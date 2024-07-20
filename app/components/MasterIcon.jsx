@@ -38,7 +38,9 @@ const MasterIcon = (props) => {
 
     const Icon = IconFamilies[iconFamily];
 
-    return <Icon name={iconName} size={iconSize} color={iconColor} />;
+    return (
+      <Icon name={iconName} size={iconSize} color={iconColor} key={iconColor} />
+    );
   };
 
   const styles = StyleSheet.create({

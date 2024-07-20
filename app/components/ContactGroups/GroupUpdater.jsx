@@ -134,7 +134,7 @@ const GroupUpdater = (props) => {
         <MasterButton
           onPress={handleSubmit}
           userStyle={styles.floatingBtn}
-          variant={theme.transblack}
+          variant={theme.itemBg}
           shape='circle'
         >
           <MasterIcon

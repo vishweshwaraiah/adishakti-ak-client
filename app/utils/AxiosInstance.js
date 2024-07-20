@@ -7,10 +7,6 @@ const allHeaders = {
   'Content-Type': 'application/json',
 };
 
-// allHeaders['Content-Type'] = 'multipart/form-data';
-// Usage: await AxiosInstance.get('/users');
-// Automatically includes the Authorization header, don't forget to import
-
 const AxiosInstance = axios.create({
   baseURL: ProdServerUri, // Your API base URL
   headers: allHeaders,

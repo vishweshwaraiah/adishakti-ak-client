@@ -35,14 +35,15 @@ const GroupsList = (props) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       overflow: 'hidden',
-      borderBottomWidth: 1,
+      borderBottomWidth: 5,
       borderBottomColor: theme.itemColor,
       height: Sizes.$ieLargeHeight,
       paddingHorizontal: Sizes.$ieLargePadding,
-      marginBottom: Sizes.$ieSmallMargin,
+      marginBottom: Sizes.$ieRegularMargin,
+      borderRadius: Sizes.$ieRegularRadius,
     },
     groupItemText: {
-      color: theme.white,
+      color: theme.itemColor,
     },
     groupActions: {
       flexDirection: 'row',

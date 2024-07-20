@@ -88,7 +88,7 @@ const MasterSelect = (props) => {
     },
     selectDropdown: {
       position: 'absolute',
-      backgroundColor: theme.white,
+      backgroundColor: theme.itemBg,
       width: '95%',
       paddingBottom: Sizes.$ieRegularPadding,
       borderBottomLeftRadius: Sizes.$ieRegularRadius,
@@ -116,8 +116,12 @@ const MasterSelect = (props) => {
       height: Sizes.$ieLargeHeight,
       borderBottomWidth: 0.3,
     },
+    selectText: {
+      color: theme.itemColor,
+    },
     isSelected: {
-      backgroundColor: theme.selected,
+      backgroundColor: theme.itemSelected,
+      borderRadius: Sizes.$ieRegularRadius,
     },
   });
 
@@ -127,7 +131,7 @@ const MasterSelect = (props) => {
         style={[styles.selectOption, item.selected && styles.isSelected]}
         onPress={() => onItemPress(item)}
       >
-        <Text>{item.label}</Text>
+        <Text style={styles.selectText}>{item.label}</Text>
       </TouchableOpacity>
     );
   };
