@@ -202,11 +202,40 @@ const MasterPicker = (props) => {
     processCalendar(new Date());
   }, []);
 
+  const styles = StyleSheet.create({
+    masterCalendar: {
+      position: 'relative',
+      alignItems: 'center',
+      paddingHorizontal: Sizes.$ieRegularPadding,
+    },
+    actionsBox: {
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: Sizes.$ieRegularPadding,
+    },
+    datesView: {
+      flex: 1,
+      alignSelf: 'center',
+      alignItems: 'center',
+      marginBottom: Sizes.$ieRegularMargin,
+    },
+    groupActions: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 10,
+    },
+    startDate: {
+      color: theme.modalTxtColor,
+    },
+  });
+
   return (
     <MasterModal
       bodyHeight={400}
       bodyWidth='80%'
-      bgColor={theme.modalBodyBg}
+      bgColor={theme.modalBgColor}
       status={modalOpen}
       setStatus={setModalOpen}
       isClosable={false}
@@ -230,7 +259,7 @@ const MasterPicker = (props) => {
                 iconFamily='Entypo'
               />
             </TouchableOpacity>
-            <Text>{stringDate}</Text>
+            <Text style={styles.startDate}>{stringDate}</Text>
             <TouchableOpacity onPress={nextMonth}>
               <MasterIcon
                 iconName='chevron-right'
@@ -282,29 +311,3 @@ const MasterPicker = (props) => {
 };
 
 export default MasterPicker;
-
-const styles = StyleSheet.create({
-  masterCalendar: {
-    position: 'relative',
-    alignItems: 'center',
-    paddingHorizontal: Sizes.$ieRegularPadding,
-  },
-  actionsBox: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: Sizes.$ieRegularPadding,
-  },
-  datesView: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center',
-    marginBottom: Sizes.$ieRegularMargin,
-  },
-  groupActions: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
-  },
-});

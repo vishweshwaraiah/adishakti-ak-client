@@ -1,29 +1,24 @@
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter, useRootNavigationState } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAppSettings } from '@/redux/slice/appSettings';
-import { fetchUser, clearUser } from '@/redux/slice/userData';
-import { logoutUser } from '@/redux/slice/authData';
+import { fetchUser } from '@/redux/slice/userData';
+import MasterLoader from '@/components/MasterLoader';
 import BaseTemplate from '@/wrappers/BaseTemplate';
-import MasterButton from '@/components/MasterButton';
-import { useTheme } from '@/themes/ThemeProvider';
-import useMasterStyle from '@/utils/useMasterStyle';
-import Sizes from '@/utils/Sizes';
+import { StyleSheet } from 'react-native';
 
 const Loader = () => {
   const router = useRouter();
+  const rootNavState = useRootNavigationState();
   const dispatch = useDispatch();
-  const { user, userStatus, message } = useSelector((state) => state.userSlice);
-
-  const { theme } = useTheme();
-  const mStyles = useMasterStyle();
+  const { user, userStatus } = useSelector((state) => state.userSlice);
 
   const [loaderMessage, setLoaderMessage] = useState('Loading you app!');
   const [actionTitle, setActionTitle] = useState('Retry');
   const [appStatus, setAppStatus] = useState('connected');
+  const [actionBtn, setActionBtn] = useState(false);
 
   const goToLogin = () => {
     router.replace('/auth/login');
@@ -34,10 +29,9 @@ const Loader = () => {
   };
 
   const handleBtnAction = async () => {
-    dispatch(logoutUser());
-    dispatch(clearUser());
     if (appStatus === 'connected') {
-      goToLogin();
+      setLoaderMessage('Server is down, try again!');
+      setTimeout(() => loadApp(), 500);
     } else {
       setLoaderMessage('Turn on internet please!');
       setTimeout(() => loadApp(), 500);
@@ -54,13 +48,18 @@ const Loader = () => {
     }
   };
 
+  const appLoader = () => <MasterLoader />;
+
   useEffect(() => {
+    if (!rootNavState?.key) return appLoader;
+
     if (userStatus === 'error') {
-      setLoaderMessage(message);
+      setActionBtn(true);
+      setLoaderMessage('Error fetching user details!');
     }
 
     if (userStatus === 'fetchinguser') {
-      setLoaderMessage('Loading the page...!');
+      setLoaderMessage('Fetching user details!');
     }
 
     if (userStatus === 'fetcheduser') {
@@ -72,7 +71,7 @@ const Loader = () => {
     const userToken = await AsyncStorage.getItem('auth');
 
     if (userToken !== null) {
-      dispatch(fetchUser(userToken));
+      dispatch(fetchUser());
     } else {
       goToLogin();
     }
@@ -84,9 +83,10 @@ const Loader = () => {
         setAppStatus('connected');
         authTokenCheck();
       } else {
+        setActionBtn(true);
         setAppStatus('disconnected');
-        setLoaderMessage('Looks like you are offline!');
         setActionTitle('Refresh!');
+        setLoaderMessage('Looks like you are offline!');
       }
     });
   };
@@ -96,59 +96,20 @@ const Loader = () => {
   }, []);
 
   const styles = StyleSheet.create({
-    containerStyle: {
-      position: 'relative',
-    },
-    loaderView: {
-      width: '100%',
-      height: '100%',
-      backgroundColor: theme.modalBackground,
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-    },
-    loaderBox: {
-      width: '60%',
-      height: 250,
-      borderWidth: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-      backgroundColor: theme.modalBodyBg,
-      borderRadius: Sizes.$ieLargeRadius,
-      padding: Sizes.$ieExtraPadding,
-      ...mStyles.commonShadow,
-    },
-    loaderText: {
-      fontSize: Sizes.$ieRegularFont,
-      color: theme.green,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      paddingTop: Sizes.$ieLargePadding,
+    authLoader: {
+      display: 'flex',
+      flex: 1,
     },
   });
 
   return (
-    <BaseTemplate containerStyle={styles.containerStyle}>
-      <View style={styles.loaderView}>
-        <View style={styles.loaderBox}>
-          <ActivityIndicator
-            animating={true}
-            size='large'
-            color={theme.green}
-          />
-          <Text style={styles.loaderText}>{loaderMessage}</Text>
-          {(userStatus === 'error' || appStatus === 'disconnected') && (
-            <MasterButton
-              onPress={handleBtnAction}
-              variant='light'
-              textColor={theme.green}
-              title={actionTitle}
-              marginTop={Sizes.$ieLargeMargin}
-            />
-          )}
-        </View>
-      </View>
+    <BaseTemplate containerStyle={styles.authLoader}>
+      <MasterLoader
+        actionBtn={actionBtn}
+        onAction={handleBtnAction}
+        actionTitle={actionTitle}
+        loaderMessage={loaderMessage}
+      />
     </BaseTemplate>
   );
 };

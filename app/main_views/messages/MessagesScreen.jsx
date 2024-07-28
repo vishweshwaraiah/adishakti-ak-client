@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ValidNumber } from '@/utils/Globals';
+import { sendMessages } from '@/redux/slice/numsGroups';
+import useContacts from '@/utils/useContacts';
 import AuthTemplate from '@/wrappers/AuthTemplate';
 import MasterChats from '@/components/MasterChats';
 import AlertModal from '@/components/Modals/AlertModal';
-import useContacts from '@/utils/useContacts';
-import { sendMessages } from '@/redux/slice/numsGroups';
-import { useDispatch } from 'react-redux';
+import MasterLoader from '@/components/MasterLoader';
 
 const MessagesScreen = () => {
   const { allNumbers } = useContacts();
+  const { status, message } = useSelector((state) => state.groupsSlice);
 
   const dispatch = useDispatch();
 
@@ -71,39 +73,53 @@ const MessagesScreen = () => {
     };
 
     dispatch(sendMessages(data));
-
-    // if (response.data) {
-    //   setModalStatus('open');
-    //   setStatusMessage('Successfully sent!');
-    //   setAfterAction('done');
-    //   setAlertIcon('alert-circle');
-    // } else {
-    //   setModalStatus('open');
-    //   setStatusMessage(err.message);
-    //   setAfterAction('error');
-    //   setAlertIcon('alert-circle');
-    // }
   };
 
   useEffect(() => {
-    allNumbers.forEach((i) => {
-      const num = i[0].number;
-      if (ValidNumber(num)) {
-        setNumbersList((prevs) => {
-          return [...prevs, num];
-        });
+    if (status === 'sms_sent') {
+      setModalStatus('open');
+      setStatusMessage(message);
+      setAfterAction('done');
+      setAlertIcon('alert-circle');
+    }
+
+    if (status === 'sms_sending') {
+      setModalStatus('open');
+      setStatusMessage(message);
+      setAfterAction('error');
+      setAlertIcon('information');
+    }
+
+    if (status === 'sms_error') {
+      setModalStatus('open');
+      setStatusMessage(message);
+      setAfterAction('error');
+      setAlertIcon('warning');
+    }
+  }, [status, message]);
+
+  useEffect(() => {
+    allNumbers.forEach((number) => {
+      if (ValidNumber(number)) {
+        setNumbersList((prevs) => [...prevs, number]);
       }
     });
+
+    return () => setNumbersList([]);
   }, [allNumbers]);
 
   return (
     <AuthTemplate screenName='Messages'>
-      <MasterChats
-        onSendClick={handleContent}
-        numbersList={numbersList}
-        selectOptions={selectOptions}
-        resetAction={clearForm}
-      />
+      {numbersList.length ? (
+        <MasterChats
+          onSendClick={handleContent}
+          numbersList={numbersList}
+          selectOptions={selectOptions}
+          resetAction={clearForm}
+        />
+      ) : (
+        <MasterLoader loaderMessage='Loading contacts list!' />
+      )}
       <AlertModal
         onCancel={handleCancel}
         onSubmit={handleSubmit}

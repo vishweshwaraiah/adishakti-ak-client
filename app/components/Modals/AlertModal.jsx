@@ -53,6 +53,7 @@ const AlertModal = (props) => {
       textAlign: 'center',
       padding: Sizes.$ieExtraPadding,
       marginBottom: Sizes.$ieRegularMargin,
+      color: theme.modalTxtColor,
     },
   });
 
@@ -116,7 +117,7 @@ const AlertModal = (props) => {
     <MasterModal
       bodyHeight={280}
       bodyWidth='70%'
-      bgColor={theme.modalBodyBg}
+      bgColor={theme.modalBgColor}
       status={modalOpen}
       setStatus={setModalOpen}
       onClose={onClose}

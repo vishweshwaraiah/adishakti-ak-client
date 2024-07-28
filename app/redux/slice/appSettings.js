@@ -22,8 +22,9 @@ export const updateAppSettings = createAsyncThunk(
       return false;
     }
 
+    await AsyncStorage.setItem('settings', JSON.stringify(appSettings));
+
     try {
-      await AsyncStorage.setItem('settings', JSON.stringify(appSettings));
       const response = await AxiosInstance.put(updatePrefsUrl, appSettings);
       return response.data;
     } catch (err) {

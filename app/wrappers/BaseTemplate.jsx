@@ -14,6 +14,7 @@ const screenWidth = Dimensions.get('window').width;
 const BaseTemplate = (props) => {
   const { children, containerStyle = {} } = props;
 
+  const gradientsArray = ['#FFA500', '#FFFFFF'];
   const { theme } = useTheme();
 
   const styles = StyleSheet.create({
@@ -35,7 +36,7 @@ const BaseTemplate = (props) => {
 
   return (
     <View style={styles.defaultStyles}>
-      <LinearGradient colors={theme.gradientsArray}>
+      <LinearGradient colors={theme.gradientsArray || gradientsArray}>
         <ImageBackground
           style={styles.loginImage}
           source={require('@/assets/images/bg.jpg')}

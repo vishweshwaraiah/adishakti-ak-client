@@ -128,6 +128,10 @@ const ContactsList = (props) => {
     } else {
       setIsIntermediate(false);
     }
+
+    return () => {
+      setOgContacts([]);
+    };
   }, [allContacts, selectedArray]);
 
   useEffect(() => {
@@ -135,6 +139,14 @@ const ContactsList = (props) => {
       setSelectedArray(lastGroupList);
     }
   }, [lastGroupList]);
+
+  useEffect(() => {
+    return () => {
+      setSelectedArray([]);
+      setFilteredData([]);
+      setOgContacts([]);
+    };
+  }, []);
 
   const onContactClick = useCallback(
     (contact) => {

@@ -157,7 +157,11 @@ const MasterChats = (props) => {
         <View style={styles.subContainer}>
           <Text style={styles.messageTitle}>Choose an option below</Text>
           <View style={styles.inputsContainer}>
-            <MasterSelect selectData={selectOptions} onSelect={setSelected} />
+            <MasterSelect
+              selectData={selectOptions}
+              onSelect={setSelected}
+              resetSelect={!selected}
+            />
             {selected?.value === 'to_few' && (
               <SendToFew getList={getNumbersList} />
             )}

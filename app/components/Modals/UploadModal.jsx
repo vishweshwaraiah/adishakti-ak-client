@@ -29,11 +29,41 @@ const UploadModal = (props) => {
     }
   }, [modalStatus]);
 
+  const styles = StyleSheet.create({
+    bodyContent: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 10,
+    },
+    groupActions: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 10,
+    },
+    actionText: {
+      justifyContent: 'center',
+      textAlign: 'center',
+      padding: Sizes.$ieRegularPadding,
+      marginBottom: Sizes.$ieSmallMargin,
+      fontSize: Sizes.$ieLargeFont,
+      color: theme.modalTxtColor,
+    },
+    statusText: {
+      justifyContent: 'center',
+      textAlign: 'center',
+      padding: Sizes.$ieRegularPadding,
+      marginBottom: Sizes.$ieLargeMargin,
+      fontSize: Sizes.$ieRegularFont,
+      color: theme.modalTxtColor,
+    },
+  });
+
   return (
     <MasterModal
       bodyHeight={160}
       bodyWidth='80%'
-      bgColor={theme.modalBodyBg}
+      bgColor={theme.modalBgColor}
       status={modalOpen}
       setStatus={setModalOpen}
       onClose={onClose}
@@ -104,31 +134,3 @@ const UploadModal = (props) => {
 };
 
 export default UploadModal;
-
-const styles = StyleSheet.create({
-  bodyContent: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-  },
-  groupActions: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
-  },
-  actionText: {
-    justifyContent: 'center',
-    textAlign: 'center',
-    padding: Sizes.$ieRegularPadding,
-    marginBottom: Sizes.$ieSmallMargin,
-    fontSize: Sizes.$ieLargeFont,
-  },
-  statusText: {
-    justifyContent: 'center',
-    textAlign: 'center',
-    padding: Sizes.$ieRegularPadding,
-    marginBottom: Sizes.$ieLargeMargin,
-    fontSize: Sizes.$ieRegularFont,
-  },
-});

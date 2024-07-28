@@ -171,14 +171,14 @@ export const numsGroups = createSlice({
 
     // send message to number(s)
     builder.addCase(sendMessages.fulfilled, (state, action) => {
-      state.status = 'sent';
-      state.message = action.payload.message;
+      state.status = 'sms_sent';
+      state.message = action.payload.Message;
     });
     builder.addCase(sendMessages.pending, (state) => {
-      state.status = 'sending';
+      state.status = 'sms_sending';
     });
     builder.addCase(sendMessages.rejected, (state, action) => {
-      state.status = 'error';
+      state.status = 'sms_error';
       state.message = action.payload?.message;
     });
   },

@@ -23,7 +23,7 @@ const BottomMenu = (props) => {
     if (menuItem.floatingBtn) {
       iconSize = 32;
       xStyles.borderRadius = 35;
-      xStyles.backgroundColor = theme.activeBar;
+      xStyles.backgroundColor = theme.activeBtn;
       xStyles.bottom = 30;
     } else {
       iconSize = 24;
@@ -35,7 +35,7 @@ const BottomMenu = (props) => {
     if (menuItem.isSelected) {
       xStyles.color = theme.itemSelected;
       xStyles.borderBottomWidth = 5;
-      xStyles.borderColor = theme.itemColor;
+      xStyles.borderColor = theme.menuText;
     }
 
     return xStyles;
@@ -58,7 +58,7 @@ const BottomMenu = (props) => {
       ...mStyles.navShadow,
     },
     floatingBarLabel: {
-      color: theme.itemColor,
+      color: theme.menuText,
     },
     bottomBarButton: {
       flexDirection: 'column',

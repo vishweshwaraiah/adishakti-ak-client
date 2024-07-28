@@ -78,7 +78,7 @@ const SettingsRow = (props) => {
     settingsRow: {
       width: '100%',
       flexDirection: 'row',
-      backgroundColor: theme.itemBg,
+      backgroundColor: theme.rowBgColor,
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: Sizes.$ieExtraPadding,
@@ -99,7 +99,7 @@ const SettingsRow = (props) => {
     },
     rowTitle: {
       fontSize: Sizes.$ieRegularFont,
-      color: theme.itemColor,
+      color: theme.rowTxtColor,
       flexWrap: 'nowrap',
     },
     subTitle: {
@@ -120,7 +120,7 @@ const SettingsRow = (props) => {
             iconFamily={iconFamily}
             iconName={startIcon}
             iconSize={Sizes.$startIconSize}
-            iconColor={theme.itemColor}
+            iconColor={theme.rowTxtColor}
           />
         )}
         <View style={styles.titleTextBox}>
@@ -140,7 +140,7 @@ const SettingsRow = (props) => {
           iconFamily={'Entypo'}
           iconName={endIcon}
           iconSize={Sizes.$startIconSize}
-          iconColor={theme.itemColor}
+          iconColor={theme.rowTxtColor}
         />
       </View>
     </TouchableOpacity>

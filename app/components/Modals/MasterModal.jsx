@@ -76,10 +76,10 @@ const MasterModal = (props) => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.modalBackground,
+      backgroundColor: theme.modalBackdrop,
     },
     modalContainer: {
-      backgroundColor: bgColor,
+      backgroundColor: bgColor || theme.modalBgColor,
       borderRadius: Sizes.$ieLargeRadius,
       minHeight: bodyHeight || '50%',
       width: bodyWidth || '80%',
@@ -99,6 +99,7 @@ const MasterModal = (props) => {
       textAlignVertical: 'center',
       fontSize: Sizes.$ieLargeFont,
       fontWeight: 'bold',
+      color: theme.modalTxtColor,
     },
     modalClose: {
       position: 'absolute',
@@ -120,15 +121,6 @@ const MasterModal = (props) => {
       padding: Sizes.$ieRegularPadding,
       backgroundColor: theme.primary,
       overflow: 'hidden',
-    },
-    textStyle: {
-      color: theme.white,
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-    modalText: {
-      marginBottom: 15,
-      textAlign: 'center',
     },
   });
 

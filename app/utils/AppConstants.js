@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 
-export const phoneRegex = /^[+]{1}(?:[0-9\-\\(\\)\\/.]\s?){11}[0-9]{1}$/;
+export const phoneRegex = /^(?:[0-9\-\\(\\)\\.]\s?){11}[0-9]{1}$/;
 export const clearRegex = /[^0-9+]+/g;
 export const emailRegex =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;

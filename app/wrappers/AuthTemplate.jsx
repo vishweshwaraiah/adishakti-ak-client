@@ -28,6 +28,7 @@ const AuthTemplate = (props) => {
   const navigation = useNavigation();
   const pathname = usePathname();
 
+  const gradientsArray = ['#FFA500', '#FFFFFF'];
   const { theme } = useTheme();
   const mStyles = useMasterStyle();
 
@@ -75,9 +76,9 @@ const AuthTemplate = (props) => {
       headerTitleAlign: 'center',
       headerLeft: leftHeaderNode,
       headerRight: rightHeaderNode,
-      headerStyle: { backgroundColor: theme.itemBg },
+      headerStyle: { backgroundColor: theme.appHeaderBg },
       headerTitleStyle: {
-        color: theme.itemColor,
+        color: theme.appHeaderColor,
       },
     });
   }, [lastScreen, screenName, theme]);
@@ -162,7 +163,10 @@ const AuthTemplate = (props) => {
     );
 
   return (
-    <LinearGradient colors={theme.gradientsArray} style={styles.container}>
+    <LinearGradient
+      colors={theme.gradientsArray || gradientsArray}
+      style={styles.container}
+    >
       <ImageBackground
         style={styles.loginImage}
         source={require('@/assets/images/app_bg.jpg')}

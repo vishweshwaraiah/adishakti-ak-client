@@ -11,6 +11,7 @@ const MasterError = (props) => {
     timeout = 5,
     marginBottom = 0,
     textAlign = 'left',
+    customStyles = {},
   } = props;
 
   const { theme } = useTheme();
@@ -53,11 +54,13 @@ const MasterError = (props) => {
   });
 
   return (
-    showError && (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>{errorMsg}</Text>
-      </View>
-    )
+    <View style={customStyles}>
+      {showError && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{errorMsg}</Text>
+        </View>
+      )}
+    </View>
   );
 };
 

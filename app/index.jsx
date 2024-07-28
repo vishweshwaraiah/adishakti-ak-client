@@ -1,18 +1,21 @@
 import React, { Fragment } from 'react';
 import { Redirect, useRootNavigationState } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Text } from 'react-native';
 
 const MasterApp = () => {
-  const { key } = useRootNavigationState();
+  const rootNavState = useRootNavigationState();
 
-  if (!key) return null;
-
-  return (
-    <Fragment>
-      <Redirect href='/auth/loader' />
-      <StatusBar style='auto' />
-    </Fragment>
-  );
+  if (rootNavState?.key) {
+    return (
+      <Fragment>
+        <Redirect href='/auth/loader' />
+        <StatusBar style='auto' />
+      </Fragment>
+    );
+  } else {
+    return <Text>Loading...</Text>;
+  }
 };
 
 export default MasterApp;

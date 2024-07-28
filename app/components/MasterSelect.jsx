@@ -13,7 +13,7 @@ import { useTheme } from '@/themes/ThemeProvider';
 import MasterIcon from '@/components/MasterIcon';
 
 const MasterSelect = (props) => {
-  const { selectData, onSelect, currentValue } = props;
+  const { selectData, onSelect, currentValue, resetSelect = false } = props;
 
   const { theme } = useTheme();
   const mStyles = useMasterStyle();
@@ -66,6 +66,10 @@ const MasterSelect = (props) => {
     setSelected(foundItem);
   }, [currentValue]);
 
+  useEffect(() => {
+    if (resetSelect) updateOptsList(selectData[0]);
+  }, [resetSelect]);
+
   const styles = StyleSheet.create({
     selectButton: {
       flexDirection: 'row',
@@ -104,7 +108,7 @@ const MasterSelect = (props) => {
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      backgroundColor: theme.modalBackground,
+      backgroundColor: theme.modalBackdrop,
       zIndex: 200,
     },
     dropdownList: {

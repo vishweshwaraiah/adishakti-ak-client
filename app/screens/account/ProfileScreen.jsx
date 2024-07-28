@@ -24,16 +24,6 @@ const ProfileScreen = () => {
     router.push('screens/account/UpdateScreen');
   };
 
-  const getBrType = (idx) => {
-    if (idx === 0) {
-      return 'top-side';
-    } else if (idx === userArray.length - 1) {
-      return 'bottom-side';
-    } else {
-      return '';
-    }
-  };
-
   useEffect(() => {
     const userData = [];
 
@@ -127,14 +117,14 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.settingsRows}>
-            {userArray?.map((item, idx) => (
+            {userArray?.map((item) => (
               <SettingsRow
                 rowTitle={item.name}
                 subTitle={item.subname}
                 startIcon={item.icon}
                 endIcon=''
                 iconFamily={item.iconFamily}
-                brType={getBrType(idx)}
+                brType='all-side'
                 key={item.subname}
                 titleFirst={false}
               />

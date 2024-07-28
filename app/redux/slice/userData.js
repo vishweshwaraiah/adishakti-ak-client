@@ -104,22 +104,19 @@ export const fetchImage = createAsyncThunk(
   }
 );
 
-export const fetchUser = createAsyncThunk(
-  'fetchUser',
-  async (token, thunkAPI) => {
-    const fetchUserUrl = ProdServerUri + '/get_user/' + token;
+export const fetchUser = createAsyncThunk('fetchUser', async (_, thunkAPI) => {
+  const fetchUserUrl = ProdServerUri + '/get_user/';
 
-    try {
-      const response = await AxiosInstance.get(fetchUserUrl);
-      return response.data;
-    } catch (err) {
-      if (!err.response) {
-        throw err; // Rethrow non-response errors
-      }
-      return thunkAPI.rejectWithValue(err.response.data);
+  try {
+    const response = await AxiosInstance.get(fetchUserUrl);
+    return response.data;
+  } catch (err) {
+    if (!err.response) {
+      throw err; // Rethrow non-response errors
     }
+    return thunkAPI.rejectWithValue(err.response.data);
   }
-);
+});
 
 export const updateUser = createAsyncThunk(
   'updateUser',
