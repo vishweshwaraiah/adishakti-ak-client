@@ -172,7 +172,11 @@ export const numsGroups = createSlice({
     // send message to number(s)
     builder.addCase(sendMessages.fulfilled, (state, action) => {
       state.status = 'sms_sent';
-      state.message = action.payload.Message;
+      if (action.payload.Success === 'True') {
+        state.message = 'Message(s) Sent Successfully.!';
+      } else {
+        state.message = action.payload.Message;
+      }
     });
     builder.addCase(sendMessages.pending, (state) => {
       state.status = 'sms_sending';

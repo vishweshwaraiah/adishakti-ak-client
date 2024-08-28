@@ -48,8 +48,8 @@ const SendToFew = (props) => {
       setEnteredList((currentArray) => [
         ...currentArray,
         {
-          value: '+91' + phone,
           key: Math.random().toString(),
+          phoneNumber: '91' + phone, // allow only indian numbers
         },
       ]);
       setPhone('');
@@ -66,7 +66,7 @@ const SendToFew = (props) => {
         style={styles.numBox}
         onPress={() => removePhoneNumber(item)}
       >
-        <Text style={styles.contactNum}>{item.value}</Text>
+        <Text style={styles.contactNum}>{item.phoneNumber}</Text>
         <MasterIcon
           iconName='remove-circle'
           iconSize={16}
@@ -105,7 +105,7 @@ const SendToFew = (props) => {
       ...mStyles.commonShadow,
     },
     addIcon: {
-      backgroundColor: theme.itemBg,
+      backgroundColor: theme.primary,
       borderRadius: Sizes.$ieRegularRadius,
       overflow: 'hidden',
       alignItems: 'center',
@@ -174,7 +174,7 @@ const SendToFew = (props) => {
               iconName='add-circle'
               iconSize={24}
               iconFamily='MaterialIcons'
-              iconColor={theme.itemColor}
+              iconColor={theme.white}
             />
           </TouchableOpacity>
         </View>
