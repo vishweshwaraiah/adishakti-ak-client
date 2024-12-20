@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigation, useSegments, usePathname } from 'expo-router';
+import { useSegments, usePathname, useRouter } from 'expo-router';
 import FloatingMenu from '@/components/Navigation/FloatingMenu';
 import BottomMenu from '@/components/Navigation/BottomMenu';
 
@@ -11,7 +11,7 @@ const MasterMenu = (props) => {
     onPress = () => {},
   } = props;
 
-  const navigation = useNavigation();
+  const navigation = useRouter();
   const segments = useSegments();
   const pathname = usePathname();
 
@@ -29,7 +29,7 @@ const MasterMenu = (props) => {
   const toggleMenu = (menu) => {
     if (menu?.isSelected) return;
     if (menu?.name) {
-      navigation.navigate(menu.name);
+      navigation.navigate(menu.path);
       updateRoutes(menu.name);
       onPress();
     }

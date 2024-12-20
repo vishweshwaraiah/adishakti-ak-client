@@ -15,3 +15,14 @@ export const LocalServerUri = Constants?.expoConfig?.hostUri
 
 // server url for production api endpoints
 export const ProductionServerUri = 'http://13.126.248.37/api/';
+
+const AppConstants = {
+  phoneRegex,
+  clearRegex,
+  emailRegex,
+  passwordRegex,
+  LocalServerUri,
+  ProductionServerUri,
+};
+
+export default AppConstants;

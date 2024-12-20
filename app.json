@@ -7,13 +7,18 @@
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "userInterfaceStyle": "light",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "splash": {
       "image": "./app/assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.mastervish.adishakti-kkmr",
@@ -24,7 +29,9 @@
         "NSPrivacyAccessedAPITypes": [
           {
             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
-            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+            "NSPrivacyAccessedAPITypeReasons": [
+              "CA92.1"
+            ]
           }
         ]
       }
@@ -54,18 +61,9 @@
       [
         "expo-font",
         {
-          "fonts": ["./app/assets/fonts/SpaceMono-Regular.ttf"]
-        }
-      ],
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "newArchEnabled": true
-          },
-          "android": {
-            "newArchEnabled": true
-          }
+          "fonts": [
+            "./app/assets/fonts/SpaceMono-Regular.ttf"
+          ]
         }
       ]
     ],
@@ -76,6 +74,7 @@
       "eas": {
         "projectId": "b84589a8-3f85-4192-a256-4f7c460d30fa"
       }
-    }
+    },
+    "newArchEnabled": true
   }
 }

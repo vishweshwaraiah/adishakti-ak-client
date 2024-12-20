@@ -10,6 +10,10 @@ import {
 // enable(make true) here to use local api endpoints
 const localEnv = true;
 
+const Globals = {
+  localEnv,
+};
+
 export const ProdServerUri = localEnv ? LocalServerUri : ProductionServerUri;
 
 export const ValidNumber = (number) => {
@@ -62,3 +66,5 @@ export const OptimizeContacts = (rawContacts = []) => {
 
   return Optimized;
 };
+
+export default Globals;

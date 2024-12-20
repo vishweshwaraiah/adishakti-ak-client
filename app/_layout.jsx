@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Stack } from 'expo-router';
 import ThemeProvider from '@/themes/ThemeProvider';
-import { store } from '@/redux/store';
+import store from '@/redux/store';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
 

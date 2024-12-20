@@ -139,3 +139,10 @@ export const toUTCDate = (dateStr) => {
   const utcStr = Date.UTC(year, month, date);
   return utcStr;
 };
+
+const DateTime = {
+  monthsObjects,
+  daysObjects,
+};
+
+export default DateTime;

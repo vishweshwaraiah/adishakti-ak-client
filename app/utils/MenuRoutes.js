@@ -1,6 +1,6 @@
 const MenuRoutes = [
   {
-    name: 'home',
+    name: 'HomeScreen',
     label: 'Home',
     floatingBtn: false,
     iconName: 'home',
@@ -9,16 +9,16 @@ const MenuRoutes = [
     isSelected: true,
   },
   {
-    name: 'messages',
+    name: 'MessageScreen',
     label: 'Messages',
     floatingBtn: true,
     iconName: 'message',
     iconFamily: 'Entypo',
-    path: '/main_views/messages/MessageScreen',
+    path: '/main_views/messages/MessagesScreen',
     isSelected: false,
   },
   {
-    name: 'account',
+    name: 'AccountScreen',
     label: 'Account',
     floatingBtn: false,
     iconName: 'person',
