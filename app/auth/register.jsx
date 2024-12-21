@@ -102,7 +102,6 @@ const AppRegister = () => {
   };
 
   const handleSubmit = () => {
-    console.log('Registered successfully!');
     setModalStatus('close');
     // after registration completed successfully
   };

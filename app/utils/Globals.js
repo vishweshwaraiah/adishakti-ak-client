@@ -18,10 +18,8 @@ export const ProdServerUri = localEnv ? LocalServerUri : ProductionServerUri;
 
 export const ValidNumber = (number) => {
   if (!number) {
-    console.log('Number is required!');
     return false;
   } else if (Number.isNaN(number)) {
-    console.log('Invalid number!');
     return false;
   } else {
     const clearNum = number?.replace(clearRegex, '');

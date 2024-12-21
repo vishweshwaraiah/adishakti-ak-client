@@ -16,6 +16,8 @@ import MasterIcon from '@/components/MasterIcon';
 import AlertModal from '@/components/Modals/AlertModal';
 import useMasterStyle from '@/utils/useMasterStyle';
 import Sizes from '@/utils/Sizes';
+import AppConstants from '@/utils/AppConstants';
+import useMasterMenu from '@/utils/useMasterMenu';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -32,9 +34,10 @@ const AuthTemplate = (props) => {
   const { theme } = useTheme();
   const mStyles = useMasterStyle();
 
-  const [lastScreen, setLastScreen] = useState(false);
+  const [homeScreen, setHomeScreen] = useState(false);
   const [modalStatus, setModalStatus] = useState('close');
 
+  const { homePath } = AppConstants;
   const logoutMessage = 'Are you sure to logout?';
 
   const logoutCurrentUser = () => {
@@ -42,7 +45,7 @@ const AuthTemplate = (props) => {
     setTimeout(() => {
       dispatch(logoutUser());
       dispatch(clearUser());
-      router.replace('/auth/login');
+      router.navigate('/auth/login');
     }, 1000);
   };
 
@@ -54,21 +57,19 @@ const AuthTemplate = (props) => {
     setModalStatus('open');
   };
 
+  const uMm = useMasterMenu();
+
   const goBack = () => {
+    uMm.updateMenus();
+
     if (router.canGoBack()) {
-      setLastScreen(false);
       router.back();
-    } else {
-      setLastScreen(true);
     }
   };
 
-  const goHome = () => {
-    const homePath = '/main_views/home/HomeScreen';
-    if (pathname !== homePath) {
-      router.replace(homePath);
-    }
-  };
+  useEffect(() => {
+    setHomeScreen(pathname === homePath);
+  }, [pathname]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -81,11 +82,11 @@ const AuthTemplate = (props) => {
         color: theme.appHeaderColor,
       },
     });
-  }, [lastScreen, screenName, theme]);
+  }, [screenName, theme, homeScreen]);
 
   useEffect(() => {
     const x = router.canGoBack();
-    if (!x) setLastScreen(true);
+    if (!x) setHomeScreen(true);
   }, []);
 
   const availableScreenHeight = screenHeight - Sizes.$ieMenuSpace;
@@ -125,7 +126,7 @@ const AuthTemplate = (props) => {
 
   const leftHeaderNode = () => (
     <View style={styles.headerView}>
-      {lastScreen ? (
+      {homeScreen ? (
         <MasterIcon
           iconFamily='Ionicons'
           iconName='home'
@@ -133,7 +134,6 @@ const AuthTemplate = (props) => {
           iconColor={theme.itemColor}
           iconStyles={mStyles.actionBtn}
           isInteractive={true}
-          onPress={goHome}
         />
       ) : (
         <MasterIcon

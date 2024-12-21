@@ -1,57 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useSegments, usePathname, useRouter } from 'expo-router';
+import React from 'react';
 import FloatingMenu from '@/components/Navigation/FloatingMenu';
 import BottomMenu from '@/components/Navigation/BottomMenu';
+import useMasterMenu from '@/utils/useMasterMenu';
 
 const MasterMenu = (props) => {
-  const {
-    menuItems = [],
-    menuType = 'bottom',
-    iconsColor = '#ffffff',
-    onPress = () => {},
-  } = props;
+  const { menuType = 'bottom' } = props;
 
-  const navigation = useRouter();
-  const segments = useSegments();
-  const pathname = usePathname();
+  const uMm = useMasterMenu();
 
-  const [routeItems, setRouteItems] = useState(menuItems);
-
-  const updateRoutes = (rName) => {
-    const updatedRoutes = menuItems.map((i) => {
-      i.isSelected = i.name === rName ? true : false;
-      return i;
-    });
-
-    setRouteItems(updatedRoutes);
+  const defaultProps = {
+    menuItems: uMm.routeItems,
+    toggleMenu: uMm.toggleMenu,
   };
-
-  const toggleMenu = (menu) => {
-    if (menu?.isSelected) return;
-    if (menu?.name) {
-      navigation.navigate(menu.path);
-      updateRoutes(menu.name);
-      onPress();
-    }
-  };
-
-  useEffect(() => {
-    // may need to fix if trows any error
-    updateRoutes(segments.reverse()[1]);
-  }, [pathname]);
 
   return menuType === 'floating' ? (
-    <FloatingMenu
-      menuItems={routeItems}
-      toggleMenu={toggleMenu}
-      iconsColor={iconsColor}
-    />
+    <FloatingMenu {...defaultProps} />
   ) : (
-    <BottomMenu
-      menuItems={routeItems}
-      toggleMenu={toggleMenu}
-      iconsColor={iconsColor}
-    />
+    <BottomMenu {...defaultProps} />
   );
 };
 

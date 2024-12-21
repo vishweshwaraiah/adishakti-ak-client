@@ -62,6 +62,13 @@ const useMasterStyle = () => {
       marginBottom: Sizes.$ieRegularMargin,
       ...CommonShadow,
     },
+    flexRow: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: Sizes.$ieFlexGap,
+    },
   });
 
   return MasterStyles;

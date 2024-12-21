@@ -18,7 +18,6 @@ export const updateAppSettings = createAsyncThunk(
     const { userEmail } = appSettings;
 
     if (!userEmail) {
-      console.log('Email is required!');
       return false;
     }
 
@@ -41,7 +40,6 @@ export const fetchAppSettings = createAsyncThunk(
   'fetchAppSettings',
   async (userEmail, thunkAPI) => {
     if (!userEmail) {
-      console.log('Email is required!');
       return false;
     }
 

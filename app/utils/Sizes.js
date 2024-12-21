@@ -42,4 +42,6 @@ export default {
   $ieXLargeHeight: 64,
   $ieMaxHeight: 64,
   $ieMinHeight: 48,
+
+  $actionIconSize: 16,
 };

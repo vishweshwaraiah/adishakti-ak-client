@@ -25,7 +25,7 @@ const useContacts = () => {
         setAllContacts(Optimized);
       }
     } else {
-      console.log('Access to contacts is denied!');
+      return 'Access to contacts is denied!';
     }
   };
 

@@ -16,6 +16,8 @@ export const LocalServerUri = Constants?.expoConfig?.hostUri
 // server url for production api endpoints
 export const ProductionServerUri = 'http://13.126.248.37/api/';
 
+const homePath = '/main_views/home/HomeScreen';
+
 const AppConstants = {
   phoneRegex,
   clearRegex,
@@ -23,6 +25,7 @@ const AppConstants = {
   passwordRegex,
   LocalServerUri,
   ProductionServerUri,
+  homePath,
 };
 
 export default AppConstants;

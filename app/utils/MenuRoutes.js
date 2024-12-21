@@ -9,7 +9,7 @@ const MenuRoutes = [
     isSelected: true,
   },
   {
-    name: 'MessageScreen',
+    name: 'MessagesScreen',
     label: 'Messages',
     floatingBtn: true,
     iconName: 'message',

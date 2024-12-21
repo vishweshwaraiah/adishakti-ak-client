@@ -15,6 +15,7 @@ const ViewScreen = () => {
 
   const [numbersList, setNumbersList] = useState([]);
   const [groupName, setGroupName] = useState('');
+  const [errorObject, setErrorObject] = useState({});
 
   useEffect(() => {
     if (groupId && groupsList?.length) {
@@ -22,7 +23,7 @@ const ViewScreen = () => {
       setNumbersList(getGroup.nums_group);
       setGroupName(getGroup.group_name);
     } else {
-      console.log('Group ID must be passed!');
+      setErrorObject({ message: 'Group ID must be passed!' });
     }
   }, [groupId, groupsList]);
 
@@ -64,6 +65,9 @@ const ViewScreen = () => {
         <Text>Total {numbersList.length} Contacts</Text>
       </View>
       <UpdateGroup groupId={groupId} action='update' />
+      <Text style={{ display: 'none' }}>
+        Error: {JSON.stringify(errorObject)}
+      </Text>
     </AuthTemplate>
   );
 };

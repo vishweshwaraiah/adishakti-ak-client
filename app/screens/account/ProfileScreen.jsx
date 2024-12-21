@@ -12,11 +12,17 @@ import SettingsRow from '@/components/Settings/SettingsRow';
 import Sizes from '@/utils/Sizes';
 import MasterAvatar from '@/components/Settings/MasterAvatar';
 import { router } from 'expo-router';
+import MasterIcon from '@/components/MasterIcon';
+import useMasterStyle from '@/utils/useMasterStyle';
+import { useTheme } from '@/themes/ThemeProvider';
 
 const ProfileScreen = () => {
   const { user } = useSelector((state) => state.userSlice);
-  const [userArray, setUserArray] = useState([]);
 
+  const mStyles = useMasterStyle();
+  const { theme } = useTheme();
+
+  const [userArray, setUserArray] = useState([]);
   const [editMode, setEditMode] = useState(false);
 
   const updateDetails = () => {
@@ -112,8 +118,14 @@ const ProfileScreen = () => {
         <View style={styles.bottomContainer}>
           <View style={styles.titleAction}>
             <Text>Personal Info</Text>
-            <TouchableOpacity onPress={updateDetails}>
+            <TouchableOpacity style={mStyles.flexRow} onPress={updateDetails}>
               <Text>Update</Text>
+              <MasterIcon
+                iconName='edit-note'
+                iconSize={20}
+                iconFamily='MaterialIcons'
+                iconColor={theme.itemColor}
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.settingsRows}>

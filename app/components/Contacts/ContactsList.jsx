@@ -194,7 +194,7 @@ const ContactsList = (props) => {
       backgroundColor: bgColor,
       width: '100%',
     },
-    sortButton: {
+    actionBar: {
       backgroundColor: theme.itemBg,
       padding: Sizes.$ieRegularPadding,
       borderRadius: Sizes.$ieRegularRadius,
@@ -206,9 +206,19 @@ const ContactsList = (props) => {
       flexDirection: 'row',
       width: '95%',
       margin: Sizes.$ieRegularMargin,
+      height: Sizes.$ieLargeHeight,
     },
     sortText: {
       color: theme.itemColor,
+      width: '60%',
+    },
+    sortButton: {
+      width: '20%',
+      minWidth: '20%',
+    },
+    checkSelect: {
+      width: '20%',
+      minWidth: '20%',
     },
     noContactsText: {
       paddingHorizontal: Sizes.$ieRegularPadding,
@@ -246,18 +256,20 @@ const ContactsList = (props) => {
 
   const ContactsHeader = () => {
     return (
-      <View style={styles.sortButton}>
-        <MasterCheckbox
-          onPress={toggleAllSelect}
-          isChecked={allSelected}
-          size='large'
-          iconColor={theme.itemColor}
-          isIntermediate={isIntermediate}
-        />
+      <View style={styles.actionBar}>
+        <View style={styles.checkSelect}>
+          <MasterCheckbox
+            onPress={toggleAllSelect}
+            isChecked={allSelected}
+            size='large'
+            iconColor={theme.itemColor}
+            isIntermediate={isIntermediate}
+          />
+        </View>
         <Text style={styles.sortText}>
           Total: {ogContacts?.length} | {selectedArray.length} Selected
         </Text>
-        <TouchableOpacity onPress={toggleOrder}>
+        <TouchableOpacity onPress={toggleOrder} style={styles.sortButton}>
           <MasterIcon
             iconName={sortBy === 'asc' ? 'sort-alpha-down' : 'sort-alpha-up'}
             iconSize={24}

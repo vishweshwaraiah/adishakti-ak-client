@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import {
   CameraType,
-  MediaTypeOptions,
   launchCameraAsync,
   launchImageLibraryAsync,
   requestCameraPermissionsAsync,
@@ -46,7 +45,9 @@ const MasterAvatar = (props) => {
   const [afterUpload, setAfterUpload] = useState('initial');
   const [uploadStatus, setUploadStatus] = useState('');
 
+  // Others
   const [userContent, setUserContent] = useState({});
+  const [errorObject, setErrorObject] = useState({});
 
   const deleteUserImage = () => {
     const { userEmail, profileImage } = userContent;
@@ -98,7 +99,7 @@ const MasterAvatar = (props) => {
         await saveImage(result.assets[0].uri);
       }
     } catch (error) {
-      console.log(error);
+      setErrorObject(error);
       setAfterUpload('error');
       setUploadStatus('Unable to upload, try again!');
     }
@@ -108,7 +109,7 @@ const MasterAvatar = (props) => {
     try {
       await requestMediaLibraryPermissionsAsync();
       const result = await launchImageLibraryAsync({
-        mediaTypes: MediaTypeOptions.Images,
+        mediaTypes: 'images',
         allowsEditing: true,
         aspect: [1, 1],
         quality: 1,
@@ -118,7 +119,7 @@ const MasterAvatar = (props) => {
         await saveImage(result.assets[0].uri);
       }
     } catch (error) {
-      console.log(error);
+      setErrorObject(error);
       setAfterUpload('error');
       setUploadStatus('Unable to upload, try again!');
     }
@@ -222,9 +223,9 @@ const MasterAvatar = (props) => {
           <TouchableOpacity onPress={editHandler} style={styles.updateImage}>
             {direction === 'row' ? (
               <MasterIcon
-                iconName='edit'
+                iconName='edit-note'
                 iconSize={20}
-                iconFamily='Entypo'
+                iconFamily='MaterialIcons'
                 iconColor={theme.itemColor}
               />
             ) : (
@@ -258,6 +259,9 @@ const MasterAvatar = (props) => {
           statusMessage={uploadStatus}
         />
       </LinearGradient>
+      <Text style={{ display: 'none' }}>
+        Error: {JSON.stringify(errorObject)}
+      </Text>
     </View>
   );
 };

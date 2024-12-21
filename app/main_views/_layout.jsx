@@ -5,7 +5,6 @@ import { Slot } from 'expo-router';
 import { useTheme } from '@/themes/ThemeProvider';
 import MasterMenu from '@/components/Navigation/MasterMenu';
 import Fallback from '@/components/ErrorFallback';
-import MenuRoutes from '@/utils/MenuRoutes';
 
 const Layout = () => {
   const { menuType, appTheme } = useSelector((state) => state.appSettings);
@@ -19,10 +18,10 @@ const Layout = () => {
     <ErrorBoundary
       FallbackComponent={Fallback}
       onReset={(details) => {
-        console.log('Error Details', details);
+        return details;
       }}
     >
-      <MasterMenu menuType={menuType} menuItems={MenuRoutes} />
+      <MasterMenu menuType={menuType} />
       <Slot />
     </ErrorBoundary>
   );

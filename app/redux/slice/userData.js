@@ -52,7 +52,7 @@ export const updateImage = createAsyncThunk(
     formData.append('currentImage', profileImage);
 
     const updateProgress = (progress) => {
-      console.log(`Upload progress: ${progress}%`);
+      return `Upload progress: ${progress}%`;
     };
 
     const config = {

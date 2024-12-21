@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { useTheme } from '@/themes/ThemeProvider';
 import useMasterStyle from '@/utils/useMasterStyle';
@@ -11,16 +11,20 @@ const BottomMenu = (props) => {
   const mStyles = useMasterStyle();
   const { theme } = useTheme();
 
+  const [menuItem, setMenuItem] = useState({});
+  const [btnStyles, setBtnStyles] = useState({});
+
   let iconSize = 24;
 
-  const handlePress = (menuItem) => {
-    toggleMenu(menuItem);
+  const handlePress = (routeItem) => {
+    setMenuItem(routeItem);
+    toggleMenu(routeItem);
   };
 
-  const btnStyles = (menuItem) => {
+  const floatingBtnStyles = (routeItem) => {
     const xStyles = {};
 
-    if (menuItem.floatingBtn) {
+    if (routeItem.floatingBtn) {
       iconSize = 32;
       xStyles.borderRadius = 35;
       xStyles.backgroundColor = theme.activeBtn;
@@ -32,14 +36,29 @@ const BottomMenu = (props) => {
       xStyles.bottom = 0;
     }
 
+    return xStyles;
+  };
+
+  useEffect(() => {
+    const xStyles = {};
+
     if (menuItem.isSelected) {
       xStyles.color = theme.itemSelected;
-      xStyles.borderBottomWidth = 5;
+      if (menuItem.floatingBtn) {
+        xStyles.borderWidth = 5;
+      } else {
+        xStyles.borderBottomWidth = 5;
+      }
       xStyles.borderColor = theme.menuText;
     }
 
-    return xStyles;
-  };
+    setBtnStyles(xStyles);
+  }, [menuItem]);
+
+  useEffect(() => {
+    const menuItem = menuItems.find((x) => x.isSelected);
+    if (menuItem) setMenuItem(menuItem);
+  }, [menuItems]);
 
   const styles = StyleSheet.create({
     bottomContainer: {
@@ -73,20 +92,24 @@ const BottomMenu = (props) => {
 
   return (
     <View style={styles.bottomContainer}>
-      {menuItems.map((menuItem, idxKey) => (
+      {menuItems.map((menu, idxKey) => (
         <TouchableOpacity
-          key={menuItem.name || idxKey}
-          style={[btnStyles(menuItem), styles.bottomBarButton]}
-          onPress={() => handlePress(menuItem)}
+          key={menu.name || idxKey}
+          style={[
+            styles.bottomBarButton,
+            menu.name === menuItem.name && btnStyles,
+            floatingBtnStyles(menu),
+          ]}
+          onPress={() => handlePress(menu)}
         >
           <MasterIcon
-            iconFamily={menuItem.iconFamily}
-            iconName={menuItem.iconName}
+            iconFamily={menu.iconFamily}
+            iconName={menu.iconName}
             iconSize={iconSize}
             iconColor={iconsColor}
           />
-          {menuItem.label && !menuItem.floatingBtn && (
-            <Text style={styles.floatingBarLabel}>{menuItem.label}</Text>
+          {menu.label && !menu.floatingBtn && (
+            <Text style={styles.floatingBarLabel}>{menu.label}</Text>
           )}
         </TouchableOpacity>
       ))}

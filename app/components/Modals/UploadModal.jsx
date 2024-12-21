@@ -93,7 +93,7 @@ const UploadModal = (props) => {
                   iconFamily={'Ionicons'}
                   iconName={'camera'}
                   iconSize={Sizes.$startIconSize}
-                  iconColor={theme.itemBg}
+                  iconColor={theme.itemColor}
                 />
                 <Text>Camera</Text>
               </MasterButton>
@@ -107,7 +107,7 @@ const UploadModal = (props) => {
                   iconFamily={'Ionicons'}
                   iconName={'images'}
                   iconSize={Sizes.$startIconSize}
-                  iconColor={theme.itemBg}
+                  iconColor={theme.itemColor}
                 />
                 <Text>Gallery</Text>
               </MasterButton>
@@ -121,7 +121,7 @@ const UploadModal = (props) => {
                   iconFamily={'Ionicons'}
                   iconName={'trash'}
                   iconSize={Sizes.$startIconSize}
-                  iconColor={theme.itemBg}
+                  iconColor={theme.itemColor}
                 />
                 <Text>Remove</Text>
               </MasterButton>

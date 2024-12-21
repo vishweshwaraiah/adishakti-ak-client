@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Animated, Pressable } from 'react-native';
 import Sizes from '@/utils/Sizes';
 import { useTheme } from '@/themes/ThemeProvider';
@@ -11,12 +11,10 @@ const FloatingMenu = (props) => {
   const { theme } = useTheme();
   const mStyles = useMasterStyle();
 
-  let actionIconSize = 16;
-  let triggerIconSize = 24;
-  let iconColor = iconsColor;
-
   const animateRef = useRef(new Animated.Value(0)).current;
   const [menuStatus, setMenuStatus] = useState(false);
+  const [menuItem, setMenuItem] = useState({});
+  const [iconStyles, setIconStyles] = useState({});
 
   // Rotating the trigger button
   const rotateTrigger = [
@@ -79,7 +77,10 @@ const FloatingMenu = (props) => {
     }).start();
 
     setMenuStatus(!menuStatus);
-    toggleMenu(menuItem);
+    if (menuItem) {
+      setMenuItem(menuItem);
+      toggleMenu(menuItem);
+    }
   };
 
   const btnStyles = (idxKey) => {
@@ -91,15 +92,20 @@ const FloatingMenu = (props) => {
     return xStyles;
   };
 
-  const iconStyles = (menuItem) => {
+  useEffect(() => {
     const xStyles = {};
 
-    if (menuItem.isSelected) {
+    if (menuItem?.isSelected) {
       xStyles.backgroundColor = theme.secondary;
     }
 
-    return xStyles;
-  };
+    setIconStyles(xStyles);
+  }, [menuItem]);
+
+  useEffect(() => {
+    const menuItem = menuItems.find((x) => x.isSelected);
+    if (menuItem) setMenuItem(menuItem);
+  }, [menuItems]);
 
   const styles = StyleSheet.create({
     menuContainer: {
@@ -154,25 +160,29 @@ const FloatingMenu = (props) => {
         <Animated.View style={[styles.backDrop, backDropStyle]} />
       </Pressable>
 
-      {menuItems.map((menuItem, idx) => (
+      {menuItems.map((menu, idx) => (
         <Animated.View
-          key={menuItem.name}
+          key={menu.name}
           style={[styles.menuBtn, btnStyles(idx + 1)]}
         >
-          {menuItem.label && (
+          {menu.label && (
             <Animated.Text style={[styles.floatingBarLabel, labelStyles]}>
-              {menuItem.label}
+              {menu.label}
             </Animated.Text>
           )}
           <View
-            style={[styles.iconBox, styles.actionIconBox, iconStyles(menuItem)]}
+            style={[
+              styles.iconBox,
+              styles.actionIconBox,
+              menu.name === menuItem.name && iconStyles,
+            ]}
           >
             <MasterIcon
-              onPress={() => handlePress(menuItem)}
-              iconFamily={menuItem.iconFamily}
-              iconName={menuItem.iconName}
-              iconSize={actionIconSize}
-              iconColor={iconColor}
+              onPress={() => handlePress(menu)}
+              iconFamily={menu.iconFamily}
+              iconName={menu.iconName}
+              iconSize={Sizes.$actionIconSize}
+              iconColor={iconsColor}
               isInteractive={true}
             />
           </View>
@@ -183,8 +193,7 @@ const FloatingMenu = (props) => {
           <MasterIcon
             onPress={() => handlePress()}
             iconName='plus'
-            iconSize={triggerIconSize}
-            iconColor={iconColor}
+            iconColor={iconsColor}
             isInteractive={true}
           />
         </Animated.View>
